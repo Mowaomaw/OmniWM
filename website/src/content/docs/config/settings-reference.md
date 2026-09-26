@@ -36,7 +36,7 @@ An absent version identifies a legacy version 0 file, while OmniWM v0.6.4 emitte
 
 ## general
 
-Global switches: hotkeys, Hyper key, default layout, sleep, updates, IPC, animations.
+Global switches: hotkeys, Hyper key, default layout, sleep, updates, IPC, animations, interface language.
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -48,6 +48,7 @@ Global switches: hotkeys, Hyper key, default layout, sleep, updates, IPC, animat
 | `updateChecksEnabled` | boolean | `true` | Automatic update checks. |
 | `ipcEnabled` | boolean | `false` | Enables the IPC server used by `omniwmctl`. |
 | `animationsEnabled` | boolean | `true` | Animates window layout changes and other OmniWM-authored motion. macOS Reduce Motion turns them off regardless of this key. |
+| `language` | string | unset | Interface language as a packaged localization code, such as `"ja"` or `"sr-Latn"`. Leave it unset to follow macOS. Takes effect the next time OmniWM starts. |
 
 ## focus
 

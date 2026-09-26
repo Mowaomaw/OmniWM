@@ -164,6 +164,10 @@ final class SettingsStore {
         didSet { scheduleSave() }
     }
 
+    var language = SettingsStore.defaultExport.language {
+        didSet { scheduleSave() }
+    }
+
     let clipboard = ClipboardSettings()
 
     let quakeTerminal = QuakeTerminalSettings()
@@ -382,6 +386,7 @@ extension SettingsStore {
             statusBar: statusBar.export(),
             hiddenBar: hiddenBar.export(),
             animationsEnabled: animationsEnabled,
+            language: language,
             clipboard: clipboard.export(),
             quakeTerminal: quakeTerminal.export(),
             appearanceMode: appearanceMode,
@@ -444,6 +449,7 @@ extension SettingsStore {
         statusBar.apply(export.statusBar)
         hiddenBar.apply(export.hiddenBar)
         animationsEnabled = export.animationsEnabled
+        language = export.language
         clipboard.apply(export.clipboard)
 
         quakeTerminal.apply(export.quakeTerminal, baseline: baseline.quakeTerminal)
