@@ -209,68 +209,35 @@ final class WorkspaceBarHoverPreviewTests: XCTestCase {
         XCTAssertNil(controller.visibleTarget)
     }
 
-    func testPreviewOpensInwardFromEveryBarEdge() {
-        let panel = WorkspaceBarPreviewPanel(ownedWindowRegistry: OwnedWindowRegistry())
-        defer { panel.hide() }
-        let base = target([10])
-        let cases: [(WorkspaceBarPosition, CGRect)] = [
-            (.overlappingMenuBar, CGRect(x: 300, y: 876, width: 800, height: 24)),
-            (.bottom, CGRect(x: 300, y: 0, width: 800, height: 24)),
-            (.left, CGRect(x: 0, y: 200, width: 24, height: 500)),
-            (.right, CGRect(x: 1576, y: 200, width: 24, height: 500))
-        ]
-        for (position, barFrame) in cases {
-            let hovered = WorkspaceBarHoverTarget(
-                key: base.key, windows: base.windows,
-                attachment: PopupAttachment(sourceFrame: barFrame, edge: position.popupEdge),
-                visibleFrame: base.visibleFrame, level: base.level
-            )
-            panel.show(
-                hovered, windows: hovered.windows, overflowCount: 0,
-                showsThumbnails: true, cachedPreview: { _ in nil }
-            )
-            XCTAssertTrue(base.visibleFrame.contains(panel.frame), "\(position)")
-            XCTAssertFalse(panel.frame.intersects(barFrame), "\(position)")
-            switch position.popupEdge {
-            case .above: XCTAssertGreaterThan(panel.frame.minY, barFrame.maxY)
-            case .below: XCTAssertLessThan(panel.frame.maxY, barFrame.minY)
-            case .left: XCTAssertLessThan(panel.frame.maxX, barFrame.minX)
-            case .right: XCTAssertGreaterThan(panel.frame.minX, barFrame.maxX)
-            }
-        }
-    }
-
-    func testGroupedPreviewsFitNarrowDisplaysWithoutCoveringSideBars() {
+    func testGroupedPreviewsFitNarrowDisplaysWithoutCoveringAnyBarEdge() throws {
         let panel = WorkspaceBarPreviewPanel(ownedWindowRegistry: OwnedWindowRegistry())
         defer { panel.hide() }
         let base = target([11, 12, 13, 14])
-        for width: CGFloat in [640, 320] {
-            let visible = CGRect(x: -800, y: -500, width: width, height: 180)
-            for position in [WorkspaceBarPosition.left, .right] {
-                let bar = CGRect(
-                    x: position == .left ? visible.minX : visible.maxX - 32,
-                    y: visible.minY, width: 32, height: visible.height
+        let visible = CGRect(x: -800, y: -500, width: 320, height: 180)
+        let cases: [(WorkspaceBarPosition, CGRect)] = [
+            (.overlappingMenuBar, CGRect(x: -800, y: -344, width: 320, height: 24)),
+            (.bottom, CGRect(x: -800, y: -500, width: 320, height: 24)),
+            (.left, CGRect(x: -800, y: -500, width: 32, height: 180)),
+            (.right, CGRect(x: -512, y: -500, width: 32, height: 180))
+        ]
+        for (position, bar) in cases {
+            let hovered = WorkspaceBarHoverTarget(
+                key: base.key, windows: base.windows,
+                attachment: PopupAttachment(sourceFrame: bar, edge: position.popupEdge),
+                visibleFrame: visible, level: base.level
+            )
+            for thumbnails in [true, false] {
+                panel.show(
+                    hovered, windows: hovered.windows, overflowCount: 17,
+                    showsThumbnails: thumbnails, cachedPreview: { _ in nil }
                 )
-                let hovered = WorkspaceBarHoverTarget(
-                    key: base.key, windows: base.windows,
-                    attachment: PopupAttachment(sourceFrame: bar, edge: position.popupEdge),
-                    visibleFrame: visible, level: base.level
-                )
-                for thumbnails in [true, false] {
-                    for overflow in [0, 17] {
-                        panel.show(
-                            hovered, windows: hovered.windows, overflowCount: overflow,
-                            showsThumbnails: thumbnails, cachedPreview: { _ in nil }
-                        )
-                        XCTAssertTrue(visible.contains(panel.frame))
-                        XCTAssertFalse(panel.frame.intersects(bar))
-                        let content = panel.contentView!
-                        XCTAssertEqual(content.subviews.count, 4 + (overflow > 0 ? 1 : 0))
-                        for tile in content.subviews {
-                            XCTAssertTrue(content.bounds.contains(tile.frame))
-                            XCTAssertGreaterThan(tile.frame.width, 0)
-                        }
-                    }
+                XCTAssertTrue(visible.contains(panel.frame), "\(position)")
+                XCTAssertFalse(panel.frame.intersects(bar), "\(position)")
+                let content = try XCTUnwrap(panel.contentView)
+                XCTAssertEqual(content.subviews.count, 5)
+                for tile in content.subviews {
+                    XCTAssertTrue(content.bounds.contains(tile.frame))
+                    XCTAssertGreaterThan(tile.frame.width, 0)
                 }
             }
         }

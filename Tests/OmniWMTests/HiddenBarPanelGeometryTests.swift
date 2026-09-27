@@ -5,6 +5,13 @@
 import XCTest
 
 final class HiddenBarPanelGeometryTests: XCTestCase {
+    func testNarrowScreenPinsToMinX() {
+        let narrow = CGRect(x: 100, y: 0, width: 150, height: 900)
+        let frame = PopupAttachment(anchor: CGPoint(x: 175, y: 900))
+            .frame(size: CGSize(width: 200, height: 60), visibleFrame: narrow)
+        XCTAssertEqual(frame.minX, narrow.minX + 8, accuracy: 0.5)
+    }
+
     func testBarSizeEmptyIsCompact() {
         let size = HiddenBarPanelController.barSize(
             itemWidths: [],

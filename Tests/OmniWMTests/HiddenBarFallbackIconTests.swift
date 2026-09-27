@@ -39,23 +39,23 @@ final class HiddenBarFallbackIconTests: XCTestCase {
         XCTAssertEqual(frame.minY, 851)
     }
 
-    func testBottomFallbackStaysBesideShortBarsAndAboveWideBars() {
-        let bounds = CGRect(x: -800, y: -600, width: 800, height: 600)
+    func testFallbackAvoidsBottomAndFullHeightSideBars() {
         let visible = CGRect(x: -752, y: -560, width: 752, height: 532)
-        let screen = monitor(frame: bounds, visibleFrame: visible)
-        for width: CGFloat in [300, visible.width, 1000] {
-            let bar = CGRect(x: visible.midX - width / 2, y: visible.minY, width: width, height: 32)
+        let screen = monitor(frame: CGRect(x: -800, y: -600, width: 800, height: 600), visibleFrame: visible)
+        let cases: [(WorkspaceBarPosition, CGRect, CGPoint)] = [
+            (.bottom, CGRect(x: -526, y: -560, width: 300, height: 32), CGPoint(x: -566, y: -560)),
+            (.bottom, CGRect(x: -752, y: -560, width: 752, height: 32), CGPoint(x: -744, y: -520)),
+            (.bottom, CGRect(x: -876, y: -560, width: 1000, height: 32), CGPoint(x: -744, y: -520)),
+            (.left, CGRect(x: -752, y: -560, width: 32, height: 532), CGPoint(x: -712, y: -560)),
+            (.right, CGRect(x: -32, y: -560, width: 32, height: 532), CGPoint(x: -72, y: -560))
+        ]
+        for (position, bar, origin) in cases {
             let icon = HiddenBarFallbackIconController.iconFrame(
-                monitor: screen, barVisible: true, barFrame: bar, position: .bottom
+                monitor: screen, barVisible: true, barFrame: bar, position: position
             )
+            XCTAssertEqual(icon.origin, origin)
             XCTAssertTrue(visible.contains(icon))
             XCTAssertFalse(icon.intersects(bar))
-            if width == 300 {
-                XCTAssertEqual(icon.maxX + HiddenBarFallbackIconController.gap, bar.minX)
-                XCTAssertEqual(icon.minY, bar.minY)
-            } else {
-                XCTAssertEqual(icon.minY, bar.maxY + HiddenBarFallbackIconController.gap)
-            }
         }
     }
 

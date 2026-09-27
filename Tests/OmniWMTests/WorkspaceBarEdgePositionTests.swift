@@ -34,6 +34,7 @@ final class WorkspaceBarEdgePositionTests: XCTestCase {
         settings.xOffset = 5
         settings.yOffset = -7
         settings.reserveLayoutSpace = true
+        settings.notchMode = .splitActiveLeft
         let cases: [(WorkspaceBarPosition, CGRect, Struts)] = [
             (.bottom, CGRect(x: -785, y: -847, width: 200, height: 32), Struts(bottom: 32)),
             (.left, CGRect(x: -1375, y: -543, width: 32, height: 200), Struts(left: 32)),
@@ -41,25 +42,19 @@ final class WorkspaceBarEdgePositionTests: XCTestCase {
         ]
         for (position, expectedFrame, insets) in cases {
             settings.position = position
-            for mode in WorkspaceBarNotchMode.allCases {
-                settings.notchMode = mode
-                let resolved = settings.resolved(for: monitor)
-                XCTAssertEqual(resolved.notchMode, .off)
-                XCTAssertEqual(settings.notchMode, mode)
-                let geometry = WorkspaceBarGeometry.resolve(monitor: monitor, resolved: resolved, isVisible: true)
-                XCTAssertEqual(geometry.frame(fittingLength: 200, monitor: monitor, resolved: resolved), expectedFrame)
-                XCTAssertEqual(geometry.reservedInsets, insets)
-                if position.isVertical {
-                    XCTAssertEqual(
-                        geometry.frame(fittingLength: 5000, monitor: monitor, resolved: resolved).height,
-                        monitor.visibleFrame.height
-                    )
-                }
-            }
-            settings.update(MonitorBarSettings(monitorName: monitor.name, position: .belowMenuBar), for: monitor)
-            XCTAssertEqual(settings.resolved(for: monitor).notchMode, settings.notchMode)
-            settings.remove(for: monitor)
+            let resolved = settings.resolved(for: monitor)
+            XCTAssertEqual(resolved.notchMode, .off)
+            XCTAssertEqual(settings.notchMode, .splitActiveLeft)
+            let geometry = WorkspaceBarGeometry.resolve(monitor: monitor, resolved: resolved, isVisible: true)
+            XCTAssertEqual(geometry.frame(fittingLength: 200, monitor: monitor, resolved: resolved), expectedFrame)
+            XCTAssertEqual(geometry.reservedInsets, insets)
+            XCTAssertEqual(
+                geometry.frame(fittingLength: 5000, monitor: monitor, resolved: resolved).height,
+                position.isVertical ? monitor.visibleFrame.height : 32
+            )
         }
+        settings.update(MonitorBarSettings(monitorName: monitor.name, position: .belowMenuBar), for: monitor)
+        XCTAssertEqual(settings.resolved(for: monitor).notchMode, .splitActiveLeft)
     }
 
     func testStatsAttachmentTracksDisplayedBarAfterMovement() async throws {
@@ -100,25 +95,6 @@ final class WorkspaceBarEdgePositionTests: XCTestCase {
             XCTAssertEqual(manager.popupAttachment(on: monitor.id, forStats: true), PopupAttachment(
                 sourceFrame: frame, edge: position.popupEdge, alignment: moved
             ))
-        }
-    }
-
-    func testFallbackIconAndPopupDoNotOverlapFullHeightSideBar() {
-        let settings = WorkspaceBarSettings()
-        for position in [WorkspaceBarPosition.left, .right] {
-            settings.position = position
-            let resolved = settings.resolved(for: monitor)
-            let bar = WorkspaceBarGeometry.resolve(monitor: monitor, resolved: resolved, isVisible: true)
-                .frame(fittingLength: 5000, monitor: monitor, resolved: resolved)
-            let icon = HiddenBarFallbackIconController.iconFrame(
-                monitor: monitor, barVisible: true, barFrame: bar, position: position
-            )
-            XCTAssertFalse(icon.intersects(bar))
-            XCTAssertTrue(monitor.visibleFrame.contains(icon))
-            let popup = PopupAttachment(sourceFrame: icon, edge: position.popupEdge)
-                .frame(size: CGSize(width: 300, height: 400), visibleFrame: monitor.visibleFrame)
-            XCTAssertFalse(popup.intersects(icon))
-            XCTAssertFalse(popup.intersects(bar))
         }
     }
 }

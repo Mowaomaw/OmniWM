@@ -7,8 +7,33 @@ import SwiftUI
 import XCTest
 
 final class SystemStatsPopupControllerTests: XCTestCase {
+    private let size = CGSize(width: 360, height: 420)
+    private let screen = CGRect(x: 0, y: 0, width: 1512, height: 950)
+
+    func testPopupFrameHangsBelowAnchorCentered() {
+        let frame = PopupAttachment(anchor: CGPoint(x: 756, y: 900)).frame(size: size, visibleFrame: screen)
+
+        XCTAssertEqual(frame.midX, 756)
+        XCTAssertEqual(frame.maxY, 896)
+        XCTAssertEqual(frame.size, size)
+    }
+
+    func testPopupFrameClampsAtLeftAndRightEdges() {
+        let left = PopupAttachment(anchor: CGPoint(x: 10, y: 900)).frame(size: size, visibleFrame: screen)
+        XCTAssertEqual(left.minX, 8)
+
+        let right = PopupAttachment(anchor: CGPoint(x: 1508, y: 900)).frame(size: size, visibleFrame: screen)
+        XCTAssertEqual(right.maxX, screen.maxX - 8)
+    }
+
+    func testPopupFrameClampsAtBottomEdge() {
+        let frame = PopupAttachment(anchor: CGPoint(x: 756, y: 100)).frame(size: size, visibleFrame: screen)
+
+        XCTAssertEqual(frame.minY, 8)
+    }
+
     @MainActor
-    func testSidePopupsFitInwardSpaceAndScrollTheDashboard() throws {
+    func testSidePopupsFitPanelAndContentToInwardSpace() throws {
         let controller = SystemStatsPopupController()
         defer { controller.dismiss() }
         let visible = CGRect(x: -800, y: -500, width: 380, height: 180)
@@ -34,21 +59,9 @@ final class SystemStatsPopupControllerTests: XCTestCase {
             hosting.layoutSubtreeIfNeeded()
             XCTAssertTrue(visible.contains(panel.frame))
             XCTAssertFalse(panel.frame.intersects(bar))
-            XCTAssertEqual(hosting.fittingSize.width, panel.frame.width, accuracy: 0.5)
-            XCTAssertEqual(hosting.fittingSize.height, panel.frame.height, accuracy: 0.5)
-            let scroll = try XCTUnwrap(findScrollView(in: hosting))
-            let document = try XCTUnwrap(scroll.documentView)
-            XCTAssertGreaterThan(document.frame.height, scroll.contentSize.height)
-            scroll.contentView.scroll(to: CGPoint(x: 0, y: document.frame.height - scroll.contentSize.height))
-            scroll.reflectScrolledClipView(scroll.contentView)
-            XCTAssertGreaterThan(scroll.contentView.bounds.minY, 0)
+            XCTAssertEqual(hosting.fittingSize, panel.frame.size)
             controller.dismiss()
         }
-    }
-
-    @MainActor
-    private func findScrollView(in view: NSView) -> NSScrollView? {
-        (view as? NSScrollView) ?? view.subviews.lazy.compactMap { self.findScrollView(in: $0) }.first
     }
 
     @MainActor

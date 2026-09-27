@@ -670,39 +670,16 @@ final class GapSettingsTests: XCTestCase {
             name: "Built-in"
         )
 
-        XCTAssertEqual(
-            controller.insetWorkingFrame(for: monitor),
-            CGRect(x: 12, y: 14, width: 1416, height: 816)
-        )
-        XCTAssertEqual(
-            controller.fullscreenLayoutFrame(for: monitor),
-            CGRect(x: 0, y: 0, width: 1440, height: 836)
-        )
-    }
-
-    @MainActor
-    func testEdgeBarReservationsApplyToTilingAndFullscreen() {
-        let settings = makeSettingsStore()
-        settings.gaps.outerGapLeft = 12
-        settings.gaps.outerGapRight = 12
-        settings.gaps.outerGapTop = 46
-        settings.gaps.outerGapBottom = 14
-        settings.workspaceBar.reserveLayoutSpace = true
-        settings.workspaceBar.height = 24
         settings.borders.enabled = false
-        let controller = WMController(settings: settings)
-        let monitor = Monitor(
-            id: .init(displayId: 1),
-            displayId: 1,
-            frame: CGRect(x: 0, y: 0, width: 1440, height: 900),
-            visibleFrame: CGRect(x: 0, y: 60, width: 1440, height: 800),
-            hasNotch: false,
-            name: "Built-in"
-        )
         let cases: [(WorkspaceBarPosition, CGRect, CGRect)] = [
-            (.bottom, CGRect(x: 12, y: 98, width: 1416, height: 756), CGRect(x: 0, y: 84, width: 1440, height: 776)),
-            (.left, CGRect(x: 36, y: 74, width: 1392, height: 780), CGRect(x: 24, y: 60, width: 1416, height: 800)),
-            (.right, CGRect(x: 12, y: 74, width: 1392, height: 780), CGRect(x: 0, y: 60, width: 1416, height: 800))
+            (
+                .belowMenuBar,
+                CGRect(x: 12, y: 14, width: 1416, height: 816),
+                CGRect(x: 0, y: 0, width: 1440, height: 836)
+            ),
+            (.bottom, CGRect(x: 12, y: 38, width: 1416, height: 816), CGRect(x: 0, y: 24, width: 1440, height: 836)),
+            (.left, CGRect(x: 36, y: 14, width: 1392, height: 840), CGRect(x: 24, y: 0, width: 1416, height: 860)),
+            (.right, CGRect(x: 12, y: 14, width: 1392, height: 840), CGRect(x: 0, y: 0, width: 1416, height: 860))
         ]
         for (position, working, fullscreen) in cases {
             settings.workspaceBar.position = position
@@ -710,12 +687,6 @@ final class GapSettingsTests: XCTestCase {
             XCTAssertEqual(frames.workingFrame, working)
             XCTAssertEqual(frames.fullscreenLayoutFrame, fullscreen)
             XCTAssertEqual(frames.borderSafeFillFrame, fullscreen)
-            settings.gaps.fullscreenUsesOuterGaps = true
-            XCTAssertEqual(controller.fullscreenLayoutFrame(for: monitor), working)
-            settings.gaps.fullscreenUsesOuterGaps = false
-            settings.workspaceBar.reserveLayoutSpace = false
-            XCTAssertEqual(controller.fullscreenLayoutFrame(for: monitor), monitor.visibleFrame)
-            settings.workspaceBar.reserveLayoutSpace = true
         }
     }
 

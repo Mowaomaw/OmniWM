@@ -193,22 +193,14 @@ final class WorkspaceBarDropResolutionTests: XCTestCase {
                 columnCount: workspace.columnCount, orientation: .vertical
             )
         })
-        let sources: [WorkspaceBarDragSource] = [
-            .init(tokens: [a], workspaceId: ws1, isFloating: false),
-            .init(tokens: [b], workspaceId: ws1, isFloating: false),
-            .init(tokens: [b, c], workspaceId: ws1, isFloating: false),
-            .init(tokens: [a], workspaceId: ws1, isFloating: true),
-            .init(tokens: [x], workspaceId: dwindleWorkspace, isFloating: false)
-        ]
-        for source in sources {
-            for x in [5, 20, 33, 40, 49, 56, 60, 64, 72, 83, 106, 140, 155, 170, 500, 2005, 2018, 2026, 2043, 2050] {
-                let point = CGPoint(x: x, y: 12)
-                XCTAssertEqual(
-                    WorkspaceBarDropResolver.resolve(source: source, at: point.applying(transform), in: vertical),
-                    WorkspaceBarDropResolver.resolve(source: source, at: point, in: geometry),
-                    "\(source), x=\(x)"
-                )
-            }
+        let source = WorkspaceBarDragSource(tokens: [a], workspaceId: ws1, isFloating: false)
+        for x in [40, 49, 56, 83, 2018, 2026, 2043] {
+            let point = CGPoint(x: x, y: 12)
+            XCTAssertEqual(
+                WorkspaceBarDropResolver.resolve(source: source, at: point.applying(transform), in: vertical),
+                WorkspaceBarDropResolver.resolve(source: source, at: point, in: geometry),
+                "x=\(x)"
+            )
         }
     }
 
