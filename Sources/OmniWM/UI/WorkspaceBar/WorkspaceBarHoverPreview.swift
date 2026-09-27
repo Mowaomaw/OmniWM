@@ -123,6 +123,13 @@ final class WorkspaceBarHoverPreviewController {
         hide()
     }
 
+    func shutdown() {
+        dismiss()
+        capture.releaseCache()
+        panel?.close()
+        panel = nil
+    }
+
     func targetsDidChange(resolve: (WorkspaceBarHitTarget) -> WorkspaceBarHoverTarget?) {
         switch phase {
         case let .pending(target, cancel):

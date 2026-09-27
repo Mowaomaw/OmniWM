@@ -152,6 +152,7 @@ struct SettingsExport: Equatable {
     }
 
     struct Overview: Codable, Equatable {
+        var enabled: Bool?
         var zoom: Double
         var backdrop: SettingsColor
         var windowBorders: OverviewWindowBorders
@@ -395,6 +396,7 @@ extension SettingsExport.Dwindle {
 extension SettingsExport.Overview {
     static func defaults() -> Self {
         Self(
+            enabled: true,
             zoom: 1.0,
             backdrop: SettingsColor(red: 0.05, green: 0.05, blue: 0.08, alpha: 0),
             windowBorders: SettingsExport.OverviewWindowBorders(

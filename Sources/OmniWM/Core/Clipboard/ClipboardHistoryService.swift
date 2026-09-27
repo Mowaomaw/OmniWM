@@ -101,7 +101,7 @@ final class ClipboardHistoryService: @unchecked Sendable {
     private var captureEpoch = 0
     private var monitoringSuspensions = 0
     private var captureTasks: [Int: Task<Void, Never>] = [:]
-    private var imageRecognitionTasks: [UUID: Task<Void, Never>] = [:]
+    private var imageRecognitionTasks: [UUID: (generation: Int, task: Task<Void, Never>)] = [:]
     private var performanceTimerFires: UInt64?
 
     init(
@@ -131,6 +131,10 @@ final class ClipboardHistoryService: @unchecked Sendable {
             start()
         } else {
             stop()
+            for recognition in imageRecognitionTasks.values {
+                recognition.task.cancel()
+            }
+            imageRecognitionTasks.removeAll()
             applyPaletteItems([])
         }
     }
@@ -168,6 +172,8 @@ final class ClipboardHistoryService: @unchecked Sendable {
     }
 
     func copyItemToPasteboard(id: UUID, plainText: Bool = false) async -> Bool {
+        guard configuration.isEnabled else { return false }
+        let generation = configurationGeneration
         let text: String?
         if plainText {
             guard let item = await store.item(id: id) else { return false }
@@ -179,7 +185,10 @@ final class ClipboardHistoryService: @unchecked Sendable {
             text = nil
         }
         guard configuration.isEnabled,
-              let item = await store.itemForUse(id: id)
+              generation == configurationGeneration,
+              let item = await store.itemForUse(id: id),
+              configuration.isEnabled,
+              generation == configurationGeneration
         else {
             return false
         }
@@ -189,23 +198,32 @@ final class ClipboardHistoryService: @unchecked Sendable {
             environment.writePasteboard(item)
         }
         let snapshots = await store.paletteItems()
-        applyPaletteItems(snapshots)
+        if configuration.isEnabled, generation == configurationGeneration {
+            applyPaletteItems(snapshots)
+        }
         return didWrite
     }
 
     func deleteItem(id: UUID) async -> [ClipboardPaletteItem] {
+        guard configuration.isEnabled else { return [] }
+        let generation = configurationGeneration
         let snapshots = await store.delete(id: id)
+        guard configuration.isEnabled, generation == configurationGeneration else { return [] }
         applyPaletteItems(snapshots)
         return snapshots
     }
 
     func setPinned(_ pinned: Bool, id: UUID) async -> [ClipboardPaletteItem] {
+        guard configuration.isEnabled else { return [] }
+        let generation = configurationGeneration
         let snapshots = await store.pin(id: id, isPinned: pinned)
+        guard configuration.isEnabled, generation == configurationGeneration else { return [] }
         applyPaletteItems(snapshots)
         return snapshots
     }
 
     func preview(id: UUID) async -> ClipboardPalettePreview? {
+        guard configuration.isEnabled else { return nil }
         guard let item = await store.item(id: id) else { return nil }
         return await Task.detached(priority: .utility) {
             if let content = item.contents.first(where: { $0.kind == .image }),
@@ -226,14 +244,18 @@ final class ClipboardHistoryService: @unchecked Sendable {
     }
 
     func clearHistory() async throws -> [ClipboardPaletteItem] {
+        guard configuration.isEnabled else { return [] }
+        let generation = configurationGeneration
         let changeCountAtClear = environment.pasteboardChangeCount()
         suspendMonitoring()
         defer { releaseMonitoring() }
         for task in Array(captureTasks.values) {
             await task.value
         }
+        guard configuration.isEnabled, generation == configurationGeneration else { return [] }
         let clearEpoch = captureEpoch &+ 1
         let snapshots = try await store.clear(epoch: clearEpoch)
+        guard configuration.isEnabled, generation == configurationGeneration else { return [] }
         captureGeneration &+= 1
         captureEpoch = clearEpoch
         lastChangeCount = max(lastChangeCount, changeCountAtClear)
@@ -249,8 +271,8 @@ final class ClipboardHistoryService: @unchecked Sendable {
         stop()
         captureEpoch &+= 1
         await store.fenceCaptures(epoch: captureEpoch)
-        for task in Array(imageRecognitionTasks.values) {
-            await task.value
+        for recognition in Array(imageRecognitionTasks.values) {
+            await recognition.task.value
         }
         try await store.flush()
     }
@@ -338,16 +360,29 @@ final class ClipboardHistoryService: @unchecked Sendable {
         let id = item.id
         let digest = item.digest
         let provider = environment.recognizeImageText
-        imageRecognitionTasks[id] = Task.detached(priority: .utility) { [weak self] in
+        let recognitionGeneration = configurationGeneration
+        let task = Task.detached(priority: .utility) { [weak self] in
             let text = provider(content.data) ?? ""
-            await self?.completeImageText(id: id, digest: digest, text: text)
+            await self?.completeImageText(
+                id: id,
+                digest: digest,
+                text: text,
+                generation: recognitionGeneration
+            )
         }
+        imageRecognitionTasks[id] = (generation: recognitionGeneration, task: task)
     }
 
-    private func completeImageText(id: UUID, digest: String, text: String) async {
+    private func completeImageText(id: UUID, digest: String, text: String, generation: Int) async {
+        defer {
+            if imageRecognitionTasks[id]?.generation == generation {
+                imageRecognitionTasks.removeValue(forKey: id)
+            }
+        }
+        guard configuration.isEnabled, generation == configurationGeneration else { return }
         let snapshots = await store.setRecognizedText(id: id, digest: digest, text: text)
+        guard configuration.isEnabled, generation == configurationGeneration else { return }
         applyPaletteItems(snapshots)
-        imageRecognitionTasks.removeValue(forKey: id)
     }
 
     private func applyPaletteItems(_ items: [ClipboardPaletteItem]) {

@@ -84,10 +84,15 @@ struct HiddenBarSettingsTab: View {
             }
         }
         .formStyle(.grouped)
-        .task {
+        .task(id: settings.hiddenBar.enabled) {
+            guard settings.hiddenBar.enabled else {
+                detectedApps = []
+                isDetectingApps = false
+                return
+            }
             isDetectingApps = true
             let apps = await controller.detectMenuBarApps()
-            guard !Task.isCancelled else { return }
+            guard !Task.isCancelled, settings.hiddenBar.enabled else { return }
             detectedApps = apps
             isDetectingApps = false
         }

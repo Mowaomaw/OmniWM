@@ -138,8 +138,15 @@ extension WMController {
     }
 
     func updateHotkeyBindings(_ bindings: [HotkeyBinding], force: Bool = false) {
+        let enabledBindings = bindings.filter { binding in
+            switch binding.command {
+            case .presentation(.overview): settings.overview.enabled
+            case .presentation(.quakeTerminal): settings.quakeTerminal.enabled
+            default: true
+            }
+        }
         hotkeys.updateBindings(
-            bindings,
+            enabledBindings,
             systemHyperTrigger: settings.systemHyperTrigger,
             force: force
         )

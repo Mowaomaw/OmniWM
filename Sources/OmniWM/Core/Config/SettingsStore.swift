@@ -24,6 +24,13 @@ final class SettingsStore {
     private let autosaveEnabled: Bool
     private var isApplyingExport = false
     private var isApplyingRuntimeState = false
+    @ObservationIgnored private var lastEffectiveTrackpadAvailability: Bool?
+
+    var effectiveTrackpadGesturesEnabled: Bool {
+        gestures.scrollEnabled || gestures.workspaceSwipeEnabled ||
+            (gestures.overviewGestureEnabled && overview.enabled) ||
+            gestures.windowMoveEnabled || gestures.windowResizeEnabled
+    }
 
     var onIPCEnabledChanged: (@MainActor (Bool) -> Void)?
     var onExternalSettingsReloaded: (@MainActor () -> Void)?
@@ -257,19 +264,22 @@ final class SettingsStore {
         gaps.onChange = { [weak self] in self?.scheduleSave() }
         niri.onChange = { [weak self] in self?.scheduleSave() }
         dwindle.onChange = { [weak self] in self?.scheduleSave() }
-        gestures.onChange = { [weak self] in self?.scheduleSave() }
+        gestures.onChange = { [weak self] in
+            self?.notifyTrackpadAvailabilityIfChanged()
+            self?.scheduleSave()
+        }
         workspaceBar.onChange = { [weak self] in self?.scheduleSave() }
         workspaces.onChange = { [weak self] in self?.scheduleSave() }
         borders.onChange = { [weak self] in self?.scheduleSave() }
-        overview.onChange = { [weak self] in self?.scheduleSave() }
+        overview.onChange = { [weak self] in
+            self?.notifyTrackpadAvailabilityIfChanged()
+            self?.scheduleSave()
+        }
         statusBar.onChange = { [weak self] in self?.scheduleSave() }
         hiddenBar.onChange = { [weak self] in self?.scheduleSave() }
         clipboard.onChange = { [weak self] in self?.scheduleSave() }
         quakeTerminal.onChange = { [weak self] in self?.scheduleSave() }
-        gestures.onAvailabilityChanged = { [weak self] available in
-            guard let self, !self.isApplyingExport else { return }
-            self.onTrackpadGestureAvailabilityChanged?(available)
-        }
+        lastEffectiveTrackpadAvailability = effectiveTrackpadGesturesEnabled
 
         let outcome = persistence.loadOutcome()
         transitionConfigNotice(to: outcome.notice)
@@ -396,11 +406,12 @@ extension SettingsStore {
 
     func applyExport(_ export: SettingsExport) {
         let baseline = SettingsStore.defaultExport
-        let trackpadGesturesWereAvailable = gestures.trackpadGesturesEnabled
+        let trackpadGesturesWereAvailable = effectiveTrackpadGesturesEnabled
         isApplyingExport = true
         defer {
             isApplyingExport = false
-            let trackpadGesturesAreAvailable = gestures.trackpadGesturesEnabled
+            let trackpadGesturesAreAvailable = effectiveTrackpadGesturesEnabled
+            lastEffectiveTrackpadAvailability = trackpadGesturesAreAvailable
             if trackpadGesturesWereAvailable != trackpadGesturesAreAvailable {
                 onTrackpadGestureAvailabilityChanged?(trackpadGesturesAreAvailable)
             }
@@ -456,6 +467,14 @@ extension SettingsStore {
 
         appearanceMode = export.appearanceMode
         tabRailAppIcons = export.tabRailAppIcons
+    }
+
+    private func notifyTrackpadAvailabilityIfChanged() {
+        guard !isApplyingExport else { return }
+        let available = effectiveTrackpadGesturesEnabled
+        guard available != lastEffectiveTrackpadAvailability else { return }
+        lastEffectiveTrackpadAvailability = available
+        onTrackpadGestureAvailabilityChanged?(available)
     }
 }
 

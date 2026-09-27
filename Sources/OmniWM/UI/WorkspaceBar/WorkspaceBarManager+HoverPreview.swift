@@ -4,7 +4,12 @@
 import AppKit
 
 extension WorkspaceBarManager {
-    func configureHoverPreview(controller: WMController) {
+    func syncHoverPreview(controller: WMController, settings: SettingsStore) {
+        guard settings.workspaceBar.enabled && settings.workspaceBar.hoverPreviewsEnabled else {
+            hoverPreview?.shutdown()
+            hoverPreview = nil
+            return
+        }
         guard hoverPreview == nil else { return }
         let preview = WorkspaceBarHoverPreviewController(
             capture: OverviewThumbnailCapture(

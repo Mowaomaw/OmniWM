@@ -146,6 +146,44 @@ final class ClipboardHistoryServiceTests: XCTestCase {
         XCTAssertEqual(persisted.first?.title, "Recognized words")
     }
 
+    func testDisablingDuringCopyDoesNotRepublishHistory() async throws {
+        let configuration = try makeConfiguration()
+        let timer = ManualClipboardHistoryTimer()
+        let changeCount = ClipboardChangeCount()
+        let captured = expectation(description: "Clipboard item captured")
+        let capture = makeCapture("saved", kind: .text)
+        weak var activeService: ClipboardHistoryService?
+        var environment = ClipboardHistoryServiceEnvironment()
+        environment.pasteboardChangeCount = { changeCount.value }
+        environment.capturePasteboard = { _ in capture }
+        environment.writePasteboard = { _ in
+            var disabled = configuration
+            disabled.isEnabled = false
+            activeService?.updateConfiguration(disabled)
+            return true
+        }
+        environment.makeTimer = { _, action in
+            timer.action = action
+            return timer
+        }
+        let service = ClipboardHistoryService(configuration: configuration, environment: environment)
+        activeService = service
+        service.onPaletteItemsChanged = { items in
+            if items.first?.title == "saved" { captured.fulfill() }
+        }
+
+        service.start()
+        changeCount.value = 1
+        timer.fire()
+        await fulfillment(of: [captured], timeout: 2)
+        service.onPaletteItemsChanged = nil
+        let id = try XCTUnwrap(service.paletteItems.first?.id)
+
+        let didCopy = await service.copyItemToPasteboard(id: id)
+        XCTAssertTrue(didCopy)
+        XCTAssertTrue(service.paletteItems.isEmpty)
+    }
+
     private func assertFullPlainTextCopy(data: Data, kind: ClipboardContentKind, tail: String) async throws {
         let configuration = try makeConfiguration(maxItemBytes: 131_072)
         let timer = ManualClipboardHistoryTimer()

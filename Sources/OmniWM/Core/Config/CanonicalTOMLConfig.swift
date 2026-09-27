@@ -144,6 +144,7 @@ extension CanonicalTOMLConfig {
 
     func toSettingsExport() -> SettingsExport {
         var overview = overview
+        overview.enabled = overview.enabled ?? true
         overview.matchFocusBorder = overview.matchFocusBorder ?? true
         overview.invertScrollDirection = overview.invertScrollDirection ?? false
         overview.mouseScrollSpeed = overview.mouseScrollSpeed ?? 1

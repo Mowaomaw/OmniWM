@@ -68,6 +68,11 @@ private struct GlobalBarSettingsSection: View {
                 }
 
             if settings.workspaceBar.enabled {
+                Toggle("Window Hover Previews", isOn: Bindable(settings.workspaceBar).hoverPreviewsEnabled)
+                    .onChange(of: settings.workspaceBar.hoverPreviewsEnabled) { _, _ in
+                        controller.updateWorkspaceBarSettings()
+                    }
+
                 Toggle("Show Workspace Labels", isOn: Bindable(settings.workspaceBar).showLabels)
                     .onChange(of: settings.workspaceBar.showLabels) { _, _ in
                         controller.updateWorkspaceBarSettings()

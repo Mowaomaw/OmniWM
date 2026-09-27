@@ -304,6 +304,9 @@ extension WMController {
             enabled: settings.borders.enabled,
             width: CGFloat(settings.borders.width)
         )
+        if !current.enabled {
+            surfaceReconciler.cleanupBorder()
+        }
         let previous = appliedBorderLayoutConfig
         appliedBorderLayoutConfig = current
         let clearanceChanged = workspaceManager.monitors.contains { monitor in
@@ -399,10 +402,6 @@ extension WMController {
     func refreshHotkeyFailureSnapshots() {
         hotkeyRegistrationFailures = hotkeys.registrationFailures
         systemHyperTriggerFailure = hotkeys.systemHyperTriggerFailure
-    }
-
-    var workspaceBarRefreshIsEnabled: Bool {
-        settings.workspaceBar.enabled || settings.workspaceBar.monitorOverrides.contains(where: { $0.enabled == true })
     }
 
     var statusBarRefreshIsEnabled: Bool {
