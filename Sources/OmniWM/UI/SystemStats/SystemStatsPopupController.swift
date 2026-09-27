@@ -63,12 +63,19 @@ final class SystemStatsPopupController {
     }
 
     private func show(attachment: PopupAttachment, monitorId: Monitor.ID, screenVisibleFrame: CGRect) {
+        let available = attachment.availableSize(in: screenVisibleFrame)
+        let size = CGSize(
+            width: min(SystemStatsView.preferredSize.width, available.width),
+            height: min(SystemStatsView.preferredSize.height, available.height)
+        )
+        guard size.width > 0, size.height > 0 else { return }
         let panel = self.panel ?? makePanel()
         self.panel = panel
         anchoredMonitorId = monitorId
         model.snapshot = nil
+        panel.contentView = NSHostingView(rootView: SystemStatsView(model: model, size: size))
         panel.setFrame(
-            attachment.frame(size: SystemStatsView.preferredSize, visibleFrame: screenVisibleFrame),
+            attachment.frame(size: size, visibleFrame: screenVisibleFrame),
             display: true
         )
         OwnedWindowRegistry.shared.register(
@@ -103,7 +110,6 @@ final class SystemStatsPopupController {
         panel.hidesOnDeactivate = false
         panel.isReleasedWhenClosed = false
         panel.isMovable = false
-        panel.contentView = NSHostingView(rootView: SystemStatsView(model: model))
         return panel
     }
 

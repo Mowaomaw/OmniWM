@@ -8,18 +8,22 @@ struct SystemStatsView: View {
     static let preferredSize = CGSize(width: 340, height: 300)
 
     let model: SystemStatsModel
+    let size: CGSize
 
     var body: some View {
         Group {
             if let snapshot = model.snapshot {
-                dashboard(snapshot)
+                ScrollView {
+                    dashboard(snapshot)
+                }
+                .scrollBounceBehavior(.basedOnSize)
             } else {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .padding(16)
-        .frame(width: Self.preferredSize.width, height: Self.preferredSize.height, alignment: .top)
+        .frame(width: size.width, height: size.height, alignment: .top)
         .omniGlassEffect(in: RoundedRectangle(cornerRadius: 14))
     }
 
