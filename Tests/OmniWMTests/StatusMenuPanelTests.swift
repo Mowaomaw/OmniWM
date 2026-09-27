@@ -42,7 +42,7 @@ final class StatusMenuPanelTests: XCTestCase {
     func testBottomMenuScrollsAboveBarOnShortDisplay() throws {
         let fixture = makeFixture()
         defer { fixture.cleanup() }
-        var visibleFrame = try XCTUnwrap(NSScreen.main).visibleFrame
+        var visibleFrame = NSScreen.main?.visibleFrame ?? CGRect(x: 0, y: 0, width: 1920, height: 1080)
         visibleFrame.size.height = 200
         let anchor = CGPoint(x: visibleFrame.midX, y: visibleFrame.minY + 32)
         fixture.host.show(attachment: PopupAttachment(anchor: anchor, edge: .above), visibleFrame: visibleFrame)
