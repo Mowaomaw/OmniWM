@@ -36,6 +36,7 @@ final class SettingsStore {
     var onExternalSettingsReloaded: (@MainActor () -> Void)?
     var onConfigNoticeChanged: (@MainActor () -> Void)?
     var onTrackpadGestureAvailabilityChanged: (@MainActor (Bool) -> Void)?
+    var onWorkspaceHotkeysChanged: (@MainActor () -> Void)?
     private(set) var configNotice: SettingsConfigNotice?
 
     var hotkeysEnabled = SettingsStore.defaultExport.hotkeysEnabled {
@@ -269,7 +270,7 @@ final class SettingsStore {
             self?.scheduleSave()
         }
         workspaceBar.onChange = { [weak self] in self?.scheduleSave() }
-        workspaces.onChange = { [weak self] in self?.scheduleSave() }
+        workspaces.onChange = { [weak self] in self?.workspacesDidChange() }
         borders.onChange = { [weak self] in self?.scheduleSave() }
         overview.onChange = { [weak self] in
             self?.notifyTrackpadAvailabilityIfChanged()
@@ -438,7 +439,7 @@ extension SettingsStore {
 
         hyperKeyModifiersStorage = export.hyperKeyModifiers
         KeySymbolMapper.setHyperKeyModifiers(export.hyperKeyModifiers)
-        hotkeyBindings = export.hotkeyBindings
+        hotkeyBindings = withWorkspaceNumberHotkeys(export.hotkeyBindings)
         systemHyperTrigger = export.systemHyperTrigger
 
         workspaceBar.applyIdentity(export.workspaceBar)
@@ -481,8 +482,26 @@ extension SettingsStore {
 extension SettingsStore {
     func resetHotkeysToDefaults() {
         hyperKeyModifiers = SettingsStore.defaultExport.hyperKeyModifiers
-        hotkeyBindings = HotkeyBindingRegistry.defaults()
+        hotkeyBindings = withWorkspaceNumberHotkeys(HotkeyBindingRegistry.defaults())
         systemHyperTrigger = SettingsStore.defaultExport.systemHyperTrigger
+    }
+
+    private func withWorkspaceNumberHotkeys(_ bindings: [HotkeyBinding]) -> [HotkeyBinding] {
+        HotkeyBindingRegistry.reconcilingWorkspaceNumberBindings(
+            bindings,
+            workspaceNames: workspaces.configuredNames()
+        )
+    }
+
+    private func workspacesDidChange() {
+        let reconciled = withWorkspaceNumberHotkeys(hotkeyBindings)
+        if reconciled != hotkeyBindings {
+            hotkeyBindings = reconciled
+            if !isApplyingExport {
+                onWorkspaceHotkeysChanged?()
+            }
+        }
+        scheduleSave()
     }
 
     func updateBinding(for commandId: String, newBinding: KeyBinding) {
@@ -503,7 +522,7 @@ extension SettingsStore {
     }
 
     func resetBindings(for commandId: String) {
-        guard let defaultBinding = HotkeyBindingRegistry.defaults().first(where: { $0.id == commandId }),
+        guard let defaultBinding = HotkeyBindingRegistry.defaultBinding(for: commandId),
               let index = hotkeyBindings.firstIndex(where: { $0.id == commandId })
         else { return }
         hotkeyBindings[index] = defaultBinding

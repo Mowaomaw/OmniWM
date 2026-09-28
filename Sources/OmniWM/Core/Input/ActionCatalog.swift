@@ -72,15 +72,15 @@ enum ActionCatalog {
     }
 
     static func spec(for id: String) -> ActionSpec? {
-        specsByID[id]
+        specsByID[id] ?? workspaceNumberSpec(for: id)
     }
 
     static func spec(for command: HotkeyCommand) -> ActionSpec? {
-        specsByCommand[command]
+        specsByCommand[command] ?? workspaceNumberSpec(for: command)
     }
 
     static func normalizedSearchTerms(for id: String) -> [String]? {
-        normalizedSearchTermsByID[id]
+        normalizedSearchTermsByID[id] ?? workspaceNumberSpec(for: id)?.searchTerms.map(normalizedSearchTerm)
     }
 
     static func title(for command: HotkeyCommand) -> String? {

@@ -59,7 +59,10 @@ enum SettingsTOMLMigration {
     static func migrate(_ raw: inout [String: TOMLNode], from version: Int) throws -> SettingsMigrationReport {
         let versionOneReport = version == 0 ? try migrateVersionZero(&raw) : nil
         let versionTwoAddedHotkeyIDs = version <= 1 ? migrateVersionOne(&raw) : []
-        let versionThreeDefaultedPaths = try migrateVersionTwo(&raw)
+        let versionThreeDefaultedPaths = version <= 2 ? try migrateVersionTwo(&raw) : []
+        // Version 4 adds optional hotkey IDs for workspaces above 9. Older builds reject those IDs, so the
+        // version stamp makes them refuse the file instead of treating it as invalid and replacing it.
+        raw["schemaVersion"] = .integer(4)
         canonicalizeMigratedHotkeys(in: &raw)
         return SettingsMigrationReport(
             fromVersion: version,
