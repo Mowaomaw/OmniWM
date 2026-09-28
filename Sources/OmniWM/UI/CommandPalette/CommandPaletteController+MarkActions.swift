@@ -73,7 +73,9 @@ extension CommandPaletteController {
             windows = []
             return
         }
-        windows = CommandPaletteSearch.buildWindowItems(from: wmController)
+        windows = CommandPaletteSearch.buildWindowItems(
+            from: wmController, focusedWindow: focusSession.restoreFocusTarget
+        )
     }
 
     private func markActionFeedback(for outcome: CommandPaletteMarkInteraction.Outcome) -> String {

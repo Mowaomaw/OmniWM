@@ -175,7 +175,14 @@ final class CommandPaletteControllerTests: XCTestCase {
     func testHiddenManagedRowsRemainSearchableAndSortAfterVisibleRows() throws {
         let (wmController, visibleToken, hiddenToken) = try makeWindowFixture()
 
-        let items = CommandPaletteSearch.buildWindowItems(from: wmController)
+        let focusedWindow = CommandPaletteFocusTarget(
+            app: .init(
+                processIdentifier: hiddenToken.pid, bundleIdentifier: nil, localizedName: nil, isTerminated: false
+            ),
+            focusedWindow: nil,
+            focusedWindowID: CGWindowID(hiddenToken.windowId)
+        )
+        let items = CommandPaletteSearch.buildWindowItems(from: wmController, focusedWindow: focusedWindow)
 
         XCTAssertEqual(items.map(\.id), [visibleToken, hiddenToken])
         XCTAssertEqual(items.map(\.isAppHidden), [false, true])
@@ -204,6 +211,35 @@ final class CommandPaletteControllerTests: XCTestCase {
         let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
         palette.windows = items
         XCTAssertEqual(palette.selectedItemID, .window(recentlyFocused.id))
+    }
+
+    func testCapturedPrePaletteWindowOverridesStaleFocusAndIsSelected() throws {
+        let older = makeWindowItem(windowId: 92_120, title: "Chrome Beta", appName: "Google Chrome")
+        let focused = makeWindowItem(windowId: 92_121, title: "Chrome Zulu", appName: "Google Chrome")
+        let ordered = CommandPaletteSearch.orderWindowItems(
+            [older, focused],
+            focusRecencyOrder: [older.id, focused.id],
+            focusedWindowToken: focused.id
+        )
+        XCTAssertEqual(ordered.map(\.id), [focused.id, older.id])
+        XCTAssertEqual(
+            CommandPaletteSearch.filterWindowItems(ordered, query: "Chrome").map(\.id),
+            [focused.id, older.id]
+        )
+
+        let (wmController, _, capturedToken) = try makeWindowFixture()
+        wmController.workspaceManager.setAppHidden(false, pid: capturedToken.pid, source: .service)
+        let focusedWindow = CommandPaletteFocusTarget(
+            app: .init(
+                processIdentifier: capturedToken.pid, bundleIdentifier: nil, localizedName: nil, isTerminated: false
+            ),
+            focusedWindow: nil,
+            focusedWindowID: CGWindowID(capturedToken.windowId)
+        )
+        let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+        palette.windows = CommandPaletteSearch.buildWindowItems(from: wmController, focusedWindow: focusedWindow)
+        XCTAssertEqual(palette.windows.first?.id, capturedToken)
+        XCTAssertEqual(palette.selectedItemID, .window(capturedToken))
     }
 
     func testMarkTargetsSelectedWindowEvenWhenSelectionChangesDuringPrompt() throws {

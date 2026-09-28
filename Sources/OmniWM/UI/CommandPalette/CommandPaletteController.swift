@@ -139,7 +139,9 @@ final class CommandPaletteController: NSObject, NSWindowDelegate {
         self.wmController = wmController
 
         focusSession.begin(wmController: wmController)
-        windows = CommandPaletteSearch.buildWindowItems(from: wmController)
+        windows = CommandPaletteSearch.buildWindowItems(
+            from: wmController, focusedWindow: focusSession.restoreFocusTarget
+        )
         menuItems = []
         isClipboardHistoryEnabled = environment.isClipboardHistoryEnabled(wmController)
         clipboardItems = isClipboardHistoryEnabled ? environment.clipboardItems(wmController) : []

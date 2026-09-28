@@ -261,10 +261,12 @@ enum CommandPaletteSearch {
 
     static func orderWindowItems(
         _ items: [CommandPaletteWindowItem],
-        focusRecencyOrder: [WindowToken]
+        focusRecencyOrder: [WindowToken],
+        focusedWindowToken: WindowToken? = nil
     ) -> [CommandPaletteWindowItem] {
+        let focusOrder = [focusedWindowToken].compactMap { $0 } + focusRecencyOrder
         let focusRanks = Dictionary(
-            focusRecencyOrder.enumerated().map { ($0.element, $0.offset) },
+            focusOrder.enumerated().map { ($0.element, $0.offset) },
             uniquingKeysWith: { first, _ in first }
         )
         return items.sorted {
@@ -282,7 +284,10 @@ enum CommandPaletteSearch {
         }
     }
 
-    static func buildWindowItems(from wmController: WMController) -> [CommandPaletteWindowItem] {
+    static func buildWindowItems(
+        from wmController: WMController,
+        focusedWindow: CommandPaletteFocusTarget? = nil
+    ) -> [CommandPaletteWindowItem] {
         let entries = wmController.workspaceManager.allEntries()
         var items: [CommandPaletteWindowItem] = []
         items.reserveCapacity(entries.count)
@@ -307,6 +312,15 @@ enum CommandPaletteSearch {
             ))
         }
 
-        return orderWindowItems(items, focusRecencyOrder: wmController.workspaceManager.windowFocusRecencyOrder)
+        let focusedWindowToken = focusedWindow.flatMap { target in
+            target.focusedWindowID.map {
+                WindowToken(pid: target.app.processIdentifier, windowId: Int($0))
+            }
+        }
+        return orderWindowItems(
+            items,
+            focusRecencyOrder: wmController.workspaceManager.windowFocusRecencyOrder,
+            focusedWindowToken: focusedWindowToken
+        )
     }
 }
