@@ -31,12 +31,12 @@ enum AppRulePrimarySpanPercent {
         percent / 100
     }
 
-    static func displayText(for proportion: Double) -> String {
+    static func displayText(for proportion: Double, locale: Locale = .current) -> String {
         let percent = percent(from: proportion)
         if percent.isNaN { return "NaN" }
         if percent.isInfinite { return percent.sign == .minus ? "−∞" : "∞" }
 
-        return percent.formatted(.number.precision(.fractionLength(0 ... 2)))
+        return percent.formatted(.number.precision(.fractionLength(0 ... 2)).locale(locale))
     }
 }
 
