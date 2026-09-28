@@ -151,6 +151,8 @@ final class ClipboardHistoryServiceTests: XCTestCase {
         let timer = ManualClipboardHistoryTimer()
         let changeCount = ClipboardChangeCount()
         let captured = expectation(description: "Clipboard item captured")
+        let disabledStoreSettled = expectation(description: "Store applied the disabled configuration")
+        disabledStoreSettled.assertForOverFulfill = false
         let capture = makeCapture("saved", kind: .text)
         weak var activeService: ClipboardHistoryService?
         var environment = ClipboardHistoryServiceEnvironment()
@@ -160,6 +162,10 @@ final class ClipboardHistoryServiceTests: XCTestCase {
             var disabled = configuration
             disabled.isEnabled = false
             activeService?.updateConfiguration(disabled)
+            activeService?.onPaletteItemsChanged = { items in
+                XCTAssertTrue(items.isEmpty)
+                disabledStoreSettled.fulfill()
+            }
             return true
         }
         environment.makeTimer = { _, action in
@@ -182,6 +188,7 @@ final class ClipboardHistoryServiceTests: XCTestCase {
         let didCopy = await service.copyItemToPasteboard(id: id)
         XCTAssertTrue(didCopy)
         XCTAssertTrue(service.paletteItems.isEmpty)
+        await fulfillment(of: [disabledStoreSettled], timeout: 2)
     }
 
     private func assertFullPlainTextCopy(data: Data, kind: ClipboardContentKind, tail: String) async throws {
