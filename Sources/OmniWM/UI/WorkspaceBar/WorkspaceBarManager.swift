@@ -135,7 +135,7 @@ final class WorkspaceBarManager {
         self.controller = controller
         self.settings = settings
         configureDragController(controller: controller)
-        configureHoverPreview(controller: controller)
+        syncHoverPreview(controller: controller, settings: settings)
     }
 
     func apply(_ bars: [DesiredBarSurface]) {

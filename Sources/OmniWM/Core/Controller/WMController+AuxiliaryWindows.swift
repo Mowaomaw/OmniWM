@@ -76,6 +76,7 @@ extension WMController {
         } else {
             quakeTerminalController.cleanup()
         }
+        updateHotkeyBindings(settings.hotkeyBindings)
     }
 
     func toggleQuakeTerminal() {
@@ -201,6 +202,16 @@ extension WMController {
 
     func toggleOverview() {
         windowActionHandler.toggleOverview()
+    }
+
+    func setOverviewEnabled(_ enabled: Bool) {
+        if settings.overview.enabled != enabled {
+            settings.overview.enabled = enabled
+        }
+        if !enabled {
+            windowActionHandlerStorage?.releaseOverviewController()
+        }
+        updateHotkeyBindings(settings.hotkeyBindings)
     }
 
     func handleOverviewHotkey(_ invocation: HotkeyInvocation) -> OverviewHotkeyDisposition {

@@ -32,6 +32,12 @@ struct MonitorBarSettingsSection: View {
                 onChange: { newValue in updateSetting { $0.enabled = newValue } },
                 onReset: { updateSetting { $0.enabled = nil } }
             )
+            .disabled(!settings.workspaceBar.enabled)
+
+            if !settings.workspaceBar.enabled {
+                Text("Enable the global Workspace Bar to use monitor settings.")
+                    .foregroundStyle(.secondary)
+            }
 
             OverridableToggle(
                 label: String(localized: "Show Workspace Labels"),

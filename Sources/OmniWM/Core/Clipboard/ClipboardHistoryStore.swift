@@ -32,7 +32,7 @@ actor ClipboardHistoryStore {
     private var configuration: ClipboardHistoryConfiguration
     private var persistence: ClipboardHistoryPersistence
     private var items: [ClipboardHistoryItem] = []
-    private var hasLoaded = false
+    private(set) var hasLoaded = false
     private var hasPendingChanges = false
     private var lastClearEpoch = Int.min
     private let sleep: @Sendable (Duration) async throws -> Void
@@ -49,7 +49,20 @@ actor ClipboardHistoryStore {
 
     func updateConfiguration(_ configuration: ClipboardHistoryConfiguration) -> [ClipboardPaletteItem] {
         let fileURLChanged = self.configuration.storageURL != configuration.storageURL
-        self.configuration = Self.normalized(configuration)
+        let nextConfiguration = Self.normalized(configuration)
+        if !nextConfiguration.isEnabled || fileURLChanged, hasPendingChanges {
+            do {
+                try flush()
+            } catch {
+                Log.config
+                    .error(
+                        "Failed to save clipboard history before changing configuration: \(error.localizedDescription)"
+                    )
+                self.configuration.isEnabled = false
+                return []
+            }
+        }
+        self.configuration = nextConfiguration
         if fileURLChanged {
             saveTask?.cancel()
             saveTask = nil
@@ -58,29 +71,36 @@ actor ClipboardHistoryStore {
             items = []
             hasLoaded = false
         }
+        guard self.configuration.isEnabled else {
+            saveTask?.cancel()
+            saveTask = nil
+            items.removeAll()
+            hasLoaded = false
+            return []
+        }
         ensureLoaded()
         let previous = items
         prune()
-        if items != previous { scheduleSave() }
+        if items != previous || (hasPendingChanges && saveTask == nil) { scheduleSave() }
         return paletteItems()
     }
 
     func load() -> [ClipboardPaletteItem] {
+        guard configuration.isEnabled else { return [] }
         ensureLoaded()
         return paletteItems()
     }
 
     func fenceCaptures(epoch: Int) {
-        ensureLoaded()
         lastClearEpoch = max(lastClearEpoch, epoch)
     }
 
     func handleCapture(_ capture: ClipboardPasteboardCapture, epoch: Int = 0) -> [ClipboardPaletteItem] {
+        guard configuration.isEnabled else { return [] }
         ensureLoaded()
         guard epoch >= lastClearEpoch else { return paletteItems() }
         let configuration = self.configuration
-        guard configuration.isEnabled,
-              !capture.contents.contains(where: { configuration.ignoredTypes.contains($0.type) })
+        guard !capture.contents.contains(where: { configuration.ignoredTypes.contains($0.type) })
         else {
             return paletteItems()
         }
@@ -94,17 +114,20 @@ actor ClipboardHistoryStore {
     }
 
     func item(matching capture: ClipboardPasteboardCapture) -> ClipboardHistoryItem? {
+        guard configuration.isEnabled else { return nil }
         ensureLoaded()
         let captureDigest = digest(for: capture.contents)
         return items.first { $0.digest == captureDigest }
     }
 
     func item(id: UUID) -> ClipboardHistoryItem? {
+        guard configuration.isEnabled else { return nil }
         ensureLoaded()
         return items.first { $0.id == id }
     }
 
     func pin(id: UUID, isPinned: Bool) -> [ClipboardPaletteItem] {
+        guard configuration.isEnabled else { return [] }
         ensureLoaded()
         guard let index = items.firstIndex(where: { $0.id == id }), items[index].isPinned != isPinned else {
             return paletteItems()
@@ -118,6 +141,7 @@ actor ClipboardHistoryStore {
     }
 
     func setRecognizedText(id: UUID, digest: String, text: String) -> [ClipboardPaletteItem] {
+        guard configuration.isEnabled else { return [] }
         ensureLoaded()
         guard let index = items.firstIndex(where: { $0.id == id && $0.digest == digest }) else {
             return paletteItems()
@@ -135,6 +159,7 @@ actor ClipboardHistoryStore {
     }
 
     func itemForUse(id: UUID) -> ClipboardHistoryItem? {
+        guard configuration.isEnabled else { return nil }
         ensureLoaded()
         guard let index = items.firstIndex(where: { $0.id == id }) else { return nil }
         var item = items.remove(at: index)
@@ -147,6 +172,7 @@ actor ClipboardHistoryStore {
     }
 
     func delete(id: UUID) -> [ClipboardPaletteItem] {
+        guard configuration.isEnabled else { return [] }
         ensureLoaded()
         let previousCount = items.count
         items.removeAll { $0.id == id }
@@ -155,6 +181,7 @@ actor ClipboardHistoryStore {
     }
 
     func clear(epoch: Int = 0) throws -> [ClipboardPaletteItem] {
+        guard configuration.isEnabled else { return [] }
         ensureLoaded()
         let retained = items.filter(\.isPinned)
         try persistence.save(retained)
@@ -167,12 +194,12 @@ actor ClipboardHistoryStore {
     }
 
     func paletteItems() -> [ClipboardPaletteItem] {
+        guard configuration.isEnabled else { return [] }
         ensureLoaded()
         return items.map(\.paletteItem)
     }
 
     func flush() throws {
-        ensureLoaded()
         guard hasPendingChanges else { return }
         saveTask?.cancel()
         saveTask = nil

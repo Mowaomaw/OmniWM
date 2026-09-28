@@ -8,6 +8,21 @@ import XCTest
 
 @MainActor
 final class CommandPaletteCommandSearchTests: XCTestCase {
+    func testDisabledPresentationActionsLeaveRunnablePaletteButKeepCatalogBindings() {
+        let controller = makeController()
+        controller.settings.overview.enabled = false
+        controller.settings.quakeTerminal.enabled = false
+
+        let items = CommandPaletteSearch.buildCommandItems(from: controller)
+
+        XCTAssertFalse(items.contains { $0.id == "toggleOverview" })
+        XCTAssertFalse(items.contains { $0.id == "toggleQuakeTerminal" })
+        XCTAssertNotNil(ActionCatalog.spec(for: "toggleOverview"))
+        XCTAssertNotNil(ActionCatalog.spec(for: "toggleQuakeTerminal"))
+        XCTAssertTrue(controller.settings.hotkeyBindings.contains { $0.id == "toggleOverview" })
+        XCTAssertTrue(controller.settings.hotkeyBindings.contains { $0.id == "toggleQuakeTerminal" })
+    }
+
     func testBuildIncludesAllCatalogActionsAndUsesCurrentShortcutBindings() throws {
         let controller = makeController()
         let binding = KeyBinding(keyCode: UInt32(kVK_ANSI_Z), modifiers: UInt32(controlKey | optionKey))

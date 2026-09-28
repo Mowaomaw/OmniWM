@@ -711,6 +711,8 @@ Layout legend:
 
 Settings > Hotkeys lists all actions that can be assigned a shortcut, including advanced actions.
 
+**If a shortcut does not fire:** Check **Settings > Hotkeys** and **Settings > Troubleshooting** for registration issues, then look for another hotkey tool, such as skhd or Raycast, still running with the same binding. [HotkeyClash](https://github.com/Wunderlandmedia/HotkeyClash) can help inspect possible conflicts in running apps, supported config files, and macOS shortcuts. It does not parse Raycast's shortcut settings. Disable or reassign the conflicting binding and retry before editing `settings.toml`.
+
 #### Workspace
 
 | Action | Default Shortcut | Layout |
