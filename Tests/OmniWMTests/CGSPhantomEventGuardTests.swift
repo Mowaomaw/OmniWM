@@ -371,6 +371,50 @@ final class CGSPhantomEventGuardTests: XCTestCase {
         XCTAssertEqual(controller.workspaceManager.invariantViolationCountsDump(), "clean")
     }
 
+    func testReplacementExpiryRetiresOldWindowWhileCreateMetadataIsUnresolved() async throws {
+        let controller = Self.controller()
+        defer { controller.serviceLifecycleManager.stop() }
+        let handler = controller.axEventHandler
+        let workspaceId = try XCTUnwrap(controller.workspaceManager.workspaceId(for: "1", createIfMissing: true))
+        controller.niriLayoutHandler.enableNiriLayout()
+        let pid: pid_t = 949_301
+        let oldToken = controller.workspaceManager.addWindow(
+            AXWindowRef(element: AXUIElementCreateApplication(pid), windowId: 949_302),
+            pid: pid, windowId: 949_302, to: workspaceId,
+            managedReplacementMetadata: Self.managedReplacementMetadata(
+                workspaceId: workspaceId, pid: pid,
+                frame: CGRect(x: 160, y: 120, width: 720, height: 520)
+            )
+        )
+        let engine = try XCTUnwrap(controller.niriEngine)
+        _ = engine.addWindow(token: oldToken, to: workspaceId, afterSelection: nil)
+        controller.layoutRefreshController.resetState()
+        handler.handleWindowDestroyed(
+            windowId: UInt32(oldToken.windowId), pidHint: pid,
+            evidence: .windowClosed, windowInfo: nil
+        )
+        let key = AXEventHandler.ManagedReplacementKey(pid: pid, workspaceId: workspaceId)
+        XCTAssertTrue(handler.hasPendingManagedReplacementDestroy(oldToken))
+        XCTAssertNotNil(controller.workspaceManager.entry(for: oldToken))
+        let gate = LifecycleQueryGate()
+        defer { gate.resume() }
+        let queryStarted = expectation(description: "Replacement metadata unresolved")
+        handler.lifecycleQueries.query = { _ in
+            queryStarted.fulfill()
+            return await gate.wait()
+        }
+        handler.processCreatedWindow(windowId: 949_303)
+        let task = try XCTUnwrap(handler.lifecycleQueries.task)
+        await fulfillment(of: [queryStarted], timeout: 2)
+        handler.flushManagedReplacementBurst(for: key)
+        XCTAssertNil(controller.workspaceManager.entry(for: oldToken))
+        XCTAssertNil(engine.findNode(for: oldToken, in: workspaceId))
+        XCTAssertFalse(handler.hasPendingManagedReplacementDestroy(oldToken))
+        gate.resume()
+        await task.value
+        XCTAssertEqual(controller.workspaceManager.invariantViolationCountsDump(), "clean")
+    }
+
     func testManagedReplacementAwaitPreservesLateMatchedCreate() async throws {
         let controller = Self.controller()
         let workspaceId = try XCTUnwrap(controller.workspaceManager.workspaceId(for: "1", createIfMissing: true))

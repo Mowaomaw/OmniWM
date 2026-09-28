@@ -89,6 +89,7 @@ extension AXEventHandler {
               state.expectedToken == token,
               case .create = state.trigger
         else { return }
+        defer { advanceLifecycleRetryGeneration(windowId: windowId, from: execution.generation) }
         state.task = nil
         state.executionPhase = .waiting
         admissionRetryStateByWindowId[windowId] = state

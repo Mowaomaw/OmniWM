@@ -140,8 +140,9 @@ extension AXEventHandler {
         }
         guard !Task.isCancelled, lifecycleQueries.active?.sequence == request.sequence else { return }
         guard isCurrentLifecycleCreate(request) else { return }
+        let appliedIdentity = lifecycleQueries.active?.destructionIdentity ?? identity
         lifecycleQueries.active = nil
-        applyLifecycleObservation(request, identity: identity, windowInfo: info)
+        applyLifecycleObservation(request, identity: appliedIdentity, windowInfo: info)
     }
 
     private func applyLifecycleObservation(
@@ -155,7 +156,7 @@ extension AXEventHandler {
         else { return }
 
         let retryGeneration = admissionRetryStateByWindowId[request.windowId]?.generation
-        defer { advanceQueuedLifecycleRetryGeneration(windowId: request.windowId, from: retryGeneration) }
+        defer { advanceLifecycleRetryGeneration(windowId: request.windowId, from: retryGeneration) }
 
         switch request.kind {
         case .created:
@@ -196,9 +197,14 @@ extension AXEventHandler {
         return true
     }
 
-    private func advanceQueuedLifecycleRetryGeneration(windowId: UInt32, from previous: UInt64?) {
+    func advanceLifecycleRetryGeneration(windowId: UInt32, from previous: UInt64?) {
         let generation = admissionRetryStateByWindowId[windowId]?.generation
         guard generation != previous else { return }
+        if lifecycleQueries.active?.windowId == windowId,
+           lifecycleQueries.active?.destructionIdentity?.retryGeneration == previous
+        {
+            lifecycleQueries.active?.destructionIdentity?.retryGeneration = generation
+        }
         for index in lifecycleQueries.pending.indices
             where lifecycleQueries.pending[index].windowId == windowId
             && lifecycleQueries.pending[index].destructionIdentity?.retryGeneration == previous

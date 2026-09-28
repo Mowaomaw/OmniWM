@@ -87,6 +87,65 @@ final class WindowLifecycleQueryTests: XCTestCase {
         XCTAssertNil(handler.pendingCreatePlacementContext(for: Int(windowId)))
     }
 
+    func testSpaceDestructionRetiresSameLookupRetryWhilePendingOrActive() async throws {
+        for (destructionIsActive, hasAXRef) in [(false, false), (true, false), (false, true), (true, true)] {
+            let controller = WindowAdmissionTestSupport.controller()
+            defer { cleanup(controller) }
+            let handler = controller.axEventHandler
+            let lookupGate = LifecycleQueryGate()
+            let queryGate = LifecycleQueryGate()
+            defer {
+                lookupGate.resume()
+                queryGate.resume()
+            }
+            let lookupStarted = expectation(description: "AX identity lookup started")
+            let queryStarted = expectation(description: "Lifecycle query suspended")
+            let windowId = UInt32(token.windowId)
+            let windowInfo = info(for: token)
+            var queries = 0
+            handler.windowInfoProvider = { _ in nil }
+            handler.createdWindowAXRefProvider = { _ in
+                lookupStarted.fulfill()
+                _ = await lookupGate.wait()
+                return hasAXRef ? WindowAdmissionTestSupport.axRef(for: self.token) : nil
+            }
+            handler.lifecycleQueries.query = { _ in
+                queries += 1
+                if queries == 1 { return windowInfo }
+                if queries == 2 {
+                    queryStarted.fulfill()
+                    return await queryGate.wait()
+                }
+                if hasAXRef, queries == 3 { return windowInfo }
+                return nil
+            }
+            handler.handleCGSEvent(.created(windowId: windowId, spaceId: 0))
+            await handler.lifecycleQueries.task?.value
+            await fulfillment(of: [lookupStarted], timeout: 2)
+            let lookupTask = try XCTUnwrap(handler.admissionRetryStateByWindowId[windowId]?.task)
+            let generation = try XCTUnwrap(handler.admissionRetryStateByWindowId[windowId]?.generation)
+            if destructionIsActive {
+                handler.handleCGSEvent(.destroyed(windowId: windowId, spaceId: 0))
+            } else {
+                handler.handleCGSEvent(.orderChanged(windowId: windowId + 1))
+            }
+            let lifecycleTask = try XCTUnwrap(handler.lifecycleQueries.task)
+            await fulfillment(of: [queryStarted], timeout: 2)
+            if !destructionIsActive {
+                handler.handleCGSEvent(.destroyed(windowId: windowId, spaceId: 0))
+            }
+            lookupGate.resume()
+            await lookupTask.value
+            let retry = try XCTUnwrap(handler.admissionRetryStateByWindowId[windowId])
+            XCTAssertNotEqual(retry.generation, generation)
+            retry.task?.cancel()
+            queryGate.resume()
+            await lifecycleTask.value
+            XCTAssertNil(handler.admissionRetryStateByWindowId[windowId])
+            XCTAssertNil(handler.pendingCreatePlacementContext(for: Int(windowId)))
+        }
+    }
+
     func testQueuedCreateDestructionPairsRetireEachPredecessorRetry() async throws {
         let controller = WindowAdmissionTestSupport.controller()
         defer { cleanup(controller) }
