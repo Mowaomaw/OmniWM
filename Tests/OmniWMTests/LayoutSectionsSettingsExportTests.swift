@@ -24,7 +24,8 @@ final class LayoutSectionsSettingsExportTests: XCTestCase {
             "alwaysCenterSingleColumn": .boolean(false),
             "singleWindowFit": .string("fill"),
             "containerPrimarySpanPresets": .array([.float(1.0 / 3), .float(0.5), .float(2.0 / 3)]),
-            "defaultContainerPrimarySpan": .float(0.5)
+            "defaultContainerPrimarySpan": .float(0.5),
+            "edgeGaps": .boolean(true)
         ]))
         XCTAssertEqual(tree["dwindle"], .table([
             "smartSplit": .boolean(false),

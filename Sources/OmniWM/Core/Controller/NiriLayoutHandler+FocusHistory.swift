@@ -66,7 +66,7 @@ extension NiriLayoutHandler {
         guard let monitor = controller.workspaceManager.monitor(for: workspaceId) else { return }
         var state = controller.workspaceManager.niriViewportState(for: workspaceId)
         let motion = controller.motionPolicy.snapshot()
-        let workingFrame = controller.insetWorkingFrame(for: monitor)
+        let workingFrame = controller.niriWorkingFrame(for: monitor)
         let gaps = controller.innerGap(for: monitor)
         let orientation = controller.settings.monitors.effectiveOrientation(for: monitor)
         let context = NiriInteractionContext(

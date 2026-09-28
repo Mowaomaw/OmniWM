@@ -114,7 +114,7 @@ extension WorkspaceNavigationHandler {
                     context: .init(
                         workspaceId: workspaceId,
                         motion: controller.motionPolicy.snapshot(),
-                        workingFrame: controller.insetWorkingFrame(for: monitor),
+                        workingFrame: controller.niriWorkingFrame(for: monitor),
                         gaps: controller.innerGap(for: monitor),
                         orientation: controller.settings.monitors.effectiveOrientation(for: monitor)
                     ),

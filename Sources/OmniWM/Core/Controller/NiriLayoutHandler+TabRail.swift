@@ -246,7 +246,7 @@ extension NiriLayoutHandler {
         controller.workspaceManager.withEngineMutationScope {
             if let monitor = controller.workspaceManager.monitor(for: workspaceId) {
                 let gap = controller.innerGap(for: monitor)
-                let workingFrame = controller.insetWorkingFrame(for: monitor)
+                let workingFrame = controller.niriWorkingFrame(for: monitor)
                 engine.ensureSelectionVisible(
                     node: target,
                     context: .init(

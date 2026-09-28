@@ -111,6 +111,11 @@ private struct GlobalNiriSettingsSection: View {
                     controller.updateNiriConfig(alwaysCenterSingleColumn: newValue)
                 }
 
+            Toggle("Gaps at Screen Edges", isOn: Bindable(settings.niri).edgeGaps)
+                .onChange(of: settings.niri.edgeGaps) { _, _ in
+                    controller.updateMonitorGapSettings()
+                }
+
             SingleWindowFitControls(
                 label: String(localized: "Single Window"),
                 fit: settings.niri.singleWindowFit,
