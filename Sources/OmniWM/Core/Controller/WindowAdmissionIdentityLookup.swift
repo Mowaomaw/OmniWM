@@ -17,9 +17,13 @@ extension AXEventHandler {
     func suspendCreatedWindowLookupExecution(_ execution: AdmissionRetryExecution) {
         guard var state = admissionRetryStateByWindowId[execution.windowId],
               state.generation == execution.generation,
-              state.executionPhase == .running(execution.executionOwner),
-              case .create = state.trigger
+              state.executionPhase == .running(execution.executionOwner)
         else { return }
+        switch state.trigger {
+        case .create,
+             .candidate: break
+        default: return
+        }
         state.task = nil
         state.executionPhase = .waiting
         admissionRetryStateByWindowId[execution.windowId] = state

@@ -96,11 +96,7 @@ extension AXEventHandler {
             deferCreatedWindow(windowId)
             return
         }
-        guard canProcessCreatedWindow(windowId: windowId, retryExecution: nil) else { return }
-        enqueueLifecycleQuery(
-            windowId: windowId,
-            kind: .created(pendingCreatePlacementContext(for: Int(windowId)))
-        )
+        processCreatedWindow(windowId: windowId)
     }
 
     func shouldDeferCreateForInactiveNativeSpace(_ spaceId: UInt64) -> Bool {
@@ -118,10 +114,13 @@ extension AXEventHandler {
         retryExecution: AdmissionRetryExecution? = nil
     ) {
         guard canProcessCreatedWindow(windowId: windowId, retryExecution: retryExecution) else { return }
-        processCreatedWindowObservation(
-            windowId: windowId, windowInfo: resolveWindowInfo(windowId),
-            fallbackToken: fallbackToken, fallbackAXRef: fallbackAXRef,
-            placementOrigin: placementOrigin, retryTrigger: retryTrigger, retryExecution: retryExecution
+        enqueueLifecycleQuery(
+            windowId: windowId,
+            kind: .created(.init(
+                placementContext: pendingCreatePlacementContext(for: Int(windowId)),
+                fallbackToken: fallbackToken, fallbackAXRef: fallbackAXRef,
+                placementOrigin: placementOrigin, retryTrigger: retryTrigger, retryExecution: retryExecution
+            ))
         )
     }
 
@@ -272,7 +271,28 @@ extension AXEventHandler {
     }
 
     func processDeferredCreatedWindow(
-        _ windowId: UInt32, controller: WMController, spaceIdsForWindow: (UInt32) -> [UInt64]
+        _ windowId: UInt32, controller: WMController, spaceIdsForWindow: @escaping (UInt32) -> [UInt64]
+    ) {
+        if case .identityRebind = admissionRetryStateByWindowId[windowId]?.trigger {
+            removeDeferredCreatedWindow(windowId)
+            return
+        }
+        guard !controller.isOwnedWindow(windowNumber: Int(windowId)) else {
+            rejectOwnedCreate(windowId)
+            return
+        }
+        enqueueLifecycleQuery(
+            windowId: windowId,
+            kind: .created(.init(
+                placementContext: pendingCreatePlacementContext(for: Int(windowId)),
+                deferredSpaceQuery: spaceIdsForWindow
+            ))
+        )
+    }
+
+    func applyDeferredCreatedWindow(
+        _ windowId: UInt32, controller: WMController, windowInfo: WindowServerInfo?,
+        spaceIdsForWindow: (UInt32) -> [UInt64]
     ) {
         let retryState = admissionRetryStateByWindowId[windowId]
         let retryTrigger = retryState?.trigger ?? .create
@@ -285,7 +305,6 @@ extension AXEventHandler {
             rejectDeferredReplacement(windowId: windowId)
             return
         }
-        let windowInfo = resolveWindowInfo(windowId)
         guard let windowInfo else {
             _ = scheduleAdmissionRetry(
                 windowId: windowId,

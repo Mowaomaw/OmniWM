@@ -9,10 +9,20 @@ extension AXEventHandler {
     }
 
     enum LifecycleQueryKind {
-        case created(WindowCreatePlacementContext?)
+        case created(LifecycleCreateRequest)
         case spaceDestroyed
         case closed
         case orderChanged
+    }
+
+    struct LifecycleCreateRequest {
+        var placementContext: WindowCreatePlacementContext?
+        var fallbackToken: WindowToken?
+        var fallbackAXRef: AXWindowRef?
+        var placementOrigin: WorkspacePlacementOrigin = .liveCreate
+        var retryTrigger: AdmissionRetryTrigger = .create
+        var retryExecution: AdmissionRetryExecution?
+        var deferredSpaceQuery: ((UInt32) -> [UInt64])?
     }
 
     struct LifecycleQuery {
@@ -47,10 +57,17 @@ extension AXEventHandler {
 
     func enqueueLifecycleQuery(windowId: UInt32, kind: LifecycleQueryKind) {
         guard let controller, !controller.isOwnedWindow(windowNumber: Int(windowId)) else { return }
-        if case .created = kind,
+        if case let .created(create) = kind,
            let previous = lifecycleQueries.pending.last(where: { $0.windowId == windowId })
            ?? lifecycleQueries.active.flatMap({ $0.windowId == windowId ? $0 : nil }),
-           case .created = previous.kind
+           case let .created(previousCreate) = previous.kind,
+           create.retryExecution == previousCreate.retryExecution,
+           create.fallbackToken == previousCreate.fallbackToken,
+           (create.fallbackAXRef == nil && previousCreate.fallbackAXRef == nil
+               || create.fallbackAXRef != nil && previousCreate.fallbackAXRef != nil
+               && CFEqual(create.fallbackAXRef?.element, previousCreate.fallbackAXRef?.element)),
+           create.placementOrigin == previousCreate.placementOrigin,
+           (create.deferredSpaceQuery == nil) == (previousCreate.deferredSpaceQuery == nil)
         {
             return
         }
@@ -110,6 +127,7 @@ extension AXEventHandler {
 
     private func performLifecycleQuery(_ request: LifecycleQuery) async {
         defer { finishLifecycleQuery(request) }
+        guard isCurrentLifecycleCreate(request) else { return }
         let identity = request.destructionIdentity ?? lifecycleIdentity(windowId: request.windowId)
         let info: WindowServerInfo?
         do {
@@ -121,6 +139,7 @@ extension AXEventHandler {
             info = nil
         }
         guard !Task.isCancelled, lifecycleQueries.active?.sequence == request.sequence else { return }
+        guard isCurrentLifecycleCreate(request) else { return }
         lifecycleQueries.active = nil
         applyLifecycleObservation(request, identity: identity, windowInfo: info)
     }
@@ -140,6 +159,7 @@ extension AXEventHandler {
 
         switch request.kind {
         case .created:
+            guard retryGeneration == identity.retryGeneration else { return }
             applyLifecycleCreate(request, windowInfo: windowInfo)
         case .spaceDestroyed,
              .closed:
@@ -165,6 +185,17 @@ extension AXEventHandler {
         }
     }
 
+    private func isCurrentLifecycleCreate(_ request: LifecycleQuery) -> Bool {
+        guard case let .created(create) = request.kind else { return true }
+        let state = admissionRetryStateByWindowId[request.windowId]
+        if let execution = create.retryExecution {
+            return state?.generation == execution.generation
+                && state?.executionPhase == .running(execution.executionOwner)
+        }
+        if case .running = state?.executionPhase { return false }
+        return true
+    }
+
     private func advanceQueuedLifecycleRetryGeneration(windowId: UInt32, from previous: UInt64?) {
         let generation = admissionRetryStateByWindowId[windowId]?.generation
         guard generation != previous else { return }
@@ -177,10 +208,22 @@ extension AXEventHandler {
     }
 
     private func applyLifecycleCreate(_ request: LifecycleQuery, windowInfo: WindowServerInfo?) {
-        guard case let .created(context) = request.kind else { return }
-        if let context { createPlacementContextsByWindowId[request.windowId] = context }
-        guard canProcessCreatedWindow(windowId: request.windowId, retryExecution: nil) else { return }
-        processCreatedWindowObservation(windowId: request.windowId, windowInfo: windowInfo)
+        guard case let .created(create) = request.kind else { return }
+        if let context = create.placementContext { createPlacementContextsByWindowId[request.windowId] = context }
+        if create.deferredSpaceQuery != nil { removeDeferredCreatedWindow(request.windowId) }
+        guard canProcessCreatedWindow(windowId: request.windowId, retryExecution: create.retryExecution) else { return }
+        if let spaceQuery = create.deferredSpaceQuery, let controller {
+            applyDeferredCreatedWindow(
+                request.windowId, controller: controller, windowInfo: windowInfo, spaceIdsForWindow: spaceQuery
+            )
+        } else {
+            processCreatedWindowObservation(
+                windowId: request.windowId, windowInfo: windowInfo,
+                fallbackToken: create.fallbackToken, fallbackAXRef: create.fallbackAXRef,
+                placementOrigin: create.placementOrigin, retryTrigger: create.retryTrigger,
+                retryExecution: create.retryExecution
+            )
+        }
     }
 
     private func lifecycleIdentity(windowId: UInt32) -> LifecycleIdentity {
@@ -207,6 +250,9 @@ extension AXEventHandler {
 
     private func finishLifecycleQuery(_ request: LifecycleQuery) {
         guard !Task.isCancelled else { return }
+        if case let .created(create) = request.kind, let execution = create.retryExecution {
+            suspendCreatedWindowLookupExecution(execution)
+        }
         if lifecycleQueries.active?.sequence == request.sequence { lifecycleQueries.active = nil }
         guard let intentId = lifecycleQueries.deferredCloseProbeExpiration,
               let open = controller?.intentLedger.openSameAppCloseProbe(), open.intent.id == intentId

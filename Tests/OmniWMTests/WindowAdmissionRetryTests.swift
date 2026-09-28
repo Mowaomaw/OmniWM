@@ -152,12 +152,14 @@ final class WindowAdmissionRetryTests: XCTestCase {
             fallbackToken: token,
             fallbackAXRef: axRef,
             placementOrigin: .discovery,
-            retryTrigger: runningState.trigger
+            retryTrigger: runningState.trigger,
+            retryExecution: .init(windowId: windowId, generation: runningState.generation, executionOwner: 701)
         )
         controller.layoutRefreshController.layoutState.activeFullEnumerationCount = 0
         controller.axEventHandler.windowInfoProvider = { _ in nil }
 
         controller.axEventHandler.drainDeferredCreatedWindows()
+        await controller.axEventHandler.lifecycleQueries.task?.value
 
         let rescheduled = try XCTUnwrap(
             controller.axEventHandler.admissionRetryStateByWindowId[windowId]

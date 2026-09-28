@@ -7,7 +7,7 @@ import Foundation
 import XCTest
 
 @MainActor
-private final class LifecycleQueryGate {
+final class LifecycleQueryGate {
     var continuation: CheckedContinuation<WindowServerInfo?, Never>?
 
     func wait() async -> WindowServerInfo? {
@@ -279,6 +279,8 @@ final class WindowLifecycleQueryTests: XCTestCase {
         defer { gate.resume() }
         let started = expectation(description: "close query started")
         let lookup = expectation(description: "later creation reaches AX lookup")
+        let lookupGate = LifecycleQueryGate()
+        defer { lookupGate.resume() }
         var queries = 0
         let windowInfo = info(for: token)
         let windowId = UInt32(token.windowId)
@@ -295,6 +297,7 @@ final class WindowLifecycleQueryTests: XCTestCase {
                 nextWorkspace
             )
             lookup.fulfill()
+            _ = await lookupGate.wait()
             return nil
         }
         handler.handleCGSEvent(.closed(windowId: windowId))
@@ -308,7 +311,9 @@ final class WindowLifecycleQueryTests: XCTestCase {
         gate.resume()
         await task.value
         await fulfillment(of: [lookup], timeout: 2)
-        await handler.admissionRetryStateByWindowId[windowId]?.task?.value
+        let lookupTask = try XCTUnwrap(handler.admissionRetryStateByWindowId[windowId]?.task)
+        lookupGate.resume()
+        await lookupTask.value
         XCTAssertEqual(queries, 2)
     }
 

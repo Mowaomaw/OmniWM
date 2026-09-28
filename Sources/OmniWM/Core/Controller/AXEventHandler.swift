@@ -127,14 +127,11 @@ extension AXEventHandler {
     }
 
     func drainDeferredCreatedWindows(
-        spaceIdsForWindow: (UInt32) -> [UInt64] = { SkyLight.shared.spacesForWindow($0) }
+        spaceIdsForWindow: @escaping (UInt32) -> [UInt64] = { SkyLight.shared.spacesForWindow($0) }
     ) {
         guard !deferredCreatedWindowOrder.isEmpty else { return }
 
         let deferredWindowIds = deferredCreatedWindowOrder
-        deferredCreatedWindowOrder.removeAll()
-        deferredCreatedWindowIds.removeAll()
-
         for windowId in deferredWindowIds {
             guard let controller else { return }
             processDeferredCreatedWindow(windowId, controller: controller, spaceIdsForWindow: spaceIdsForWindow)

@@ -1381,13 +1381,16 @@ final class FullRescanWindowAdmissionTests: XCTestCase {
         }
 
         controller.axEventHandler.drainDeferredCreatedWindows { _ in [2] }
+        await controller.axEventHandler.lifecycleQueries.task?.value
         controller.axEventHandler.drainDeferredCreatedWindows { _ in [2] }
+        await controller.axEventHandler.lifecycleQueries.task?.value
         let firstProtectedTokens =
             controller.axEventHandler.protectMissingEntriesDuringUnsettledAdmission(
                 candidates: [oldToken, unrelatedToken],
                 scope: .all
             )
         controller.axEventHandler.drainDeferredCreatedWindows { _ in [2] }
+        await controller.axEventHandler.lifecycleQueries.task?.value
         let secondProtectedTokens =
             controller.axEventHandler.protectMissingEntriesDuringUnsettledAdmission(
                 candidates: [oldToken, unrelatedToken],
