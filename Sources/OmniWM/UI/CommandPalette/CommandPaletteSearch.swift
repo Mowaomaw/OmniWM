@@ -29,31 +29,32 @@ enum CommandPaletteSearch {
         }
         let query = trimmedQuery.lowercased()
 
-        let scored: [(CommandPaletteWindowItem, Int)] = items.compactMap { item in
+        let scored: [(item: CommandPaletteWindowItem, score: Int, order: Int)] = items.enumerated().compactMap {
+            order, item in
             let titleLower = item.title.lowercased()
             let appLower = item.appName.lowercased()
 
             if let range = titleLower.range(of: query) {
                 let pos = titleLower.distance(from: titleLower.startIndex, to: range.lowerBound)
-                return (item, pos)
+                return (item, pos, order)
             }
 
             if let range = appLower.range(of: query) {
                 let pos = appLower.distance(from: appLower.startIndex, to: range.lowerBound)
-                return (item, 1000 + pos)
+                return (item, 1000 + pos, order)
             }
 
             let workspaceLower = item.workspaceName.lowercased()
             if let range = workspaceLower.range(of: query) {
                 let pos = workspaceLower.distance(from: workspaceLower.startIndex, to: range.lowerBound)
-                return (item, 2000 + pos)
+                return (item, 2000 + pos, order)
             }
 
             if item.isAppHidden {
                 for term in hiddenSearchTerms {
                     if let range = term.range(of: query) {
                         let pos = term.distance(from: term.startIndex, to: range.lowerBound)
-                        return (item, 3000 + pos)
+                        return (item, 3000 + pos, order)
                     }
                 }
             }
@@ -66,7 +67,7 @@ enum CommandPaletteSearch {
                 }
                 .min()
             if let markMatchScore {
-                return (item, 4000 + markMatchScore)
+                return (item, 4000 + markMatchScore, order)
             }
 
             return nil
@@ -74,11 +75,9 @@ enum CommandPaletteSearch {
 
         return scored
             .sorted { lhs, rhs in
-                if lhs.1 != rhs.1 { return lhs.1 < rhs.1 }
-                if lhs.0.title.count != rhs.0.title.count { return lhs.0.title.count < rhs.0.title.count }
-                return lhs.0.title < rhs.0.title
+                lhs.score == rhs.score ? lhs.order < rhs.order : lhs.score < rhs.score
             }
-            .map(\.0)
+            .map(\.item)
     }
 
     static func filterMenuItems(_ items: [MenuItemModel], query rawQuery: String) -> [MenuItemModel] {
@@ -260,6 +259,29 @@ enum CommandPaletteSearch {
         return titleOrder == .orderedSame ? lhs.id < rhs.id : titleOrder == .orderedAscending
     }
 
+    static func orderWindowItems(
+        _ items: [CommandPaletteWindowItem],
+        focusRecencyOrder: [WindowToken]
+    ) -> [CommandPaletteWindowItem] {
+        let focusRanks = Dictionary(
+            focusRecencyOrder.enumerated().map { ($0.element, $0.offset) },
+            uniquingKeysWith: { first, _ in first }
+        )
+        return items.sorted {
+            (
+                $0.isAppHidden ? 1 : 0,
+                focusRanks[$0.id] ?? Int.max,
+                $0.appName,
+                $0.title
+            ) < (
+                $1.isAppHidden ? 1 : 0,
+                focusRanks[$1.id] ?? Int.max,
+                $1.appName,
+                $1.title
+            )
+        }
+    }
+
     static func buildWindowItems(from wmController: WMController) -> [CommandPaletteWindowItem] {
         let entries = wmController.workspaceManager.allEntries()
         var items: [CommandPaletteWindowItem] = []
@@ -285,10 +307,6 @@ enum CommandPaletteSearch {
             ))
         }
 
-        items.sort {
-            ($0.isAppHidden ? 1 : 0, $0.appName, $0.title)
-                < ($1.isAppHidden ? 1 : 0, $1.appName, $1.title)
-        }
-        return items
+        return orderWindowItems(items, focusRecencyOrder: wmController.workspaceManager.windowFocusRecencyOrder)
     }
 }

@@ -187,6 +187,25 @@ final class CommandPaletteControllerTests: XCTestCase {
         XCTAssertFalse(CommandPalettePresentation.allowsSummonRight(items[1]))
     }
 
+    func testWindowRowsUseFocusRecencyForInitialSelectionAndChromeSearch() {
+        let older = makeWindowItem(windowId: 92_120, title: "Chrome Beta", appName: "Google Chrome")
+        let recentlyFocused = makeWindowItem(windowId: 92_121, title: "Chrome Zulu", appName: "Google Chrome")
+        let items = CommandPaletteSearch.orderWindowItems(
+            [older, recentlyFocused],
+            focusRecencyOrder: [recentlyFocused.id, older.id]
+        )
+
+        XCTAssertEqual(items.map(\.id), [recentlyFocused.id, older.id])
+        XCTAssertEqual(
+            CommandPaletteSearch.filterWindowItems(items, query: "Chrome").map(\.id),
+            [recentlyFocused.id, older.id]
+        )
+
+        let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+        palette.windows = items
+        XCTAssertEqual(palette.selectedItemID, .window(recentlyFocused.id))
+    }
+
     func testMarkTargetsSelectedWindowEvenWhenSelectionChangesDuringPrompt() throws {
         let (wmController, otherToken, selectedToken) = try makeWindowFixture()
         var palette: CommandPaletteController!
@@ -448,14 +467,16 @@ final class CommandPaletteControllerTests: XCTestCase {
 
     private func makeWindowItem(
         windowId: Int,
+        title: String = "Quarterly review",
+        appName: String = "Drafts",
         markNames: [String] = []
     ) -> CommandPaletteWindowItem {
         let token = WindowToken(pid: 92_010, windowId: windowId)
         return CommandPaletteWindowItem(
             id: token,
             handle: WindowHandle(id: token),
-            title: "Quarterly review",
-            appName: "Drafts",
+            title: title,
+            appName: appName,
             appIcon: nil,
             workspaceName: "Research",
             isAppHidden: false,
