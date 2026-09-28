@@ -1818,7 +1818,7 @@ final class TrackpadWorkspaceGestureTests: XCTestCase {
         let harness = await installRecoveringMultitouchSource(fixture)
         defer {
             fixture.controller.mouseEventHandler.cleanup()
-            harness.sleeper.resumeAll()
+            await harness.sleeper.resumeAll()
         }
         harness.backend.emitFrame(
             registryId: 303,
@@ -1843,7 +1843,7 @@ final class TrackpadWorkspaceGestureTests: XCTestCase {
         let harness = await installRecoveringMultitouchSource(fixture, includeSecondDevice: true)
         defer {
             fixture.controller.mouseEventHandler.cleanup()
-            harness.sleeper.resumeAll()
+            await harness.sleeper.resumeAll()
         }
         harness.backend.emitFrame(
             registryId: 303,
@@ -2225,9 +2225,8 @@ final class TrackpadWorkspaceGestureTests: XCTestCase {
         fixture.controller.mouseEventHandler.state.suppressTrackpadMomentumScroll = true
 
         harness.source.requestRevalidation(.wake)
-        await drainMultitouchTasks()
-        harness.sleeper.resumeNext()
-        await drainMultitouchTasks()
+        await harness.sleeper.waitForScheduledSleep(of: harness.source)
+        await harness.sleeper.resumeNext()
         let recoveredGeneration = try XCTUnwrap(harness.source.diagnosticsSnapshot().activeGeneration)
 
         XCTAssertNotEqual(recoveredGeneration, firstGeneration)
@@ -2317,9 +2316,8 @@ final class TrackpadWorkspaceGestureTests: XCTestCase {
         fixture.controller.mouseEventHandler.state.suppressTrackpadMomentumScroll = true
 
         harness.source.requestRevalidation(.wake)
-        await drainMultitouchTasks()
-        harness.sleeper.resumeNext()
-        await drainMultitouchTasks()
+        await harness.sleeper.waitForScheduledSleep(of: harness.source)
+        await harness.sleeper.resumeNext()
         let recoveredGeneration = try XCTUnwrap(harness.source.diagnosticsSnapshot().activeGeneration)
 
         XCTAssertNotEqual(recoveredGeneration, firstGeneration)
@@ -2450,10 +2448,9 @@ final class TrackpadWorkspaceGestureTests: XCTestCase {
             topologyMonitoringEnabled: false
         )
         fixture.controller.mouseEventHandler.installMultitouchSource(source)
-        await drainMultitouchTasks()
+        await sleeper.waitForScheduledSleep(of: source)
         XCTAssertEqual(sleeper.pendingCount, 1)
-        sleeper.resumeNext()
-        await drainMultitouchTasks()
+        await sleeper.resumeNext()
         XCTAssertEqual(source.diagnosticsSnapshot().state, .running)
         return (source, backend, sleeper)
     }
@@ -2467,8 +2464,7 @@ final class TrackpadWorkspaceGestureTests: XCTestCase {
         )
     ) async {
         fixture.controller.mouseEventHandler.cleanup()
-        harness.sleeper.resumeAll()
-        await drainMultitouchTasks()
+        await harness.sleeper.resumeAll()
     }
 
     func testCommittedVisibilityAbortRetainsPhaseLessTailUntilFreshContact() async throws {
@@ -2479,7 +2475,7 @@ final class TrackpadWorkspaceGestureTests: XCTestCase {
         defer {
             controller.eventIntake.close()
             handler.cleanup()
-            harness.sleeper.resumeAll()
+            await harness.sleeper.resumeAll()
         }
         harness.backend.emitFrame(
             registryId: 303,
@@ -2524,7 +2520,7 @@ final class TrackpadWorkspaceGestureTests: XCTestCase {
         defer {
             controller.eventIntake.close()
             handler.cleanup()
-            harness.sleeper.resumeAll()
+            await harness.sleeper.resumeAll()
         }
         for step in 0 ... 4 {
             harness.backend.emitFrame(
