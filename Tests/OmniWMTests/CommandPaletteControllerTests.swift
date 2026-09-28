@@ -242,6 +242,45 @@ final class CommandPaletteControllerTests: XCTestCase {
         XCTAssertEqual(palette.selectedItemID, .window(capturedToken))
     }
 
+    func testConfirmedFocusBeatsPreviousAppCaptureWhenOpeningPalette() throws {
+        let chrome = makeWindowItem(windowId: 92_120, title: "Chrome", appName: "Google Chrome")
+        let wezTerm = makeWindowItem(windowId: 92_121, title: "WezTerm", appName: "WezTerm")
+        let markEdit = makeWindowItem(windowId: 92_122, title: "MarkEdit", appName: "MarkEdit")
+
+        for (current, previous) in [(wezTerm, chrome), (markEdit, wezTerm)] {
+            let items = CommandPaletteSearch.orderWindowItems(
+                [previous, current],
+                focusRecencyOrder: [current.id, previous.id],
+                confirmedFocusToken: current.id,
+                focusedWindowToken: previous.id
+            )
+            XCTAssertEqual(items.first?.id, current.id)
+            let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+            palette.windows = items
+            XCTAssertEqual(palette.selectedItemID, .window(current.id))
+        }
+
+        let (wmController, currentToken, previousToken) = try makeWindowFixture()
+        wmController.workspaceManager.setAppHidden(false, pid: previousToken.pid, source: .service)
+        let workspaceId = try XCTUnwrap(wmController.workspaceManager.entry(for: currentToken)?.workspaceId)
+        _ = wmController.workspaceManager.recordReconcileEvent(.managedFocusConfirmed(
+            token: currentToken, workspaceId: workspaceId, monitorId: nil,
+            requestId: nil, source: .workspaceManager
+        ))
+        XCTAssertEqual(wmController.workspaceManager.selectedManagedToken, currentToken)
+        let previousFocus = CommandPaletteFocusTarget(
+            app: .init(
+                processIdentifier: previousToken.pid, bundleIdentifier: nil, localizedName: nil, isTerminated: false
+            ),
+            focusedWindow: nil,
+            focusedWindowID: CGWindowID(previousToken.windowId)
+        )
+        let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+        palette.windows = CommandPaletteSearch.buildWindowItems(from: wmController, focusedWindow: previousFocus)
+        XCTAssertEqual(palette.windows.first?.id, currentToken)
+        XCTAssertEqual(palette.selectedItemID, .window(currentToken))
+    }
+
     func testMarkTargetsSelectedWindowEvenWhenSelectionChangesDuringPrompt() throws {
         let (wmController, otherToken, selectedToken) = try makeWindowFixture()
         var palette: CommandPaletteController!

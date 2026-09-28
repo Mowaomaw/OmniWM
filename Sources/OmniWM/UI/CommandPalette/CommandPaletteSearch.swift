@@ -262,9 +262,11 @@ enum CommandPaletteSearch {
     static func orderWindowItems(
         _ items: [CommandPaletteWindowItem],
         focusRecencyOrder: [WindowToken],
+        confirmedFocusToken: WindowToken? = nil,
         focusedWindowToken: WindowToken? = nil
     ) -> [CommandPaletteWindowItem] {
-        let focusOrder = [focusedWindowToken].compactMap { $0 } + focusRecencyOrder
+        // The frontmost-app capture can lag the confirmed managed focus during an app switch.
+        let focusOrder = [confirmedFocusToken, focusedWindowToken].compactMap { $0 } + focusRecencyOrder
         let focusRanks = Dictionary(
             focusOrder.enumerated().map { ($0.element, $0.offset) },
             uniquingKeysWith: { first, _ in first }
@@ -320,6 +322,7 @@ enum CommandPaletteSearch {
         return orderWindowItems(
             items,
             focusRecencyOrder: wmController.workspaceManager.windowFocusRecencyOrder,
+            confirmedFocusToken: wmController.workspaceManager.selectedManagedToken,
             focusedWindowToken: focusedWindowToken
         )
     }
