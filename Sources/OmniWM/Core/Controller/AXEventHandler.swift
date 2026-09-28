@@ -42,6 +42,7 @@ final class AXEventHandler {
     var visibleWindowInfoProvider: () -> [WindowServerInfo]
     var windowInfoProvider: (UInt32) -> WindowServerInfo?
     var windowInfoBatchProvider: (Set<UInt32>) -> [UInt32: WindowServerInfo]?
+    var createdWindowAXRefProvider: (WindowToken) async throws -> AXWindowRef? = lookupCreatedWindowIdentity
     var frameObservations = FrameObservations()
     var windowSubscriptionProvider: ([UInt32]) -> Bool
     var preparedWindowSubscriptionRetainCounts: [UInt32: Int] = [:]

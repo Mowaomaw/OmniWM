@@ -105,10 +105,14 @@ extension AXEventHandler {
         fallbackToken: WindowToken? = nil,
         fallbackAXRef: AXWindowRef? = nil,
         placementOrigin: WorkspacePlacementOrigin = .liveCreate,
-        retryTrigger: AdmissionRetryTrigger = .create
+        retryTrigger: AdmissionRetryTrigger = .create,
+        retryExecution: AdmissionRetryExecution? = nil
     ) {
         guard let controller else { return }
         if controller.isDiscoveryInProgress {
+            if let retryExecution {
+                suspendCreatedWindowLookupExecution(retryExecution)
+            }
             deferCreateDuringDiscovery(windowId)
             return
         }
@@ -122,6 +126,30 @@ extension AXEventHandler {
             rejectOwnedCreate(windowId)
             return
         }
+        prepareAndTrackCreatedWindow(
+            windowId: windowId, windowInfo: windowInfo,
+            fallbackToken: fallbackToken, fallbackAXRef: fallbackAXRef,
+            placementOrigin: placementOrigin, retryTrigger: retryTrigger, retryExecution: retryExecution
+        )
+    }
+
+    func prepareAndTrackCreatedWindow(
+        windowId: UInt32,
+        windowInfo: WindowServerInfo?,
+        fallbackToken: WindowToken? = nil,
+        fallbackAXRef: AXWindowRef? = nil,
+        placementOrigin: WorkspacePlacementOrigin = .liveCreate,
+        retryTrigger: AdmissionRetryTrigger = .create,
+        retryExecution: AdmissionRetryExecution? = nil
+    ) {
+        let token = fallbackToken ?? windowInfo?.token(matching: windowId)
+        let axRef = fallbackAXRef?.windowId == Int(windowId) ? fallbackAXRef : token.flatMap {
+            AXWindowService.pinnedAXWindowRef(for: windowId, pid: $0.pid)
+        }
+        if let token, axRef == nil {
+            requestCreatedWindowIdentity(token: token, execution: retryExecution)
+            return
+        }
         let createPlacementContext = pendingCreatePlacementContext(for: Int(windowId))
         let effectivePlacementOrigin = Self.effectivePlacementOrigin(
             placementOrigin,
@@ -131,7 +159,7 @@ extension AXEventHandler {
             windowId: windowId,
             windowInfo: windowInfo,
             fallbackToken: fallbackToken,
-            fallbackAXRef: fallbackAXRef,
+            fallbackAXRef: axRef,
             allowsTrackedIdentityReplacement: retryTrigger.allowsTrackedIdentityReplacement,
             placementOrigin: effectivePlacementOrigin,
             createPlacementContext: createPlacementContext
@@ -155,7 +183,7 @@ extension AXEventHandler {
         trackPreparedCreate(candidate)
     }
 
-    private func deferCreateDuringDiscovery(_ windowId: UInt32) {
+    func deferCreateDuringDiscovery(_ windowId: UInt32) {
         WindowAdmissionTrace.record(
             .init(
                 action: .admissionPending,
@@ -271,34 +299,13 @@ extension AXEventHandler {
         _ windowId: UInt32, windowInfo: WindowServerInfo?, retryState: AdmissionRetryState?,
         trigger retryTrigger: AdmissionRetryTrigger
     ) {
-        let createPlacementContext = pendingCreatePlacementContext(for: Int(windowId))
-        let placementOrigin = Self.effectivePlacementOrigin(
-            retryTrigger.placementOrigin,
-            createPlacementContext: createPlacementContext
-        )
-        let outcome = prepareCreateCandidate(
+        prepareAndTrackCreatedWindow(
             windowId: windowId,
             windowInfo: windowInfo,
             fallbackToken: retryState?.expectedToken,
             fallbackAXRef: retryState?.axRef,
-            allowsTrackedIdentityReplacement: retryTrigger.allowsTrackedIdentityReplacement,
-            placementOrigin: placementOrigin,
-            createPlacementContext: createPlacementContext
+            placementOrigin: retryTrigger.placementOrigin,
+            retryTrigger: retryTrigger
         )
-        guard let candidate = preparedCreateCandidate(
-            from: outcome,
-            windowId: windowId,
-            trigger: retryTrigger
-        ) else {
-            return
-        }
-        if completeLiveStructuralReplacementCreate(candidate) {
-            return
-        }
-        if shouldDelayManagedReplacementCreate(candidate) {
-            enqueueManagedReplacementCreate(candidate)
-        } else {
-            trackPreparedCreate(candidate)
-        }
     }
 }

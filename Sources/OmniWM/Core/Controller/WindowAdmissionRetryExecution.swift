@@ -11,6 +11,7 @@ extension AXEventHandler {
     @discardableResult
     func dispatchAdmissionRetry(windowId: UInt32) -> Bool {
         guard var state = admissionRetryStateByWindowId[windowId] else { return false }
+        if case .create = state.trigger, case .running = state.executionPhase { return true }
         if case .identityRebind = state.trigger {
             if case .running = state.executionPhase { return true }
             guard !state.exhausted, !state.identityRebindTargetDestroyed,
@@ -53,6 +54,11 @@ extension AXEventHandler {
             state: state,
             executionOwner: executionOwner
         )
+        if case .create = state.trigger {
+            suspendCreatedWindowLookupExecution(
+                .init(windowId: windowId, generation: state.generation, executionOwner: executionOwner)
+            )
+        }
         return true
     }
 
@@ -97,7 +103,12 @@ extension AXEventHandler {
     ) {
         switch state.trigger {
         case .create:
-            processCreatedWindow(windowId: windowId)
+            processCreatedWindow(
+                windowId: windowId,
+                retryExecution: .init(
+                    windowId: windowId, generation: state.generation, executionOwner: executionOwner
+                )
+            )
         case let .candidate(token, axRef, placementOrigin):
             processCreatedWindow(
                 windowId: windowId,
