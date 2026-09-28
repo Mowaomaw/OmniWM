@@ -90,6 +90,7 @@ final class WindowAdmissionIdentityLookupTests: XCTestCase {
 
         handler.handleCGSEvent(.closed(windowId: windowId))
         XCTAssertNil(handler.admissionRetryStateByWindowId[windowId])
+        await handler.lifecycleQueries.task?.value
         handler.createdWindowAXRefProvider = { _ in nil }
         handler.processCreatedWindow(windowId: windowId)
         let replacement = try XCTUnwrap(handler.admissionRetryStateByWindowId[windowId])

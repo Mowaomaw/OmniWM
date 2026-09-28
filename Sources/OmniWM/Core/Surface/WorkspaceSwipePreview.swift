@@ -77,6 +77,7 @@ final class WorkspaceSwipePreview {
         capture = previewCapture ?? OverviewThumbnailCapture(
             environment: OverviewEnvironment(),
             ownedWindowRegistry: ownedWindowRegistry,
+            consumer: .workspaceSwipe,
             hasCaptureAccess: hasCaptureAccess
         )
         capture.onPreview = { [weak self] handle, frame in

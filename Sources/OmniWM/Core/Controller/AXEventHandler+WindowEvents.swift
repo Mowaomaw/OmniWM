@@ -23,16 +23,11 @@ extension AXEventHandler {
             WindowAdmissionTrace.record(
                 .init(action: .cgsDestroyed, windowId: Int(windowId), reason: "destroyed")
             )
-            handleCGSSpaceWindowDestroyed(windowId: windowId)
+            enqueueLifecycleQuery(windowId: windowId, kind: .spaceDestroyed)
             refreshWindowSubscriptions()
 
         case let .closed(windowId):
-            beginWindowSubscriptionIdentityTransition()
-            WindowAdmissionTrace.record(
-                .init(action: .cgsDestroyed, windowId: Int(windowId), reason: "closed")
-            )
-            handleCGSWindowDestroyed(windowId: windowId, evidence: .windowClosed)
-            refreshWindowSubscriptions()
+            handleCGSWindowClosed(windowId: windowId)
 
         case let .frameChanged(windowId):
             handleFrameChanged(windowId: windowId)
@@ -65,14 +60,24 @@ extension AXEventHandler {
         }
     }
 
+    private func handleCGSWindowClosed(windowId: UInt32) {
+        beginWindowSubscriptionIdentityTransition()
+        WindowAdmissionTrace.record(.init(action: .cgsDestroyed, windowId: Int(windowId), reason: "closed"))
+        cancelQueuedWindowCreation(windowId: windowId)
+        cancelCGSWindowAdmission(windowId: windowId)
+        enqueueLifecycleQuery(windowId: windowId, kind: .closed)
+        refreshWindowSubscriptions()
+    }
+
     private func handleWindowOrderChanged(windowId: UInt32) {
-        guard let controller else { return }
-        guard !controller.isOwnedWindow(windowNumber: Int(windowId)) else { return }
-        guard case let .exact(token, _) = resolveWindowServerIdentity(windowId),
+        enqueueLifecycleQuery(windowId: windowId, kind: .orderChanged)
+    }
+
+    func applyWindowOrderChanged(windowId: UInt32, windowInfo: WindowServerInfo?) {
+        guard let controller,
+              case let .exact(token, _) = WindowServerIdentityResolution(windowId: windowId, info: windowInfo),
               controller.workspaceManager.entry(for: token) != nil
-        else {
-            return
-        }
+        else { return }
         controller.surfaceReconciler.noteRestackOccurred()
     }
 
@@ -91,7 +96,11 @@ extension AXEventHandler {
             deferCreatedWindow(windowId)
             return
         }
-        processCreatedWindow(windowId: windowId)
+        guard canProcessCreatedWindow(windowId: windowId, retryExecution: nil) else { return }
+        enqueueLifecycleQuery(
+            windowId: windowId,
+            kind: .created(pendingCreatePlacementContext(for: Int(windowId)))
+        )
     }
 
     func shouldDeferCreateForInactiveNativeSpace(_ spaceId: UInt64) -> Bool {
@@ -108,20 +117,39 @@ extension AXEventHandler {
         retryTrigger: AdmissionRetryTrigger = .create,
         retryExecution: AdmissionRetryExecution? = nil
     ) {
-        guard let controller else { return }
+        guard canProcessCreatedWindow(windowId: windowId, retryExecution: retryExecution) else { return }
+        processCreatedWindowObservation(
+            windowId: windowId, windowInfo: resolveWindowInfo(windowId),
+            fallbackToken: fallbackToken, fallbackAXRef: fallbackAXRef,
+            placementOrigin: placementOrigin, retryTrigger: retryTrigger, retryExecution: retryExecution
+        )
+    }
+
+    func canProcessCreatedWindow(windowId: UInt32, retryExecution: AdmissionRetryExecution?) -> Bool {
+        guard let controller else { return false }
         if controller.isDiscoveryInProgress {
             if let retryExecution {
                 suspendCreatedWindowLookupExecution(retryExecution)
             }
             deferCreateDuringDiscovery(windowId)
-            return
+            return false
         }
         if controller.isOwnedWindow(windowNumber: Int(windowId)) {
             rejectOwnedCreate(windowId)
-            return
+            return false
         }
+        return true
+    }
 
-        let windowInfo = resolveWindowInfo(windowId)
+    func processCreatedWindowObservation(
+        windowId: UInt32,
+        windowInfo: WindowServerInfo?,
+        fallbackToken: WindowToken? = nil,
+        fallbackAXRef: AXWindowRef? = nil,
+        placementOrigin: WorkspacePlacementOrigin = .liveCreate,
+        retryTrigger: AdmissionRetryTrigger = .create,
+        retryExecution: AdmissionRetryExecution? = nil
+    ) {
         if let windowInfo, isOwnProcessPid(pid_t(windowInfo.pid)) {
             rejectOwnedCreate(windowId)
             return
@@ -209,14 +237,6 @@ extension AXEventHandler {
         rejectDeferredReplacement(windowId: windowId)
     }
 
-    private func handleCGSSpaceWindowDestroyed(windowId: UInt32) {
-        if resolveWindowInfo(windowId) != nil { return }
-        cancelFrameObservation(windowId: windowId)
-        if let controller, let entry = controller.workspaceManager.entry(forWindowId: Int(windowId)),
-           controller.workspaceManager.hiddenState(for: entry.token) != nil { return }
-        handleCGSWindowDestroyed(windowId: windowId, evidence: .transientLifecycle)
-    }
-
     func subscribeToManagedWindows() {
         refreshWindowSubscriptions()
     }
@@ -230,10 +250,16 @@ extension AXEventHandler {
             .selectWindowSpace(from: spaceIdsForWindow(windowId)) ?? 0
     }
 
-    private func handleCGSWindowDestroyed(
+    func completeCGSWindowDestroyed(
         windowId: UInt32,
-        evidence: WindowDestroyEvidence
+        evidence: WindowDestroyEvidence,
+        windowInfo: WindowServerInfo?
     ) {
+        cancelCGSWindowAdmission(windowId: windowId)
+        handleWindowDestroyed(windowId: windowId, pidHint: nil, evidence: evidence, windowInfo: windowInfo)
+    }
+
+    private func cancelCGSWindowAdmission(windowId: UInt32) {
         AXWindowService.invalidateCachedTitle(windowId: windowId)
         let retryRetainCount = cancelCreatedWindowRetry(windowId: windowId)
         if retryRetainCount == 0 {
@@ -243,7 +269,6 @@ extension AXEventHandler {
         removeDeferredCreatedWindow(windowId)
         rejectDeferredReplacement(windowId: windowId)
         cancelFrameObservation(windowId: windowId)
-        handleWindowDestroyed(windowId: windowId, pidHint: nil, evidence: evidence)
     }
 
     func processDeferredCreatedWindow(

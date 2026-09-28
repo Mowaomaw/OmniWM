@@ -44,6 +44,7 @@ final class AXEventHandler {
     var windowInfoBatchProvider: (Set<UInt32>) -> [UInt32: WindowServerInfo]?
     var createdWindowAXRefProvider: (WindowToken) async throws -> AXWindowRef? = lookupCreatedWindowIdentity
     var frameObservations = FrameObservations()
+    var lifecycleQueries = LifecycleQueries()
     var windowSubscriptionProvider: ([UInt32]) -> Bool
     var preparedWindowSubscriptionRetainCounts: [UInt32: Int] = [:]
     var windowSubscriptionIdentityRevision: UInt64 = 0
@@ -93,6 +94,7 @@ final class AXEventHandler {
     }
 
     func cleanup() {
+        cancelLifecycleQueries()
         cancelFrameObservations()
         resetCreatePlacementContextState()
         resetManagedReplacementState()

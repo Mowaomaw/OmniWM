@@ -55,6 +55,7 @@ extension AXEventHandler {
         state.expectedToken = token
         state.executionPhase = .running(executionOwner)
         let provider = createdWindowAXRefProvider
+        let query = lifecycleQueries.query
         state.task = Task { @MainActor [weak self] in
             let axRef: AXWindowRef?
             do {
@@ -64,13 +65,17 @@ extension AXEventHandler {
                 axRef = nil
             }
             guard !Task.isCancelled else { return }
-            self?.completeCreatedWindowIdentity(axRef, token: token, execution: lookupExecution)
+            let windowInfo = if axRef != nil { try? await query(windowId) } else { nil as WindowServerInfo? }
+            guard !Task.isCancelled else { return }
+            self?.completeCreatedWindowIdentity(
+                axRef, token: token, execution: lookupExecution, windowInfo: windowInfo
+            )
         }
         admissionRetryStateByWindowId[windowId] = state
     }
 
     func completeCreatedWindowIdentity(
-        _ axRef: AXWindowRef?, token: WindowToken, execution: AdmissionRetryExecution
+        _ axRef: AXWindowRef?, token: WindowToken, execution: AdmissionRetryExecution, windowInfo: WindowServerInfo?
     ) {
         let windowId = execution.windowId
         guard let controller,
@@ -91,7 +96,6 @@ extension AXEventHandler {
             retryCreatedWindowIdentity(token: token, reason: .axWindowMissing)
             return
         }
-        let windowInfo = resolveWindowInfo(windowId)
         guard windowInfo?.token(matching: windowId) == token else {
             retryCreatedWindowIdentity(token: token, reason: .windowInfoMissing)
             return

@@ -1194,6 +1194,11 @@ final class DurableParkTests: XCTestCase {
             let task = try XCTUnwrap(handler.frameObservations.byWindowId[windowId]?.task)
 
             handler.handleCGSEvent(event)
+            if case .closed = event {
+                XCTAssertNil(handler.frameObservations.byWindowId[windowId], "\(event)")
+                XCTAssertTrue(task.isCancelled, "\(event)")
+            }
+            await handler.lifecycleQueries.task?.value
             XCTAssertNil(handler.frameObservations.byWindowId[windowId], "\(event)")
             XCTAssertTrue(task.isCancelled, "\(event)")
             FrameApplyTrace.shared.beginCapture()
@@ -1222,6 +1227,7 @@ final class DurableParkTests: XCTestCase {
         await waitForQueries(queries, count: 1)
         let task = try XCTUnwrap(handler.frameObservations.byWindowId[windowId]?.task)
         handler.handleCGSEvent(.destroyed(windowId: windowId, spaceId: 1))
+        await handler.lifecycleQueries.task?.value
 
         XCTAssertFalse(task.isCancelled)
         XCTAssertNotNil(handler.frameObservations.byWindowId[windowId])
@@ -1932,7 +1938,7 @@ final class DurableParkTests: XCTestCase {
             ),
             autosaveEnabled: false
         )
-        return WMController(
+        let controller = WMController(
             settings: settings,
             windowFocusOperations: WindowFocusOperations(
                 activateApp: { _ in },
@@ -1940,6 +1946,9 @@ final class DurableParkTests: XCTestCase {
                 raiseWindow: { _ in }
             )
         )
+        let handler = controller.axEventHandler
+        handler.lifecycleQueries.query = { [weak handler] in handler?.windowInfoProvider($0) }
+        return controller
     }
 }
 

@@ -1917,7 +1917,7 @@ final class FullRescanWindowAdmissionTests: XCTestCase {
         )
     }
 
-    func testDeferredCreateTreatsPendingDestroyAndLiveEntryAsOneReplacement() throws {
+    func testDeferredCreateTreatsPendingDestroyAndLiveEntryAsOneReplacement() async throws {
         let controller = WindowAdmissionTestSupport.controller()
         let workspaceId = try XCTUnwrap(
             controller.workspaceManager.workspaceId(for: "1", createIfMissing: true)
@@ -1940,6 +1940,7 @@ final class FullRescanWindowAdmissionTests: XCTestCase {
         )
         controller.axEventHandler.windowInfoProvider = { _ in nil }
         controller.axEventHandler.handleCGSEvent(.closed(windowId: UInt32(oldToken.windowId)))
+        await controller.axEventHandler.lifecycleQueries.task?.value
         XCTAssertNotNil(controller.workspaceManager.entry(for: oldToken))
         deferCreatedWindow(newToken, controller: controller)
         let facts = replacementFacts(token: newToken, bundleId: bundleId, frame: frame)

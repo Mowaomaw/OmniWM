@@ -125,7 +125,7 @@ final class WorkspaceBarHoverPreviewController {
 
     func shutdown() {
         dismiss()
-        capture.releaseCache()
+        capture.releaseCache(reason: .shutdown)
         panel?.close()
         panel = nil
     }

@@ -6022,8 +6022,10 @@ final class RuntimeArchitectureTests: XCTestCase {
     }
 
     @MainActor
-    func testNativeFullscreenCGSDestroyPreservesBeforeTopologyCleanup() throws {
+    func testNativeFullscreenCGSDestroyPreservesBeforeTopologyCleanup() async throws {
         let controller = Self.controller()
+        let handler = controller.axEventHandler
+        handler.lifecycleQueries.query = { [weak handler] in handler?.windowInfoProvider($0) }
         let ws = try XCTUnwrap(controller.workspaceManager.workspaceId(for: "1", createIfMissing: true))
         _ = controller.workspaceManager.focusWorkspace(named: "1")
         controller.niriLayoutHandler.enableNiriLayout()
@@ -6070,6 +6072,7 @@ final class RuntimeArchitectureTests: XCTestCase {
         controller.axEventHandler.handleCGSEvent(
             .destroyed(windowId: UInt32(targetToken.windowId), spaceId: fullscreenSpaceId)
         )
+        await controller.axEventHandler.lifecycleQueries.task?.value
 
         let record = try XCTUnwrap(controller.workspaceManager.nativeFullscreenRecord(for: targetToken))
         XCTAssertEqual(record.transition, .suspended)
@@ -6084,6 +6087,7 @@ final class RuntimeArchitectureTests: XCTestCase {
         controller.axEventHandler.handleCGSEvent(
             .closed(windowId: UInt32(targetToken.windowId))
         )
+        await controller.axEventHandler.lifecycleQueries.task?.value
 
         XCTAssertNil(controller.workspaceManager.entry(for: targetToken))
         XCTAssertNil(controller.workspaceManager.spaceTopology.spaceForWindow(targetToken.windowId))

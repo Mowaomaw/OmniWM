@@ -15,6 +15,7 @@ extension WorkspaceBarManager {
             capture: OverviewThumbnailCapture(
                 environment: OverviewEnvironment(),
                 ownedWindowRegistry: controller.ownedWindowRegistry,
+                consumer: .workspaceBarHover,
                 maximumRetainedBytes: 24 * 1_024 * 1_024
             ),
             makePanel: { [weak controller] in
