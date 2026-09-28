@@ -183,6 +183,7 @@ extension AXEventHandler {
 
     private func handleCGSSpaceWindowDestroyed(windowId: UInt32) {
         if resolveWindowInfo(windowId) != nil { return }
+        cancelFrameObservation(windowId: windowId)
         if let controller, let entry = controller.workspaceManager.entry(forWindowId: Int(windowId)),
            controller.workspaceManager.hiddenState(for: entry.token) != nil { return }
         handleCGSWindowDestroyed(windowId: windowId, evidence: .transientLifecycle)
@@ -213,6 +214,7 @@ extension AXEventHandler {
         discardCreatePlacementContext(windowId: windowId)
         removeDeferredCreatedWindow(windowId)
         rejectDeferredReplacement(windowId: windowId)
+        cancelFrameObservation(windowId: windowId)
         handleWindowDestroyed(windowId: windowId, pidHint: nil, evidence: evidence)
     }
 

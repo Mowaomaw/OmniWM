@@ -42,6 +42,7 @@ final class AXEventHandler {
     var visibleWindowInfoProvider: () -> [WindowServerInfo]
     var windowInfoProvider: (UInt32) -> WindowServerInfo?
     var windowInfoBatchProvider: (Set<UInt32>) -> [UInt32: WindowServerInfo]?
+    var frameObservations = FrameObservations()
     var windowSubscriptionProvider: ([UInt32]) -> Bool
     var preparedWindowSubscriptionRetainCounts: [UInt32: Int] = [:]
     var windowSubscriptionIdentityRevision: UInt64 = 0
@@ -91,6 +92,7 @@ final class AXEventHandler {
     }
 
     func cleanup() {
+        cancelFrameObservations()
         resetCreatePlacementContextState()
         resetManagedReplacementState()
         endWindowCloseFocusRecovery(reason: "cleanup")
@@ -347,13 +349,9 @@ extension AXEventHandler {
         return candidate.structuralReplacementMatch?.source == .pendingDestroy
     }
 
-    func enqueueManagedReplacementCreate(_ candidate: PreparedCreate) {
-        enqueueManagedReplacementCreate(candidate, focusedActivation: nil)
-    }
-
     func enqueueManagedReplacementCreate(
         _ candidate: PreparedCreate,
-        focusedActivation: PendingFocusedManagedActivation?
+        focusedActivation: PendingFocusedManagedActivation? = nil
     ) {
         guard let policy = managedReplacementCorrelationPolicy(for: candidate.replacementMetadata) else { return }
         recordDeferredManagedReplacementCreate(candidate)
