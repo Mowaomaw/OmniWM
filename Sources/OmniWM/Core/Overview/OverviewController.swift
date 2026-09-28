@@ -135,11 +135,9 @@ final class OverviewController {
         }
     }
 
-    deinit {
-        MainActor.assumeIsolated {
-            endOwnedSession()
-            cleanup()
-        }
+    isolated deinit {
+        endOwnedSession()
+        cleanup()
     }
 }
 
