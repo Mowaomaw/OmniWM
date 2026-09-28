@@ -77,6 +77,39 @@ final class CommandPaletteFocusTests: XCTestCase {
         XCTAssertTrue(panel.firstResponder is NSTextView)
     }
 
+    func testCollapsedDownAndEnterExpandWindowsWithoutSkippingFirstRow() throws {
+        let fixture = CommandPaletteFocusFixture()
+        defer { fixture.cleanup() }
+        let manager = fixture.controller.workspaceManager
+        let workspaceId = try XCTUnwrap(manager.workspaceId(for: "1", createIfMissing: true))
+        for windowId in [92_201, 92_202] {
+            _ = manager.addWindow(
+                AXWindowRef(element: AXUIElementCreateApplication(92_200), windowId: windowId),
+                pid: 92_200,
+                windowId: windowId,
+                to: workspaceId
+            )
+        }
+        _ = try fixture.show()
+        let first = try XCTUnwrap(fixture.palette.filteredWindowItems.first?.id)
+        let second = try XCTUnwrap(fixture.palette.filteredWindowItems.dropFirst().first?.id)
+        XCTAssertFalse(fixture.palette.isExpanded)
+        XCTAssertEqual(fixture.palette.selectedItemID, .window(first))
+
+        fixture.palette.moveSelection(by: 1)
+        XCTAssertTrue(fixture.palette.isExpanded)
+        XCTAssertEqual(fixture.palette.selectedItemID, .window(first))
+        fixture.palette.moveSelection(by: 1)
+        XCTAssertEqual(fixture.palette.selectedItemID, .window(second))
+
+        fixture.palette.toggle(wmController: fixture.controller)
+        _ = try fixture.show()
+        XCTAssertFalse(fixture.palette.isExpanded)
+        fixture.palette.selectCurrent()
+        XCTAssertTrue(fixture.palette.isExpanded)
+        XCTAssertEqual(fixture.palette.selectedItemID, .window(first))
+    }
+
     func testTypingExpandsCompactPaletteAndKeepsSearchEditable() async throws {
         let fixture = CommandPaletteFocusFixture()
         defer { fixture.cleanup() }

@@ -19,6 +19,9 @@ final class CommandPaletteController: NSObject, NSWindowDelegate {
             if isVisible, isLauncherMode {
                 launcherSearchTextDidChange(from: oldValue)
             } else {
+                if selectedMode == .windows, searchText != oldValue {
+                    selectedItemID = nil
+                }
                 updateSelectionAfterFilterChange()
             }
             if !searchText.isEmpty {

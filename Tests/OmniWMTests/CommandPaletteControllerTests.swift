@@ -281,6 +281,27 @@ final class CommandPaletteControllerTests: XCTestCase {
         XCTAssertEqual(palette.selectedItemID, .window(currentToken))
     }
 
+    func testWindowSearchPrioritizesMatchingMarksThenKeepsOtherMatchesInFocusOrder() {
+        let recent = makeWindowItem(windowId: 92_130, title: "Home tabs", appName: "Google Chrome")
+        let next = makeWindowItem(windowId: 92_131, title: "Omni notes", appName: "Google Chrome")
+        let marked = makeWindowItem(
+            windowId: 92_132, title: "Unrelated page", appName: "Google Chrome", markNames: ["Omni"]
+        )
+        let windows = [recent, next, marked]
+
+        XCTAssertEqual(CommandPaletteSearch.filterWindowItems(windows, query: "").map(\.id), windows.map(\.id))
+        XCTAssertEqual(
+            CommandPaletteSearch.filterWindowItems(windows, query: "OM").map(\.id),
+            [marked.id, recent.id, next.id]
+        )
+
+        let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+        palette.windows = windows
+        XCTAssertEqual(palette.selectedItemID, .window(recent.id))
+        palette.searchText = "OM"
+        XCTAssertEqual(palette.selectedItemID, .window(marked.id))
+    }
+
     func testMarkTargetsSelectedWindowEvenWhenSelectionChangesDuringPrompt() throws {
         let (wmController, otherToken, selectedToken) = try makeWindowFixture()
         var palette: CommandPaletteController!

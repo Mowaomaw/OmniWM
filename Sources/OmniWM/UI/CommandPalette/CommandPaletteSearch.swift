@@ -29,55 +29,20 @@ enum CommandPaletteSearch {
         }
         let query = trimmedQuery.lowercased()
 
-        let scored: [(item: CommandPaletteWindowItem, score: Int, order: Int)] = items.enumerated().compactMap {
-            order, item in
-            let titleLower = item.title.lowercased()
-            let appLower = item.appName.lowercased()
-
-            if let range = titleLower.range(of: query) {
-                let pos = titleLower.distance(from: titleLower.startIndex, to: range.lowerBound)
-                return (item, pos, order)
+        var markedMatches: [CommandPaletteWindowItem] = []
+        var otherMatches: [CommandPaletteWindowItem] = []
+        for item in items {
+            if item.markNames.contains(where: { $0.localizedCaseInsensitiveContains(query) }) {
+                markedMatches.append(item)
+            } else if item.title.localizedCaseInsensitiveContains(query)
+                || item.appName.localizedCaseInsensitiveContains(query)
+                || item.workspaceName.localizedCaseInsensitiveContains(query)
+                || (item.isAppHidden && hiddenSearchTerms.contains(where: { $0.contains(query) }))
+            {
+                otherMatches.append(item)
             }
-
-            if let range = appLower.range(of: query) {
-                let pos = appLower.distance(from: appLower.startIndex, to: range.lowerBound)
-                return (item, 1000 + pos, order)
-            }
-
-            let workspaceLower = item.workspaceName.lowercased()
-            if let range = workspaceLower.range(of: query) {
-                let pos = workspaceLower.distance(from: workspaceLower.startIndex, to: range.lowerBound)
-                return (item, 2000 + pos, order)
-            }
-
-            if item.isAppHidden {
-                for term in hiddenSearchTerms {
-                    if let range = term.range(of: query) {
-                        let pos = term.distance(from: term.startIndex, to: range.lowerBound)
-                        return (item, 3000 + pos, order)
-                    }
-                }
-            }
-
-            let markMatchScore = item.markNames
-                .compactMap { markName -> Int? in
-                    let markNameLower = markName.lowercased()
-                    guard let range = markNameLower.range(of: query) else { return nil }
-                    return markNameLower.distance(from: markNameLower.startIndex, to: range.lowerBound)
-                }
-                .min()
-            if let markMatchScore {
-                return (item, 4000 + markMatchScore, order)
-            }
-
-            return nil
         }
-
-        return scored
-            .sorted { lhs, rhs in
-                lhs.score == rhs.score ? lhs.order < rhs.order : lhs.score < rhs.score
-            }
-            .map(\.item)
+        return markedMatches + otherMatches
     }
 
     static func filterMenuItems(_ items: [MenuItemModel], query rawQuery: String) -> [MenuItemModel] {
