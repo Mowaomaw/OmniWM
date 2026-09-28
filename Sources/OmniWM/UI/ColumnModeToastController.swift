@@ -38,6 +38,10 @@ final class ColumnModeToastController {
     }
 
     func show(isTabbed: Bool, columnFrame: CGRect, visibleFrame: CGRect, motion: MotionSnapshot) {
+        // A non-activating panel never triggers .moveToActiveSpace; recreate it if it is visible on another Space
+        if let visiblePanel = surface?.panel, visiblePanel.isVisible, !visiblePanel.isOnActiveSpace {
+            destroy()
+        }
         let (panel, hostingView) = surface ?? makeSurface()
 
         // Replace any pill already on screen: new content, new position, fresh timer
@@ -123,7 +127,7 @@ final class ColumnModeToastController {
         panel.isReleasedWhenClosed = false
         panel.animationBehavior = .none
         panel.level = .floating
-        // Follow the active Space on each show instead of lingering on every Space
+        // Live only on the Space where it is shown, not on every Space (show() recreates it across Spaces)
         panel.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary, .stationary, .ignoresCycle]
 
         let hostingView = NSHostingView(rootView: ColumnModeToastView(isTabbed: false))

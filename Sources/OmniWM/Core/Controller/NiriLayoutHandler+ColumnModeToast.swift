@@ -22,7 +22,11 @@ extension NiriLayoutHandler {
               !frame.isInfinite,
               frame.width > 0,
               frame.height > 0
-        else { return }
+        else {
+            // Never leave an earlier pill showing a mode this toggle just changed
+            columnModeToast.hide()
+            return
+        }
         columnModeToast.show(
             isTabbed: column.isTabbed,
             columnFrame: frame,
