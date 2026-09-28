@@ -9,7 +9,6 @@ enum WorkspaceNumberActionKind: String, CaseIterable {
     case moveToWorkspace
     case moveColumnToWorkspace
 
-    // The catalog alternates Switch and Move rows per workspace, so both kinds sort as one block.
     var rowGroup: WorkspaceNumberActionKind {
         self == .moveToWorkspace ? .switchWorkspace : self
     }
@@ -47,7 +46,6 @@ extension ActionCatalog {
         }
     }
 
-    // Workspaces above 9 are not in the static catalog. SettingsStore adds and drops their rows with the workspace list.
     static func workspaceNumberSpecs(forWorkspaceNumber number: Int) -> [ActionSpec] {
         WorkspaceNumberActionKind.allCases.compactMap { workspaceNumberSpec(kind: $0, index: number - 1) }
     }
@@ -66,7 +64,6 @@ extension ActionCatalog {
     }
 
     private static func workspaceNumberSpec(kind: WorkspaceNumberActionKind, index: Int) -> ActionSpec? {
-        // Titles and dispatch compute index + 1, which traps at Int.max.
         guard index >= digitCodes.count, index < Int.max else { return nil }
         let id = "\(kind.rawValue).\(index)"
         return switch kind {
