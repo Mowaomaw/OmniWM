@@ -242,9 +242,9 @@ extension AXEventHandler {
         windowInfoProvider(windowId)
     }
 
-    func resolveWindowInfo(_ windowIds: Set<UInt32>) -> [UInt32: WindowServerInfo] {
+    func resolveWindowInfo(_ windowIds: Set<UInt32>) async throws -> [UInt32: WindowServerInfo] {
         guard !windowIds.isEmpty else { return [:] }
-        return windowInfoBatchProvider(windowIds) ?? [:]
+        return try await windowInfoBatchProvider(windowIds) ?? [:]
     }
 
     func resolveWindowServerIdentity(_ windowId: UInt32) -> WindowServerIdentityResolution {

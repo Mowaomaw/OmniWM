@@ -41,7 +41,7 @@ final class AXEventHandler {
     private var nextManagedReplacementEventSequence: UInt64 = 0
     var visibleWindowInfoProvider: () -> [WindowServerInfo]
     var windowInfoProvider: (UInt32) -> WindowServerInfo?
-    var windowInfoBatchProvider: (Set<UInt32>) -> [UInt32: WindowServerInfo]?
+    var windowInfoBatchProvider: (Set<UInt32>) async throws -> [UInt32: WindowServerInfo]?
     var createdWindowAXRefProvider: (WindowToken) async throws -> AXWindowRef? = lookupCreatedWindowIdentity
     var frameObservations = FrameObservations()
     var lifecycleQueries = LifecycleQueries()
@@ -78,8 +78,8 @@ final class AXEventHandler {
         windowInfoProvider: @escaping (UInt32) -> WindowServerInfo? = {
             SkyLight.shared.queryWindowInfo($0)
         },
-        windowInfoBatchProvider: @escaping (Set<UInt32>) -> [UInt32: WindowServerInfo]? = {
-            SkyLight.shared.queryWindowInfo(windowIds: $0)
+        windowInfoBatchProvider: @escaping (Set<UInt32>) async throws -> [UInt32: WindowServerInfo]? = {
+            try await SkyLight.shared.queryWindowInfoDeferred(windowIds: $0)
         },
         windowSubscriptionProvider: @escaping ([UInt32]) -> Bool = {
             CGSEventObserver.shared.subscribeToWindows($0)
