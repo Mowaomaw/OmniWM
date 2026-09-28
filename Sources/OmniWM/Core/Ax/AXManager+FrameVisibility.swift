@@ -143,11 +143,23 @@ extension AXManager {
     @discardableResult
     func applyPositionsViaSkyLight(
         _ positions: [SkyLightPositionTarget],
-        allowInactive: Bool = false
+        allowInactive: Bool = false,
+        tracingPark: Bool = false
     ) -> SkyLight.TransactionSubmissionResult {
         let filtered = positionsAllowedToWrite(positions, allowInactive: allowInactive)
-        guard !filtered.isEmpty else { return .submitted }
-        return SkyLight.shared.batchMoveWindows(Self.windowServerPositions(filtered))
+        let result: SkyLight.TransactionSubmissionResult = filtered.isEmpty
+            ? .submitted : SkyLight.shared.batchMoveWindows(Self.windowServerPositions(filtered))
+        if tracingPark, FrameApplyTrace.shared.isActive {
+            for position in positions {
+                let eligible = filtered.contains { $0.token == position.token }
+                FrameApplyTrace.recordEvent(
+                    pid: position.token.pid, windowId: position.token.windowId,
+                    outcome: "outcome=sls-park-submission/\(eligible ? String(describing: result) : "filtered")",
+                    target: position.frame, lane: .park
+                )
+            }
+        }
+        return result
     }
 
     func positionsAllowedToWrite(

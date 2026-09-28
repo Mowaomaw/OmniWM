@@ -70,7 +70,7 @@ final class DurableParkTests: XCTestCase {
         )
         XCTAssertTrue(controller.axManager.pendingParkWindowIds.contains(token.windowId))
         XCTAssertNil(controller.axManager.pendingParkFrameRequest(for: token.windowId))
-        XCTAssertTrue(FrameApplyTrace.shared.dump().contains("outcome=sls-parked/animation"))
+        XCTAssertTrue(FrameApplyTrace.shared.dump().contains("outcome=sls-park-intent/animation"))
         XCTAssertFalse(FrameApplyTrace.shared.dump().contains("outcome=ax-park-"))
         let parkOrigin = try XCTUnwrap(controller.axManager.skyLightLivePosition(for: token.windowId))
 
@@ -88,7 +88,7 @@ final class DurableParkTests: XCTestCase {
         )
         XCTAssertTrue(controller.axManager.pendingParkWindowIds.contains(token.windowId))
         XCTAssertNil(controller.axManager.verifiedParkFrame(for: token.windowId))
-        XCTAssertTrue(FrameApplyTrace.shared.dump().contains("outcome=sls-parked/settled"))
+        XCTAssertTrue(FrameApplyTrace.shared.dump().contains("outcome=sls-park-intent/settled"))
         XCTAssertTrue(FrameApplyTrace.shared.dump().contains("outcome=ax-park-failed/contextUnavailable"))
 
         let parkFrame = CGRect(origin: parkOrigin, size: onscreenFrame.size)
@@ -286,7 +286,7 @@ final class DurableParkTests: XCTestCase {
         }
 
         XCTAssertFalse(FrameApplyTrace.shared.dump().split(separator: "\n").contains {
-            $0.contains("win=\(fixture.token.windowId) ") && $0.contains("outcome=sls-parked")
+            $0.contains("win=\(fixture.token.windowId) ") && $0.contains("outcome=sls-park-intent")
         })
     }
 
@@ -916,7 +916,7 @@ final class DurableParkTests: XCTestCase {
                 label
             )
             XCTAssertTrue(controller.axManager.pendingParkWindowIds.contains(windowId), label)
-            XCTAssertTrue(trace.contains("outcome=sls-parked/settled"), label)
+            XCTAssertTrue(trace.contains("outcome=sls-park-intent/settled"), label)
             XCTAssertTrue(trace.contains("outcome=ax-park-failed/contextUnavailable"), label)
         }
     }
@@ -1170,7 +1170,7 @@ final class DurableParkTests: XCTestCase {
         await waitForQueries(queries, count: 3)
 
         XCTAssertNil(fixture.controller.axManager.verifiedParkFrame(for: fixture.token.windowId))
-        XCTAssertTrue(Self.frameTrace(fixture).contains("outcome=sls-parked/settled"))
+        XCTAssertTrue(Self.frameTrace(fixture).contains("outcome=sls-park-intent/settled"))
         XCTAssertEqual(handler.frameObservations.byWindowId[windowId]?.needsRequery, false)
         queries.answer(windowId, with: Self.windowServerInfo(fixture, frame: fixture.parkFrame))
         queries.answer(otherWindowId, with: nil)
@@ -1235,7 +1235,7 @@ final class DurableParkTests: XCTestCase {
         await handler.settleFrameObservations(windowId: windowId)
 
         XCTAssertNil(fixture.controller.axManager.verifiedParkFrame(for: fixture.token.windowId))
-        XCTAssertTrue(Self.frameTrace(fixture).contains("outcome=sls-parked/settled"))
+        XCTAssertTrue(Self.frameTrace(fixture).contains("outcome=sls-park-intent/settled"))
         XCTAssertEqual(queries.requestedWindowIds.count, 1)
     }
 
@@ -1288,7 +1288,7 @@ final class DurableParkTests: XCTestCase {
         )
         await handler.settleFrameObservations(windowId: windowId)
 
-        XCTAssertFalse(Self.frameTrace(fixture).contains("outcome=sls-parked"))
+        XCTAssertFalse(Self.frameTrace(fixture).contains("outcome=sls-park-intent"))
         XCTAssertEqual(queries.requestedWindowIds.count, 2)
     }
 
@@ -1501,7 +1501,7 @@ final class DurableParkTests: XCTestCase {
         let trace = Self.frameTrace(fixture)
         XCTAssertNil(controller.axManager.verifiedParkFrame(for: fixture.token.windowId))
         XCTAssertTrue(controller.axManager.pendingParkWindowIds.contains(fixture.token.windowId))
-        XCTAssertTrue(trace.contains("outcome=sls-parked/settled"), trace)
+        XCTAssertTrue(trace.contains("outcome=sls-park-intent/settled"), trace)
         XCTAssertTrue(trace.contains("outcome=ax-park-failed/contextUnavailable"), trace)
         XCTAssertTrue(trace.contains("target=\(TraceFormat.rect(fixture.parkFrame))"), trace)
         XCTAssertEqual(fastFrameReads, 0)
@@ -1872,7 +1872,7 @@ final class DurableParkTests: XCTestCase {
     private static func settledParkEventCount(windowId: Int, target: CGRect) -> Int {
         FrameApplyTrace.shared.dump().split(separator: "\n").filter {
             $0.contains("win=\(windowId) ")
-                && $0.contains("outcome=sls-parked/settled")
+                && $0.contains("outcome=sls-park-intent/settled")
                 && $0.contains("target=\(TraceFormat.rect(target))")
         }.count
     }

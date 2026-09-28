@@ -130,7 +130,7 @@ extension LayoutRefreshController {
         if !movablePlans.isEmpty {
             controller.axManager.applyPositionsViaSkyLight(
                 movablePlans.map { SkyLightPositionTarget(token: $0.entry.token, frame: $0.frame) },
-                allowInactive: true
+                allowInactive: true, tracingPark: true
             )
         }
 
@@ -141,7 +141,7 @@ extension LayoutRefreshController {
             FrameApplyTrace.recordEvent(
                 pid: plan.entry.pid,
                 windowId: plan.entry.windowId,
-                outcome: animationTick ? "outcome=sls-parked/animation" : "outcome=sls-parked/settled",
+                outcome: animationTick ? "outcome=sls-park-intent/animation" : "outcome=sls-park-intent/settled",
                 target: plan.frame
             )
         }
