@@ -61,12 +61,13 @@ final class WindowRuleReevaluationScheduler {
                 return
             }
             let targets = self.pendingWindowRuleReevaluationTargets
-            self.pendingWindowRuleReevaluationTargets.removeAll()
             let outcome = await self.reevaluate(controller, targets)
             guard !Task.isCancelled, self.pendingWindowRuleReevaluationGeneration == generation else { return }
             self.pendingWindowRuleReevaluationTask = nil
             if outcome.stale {
                 self.schedule(targets: targets)
+            } else {
+                self.pendingWindowRuleReevaluationTargets.removeAll()
             }
         }
     }
