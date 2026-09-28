@@ -334,14 +334,7 @@ extension AXParkFrameLedger {
             guard pending.retriesRemaining > 0,
                   pendingParkWindowIds.contains(windowId)
             else {
-                if FrameApplyTrace.shared.isActive {
-                    FrameApplyTrace.recordEvent(
-                        pid: result.pid, windowId: windowId,
-                        outcome: "outcome=ax-park-terminal/\(failureReason.traceDescription) remaining=\(pending.retriesRemaining)",
-                        target: result.targetFrame, observed: result.writeResult.observedFrame,
-                        requestId: result.requestId, traceRequestId: result.traceRequestId, lane: .park
-                    )
-                }
+                result.recordParkTerminalFailure(failureReason, retriesRemaining: pending.retriesRemaining)
                 continue
             }
 

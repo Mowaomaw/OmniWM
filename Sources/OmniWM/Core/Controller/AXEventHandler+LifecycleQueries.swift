@@ -63,9 +63,9 @@ extension AXEventHandler {
            case let .created(previousCreate) = previous.kind,
            create.retryExecution == previousCreate.retryExecution,
            create.fallbackToken == previousCreate.fallbackToken,
-           (create.fallbackAXRef == nil && previousCreate.fallbackAXRef == nil
-               || create.fallbackAXRef != nil && previousCreate.fallbackAXRef != nil
-               && CFEqual(create.fallbackAXRef?.element, previousCreate.fallbackAXRef?.element)),
+           create.fallbackAXRef == nil && previousCreate.fallbackAXRef == nil
+           || create.fallbackAXRef != nil && previousCreate.fallbackAXRef != nil
+           && CFEqual(create.fallbackAXRef?.element, previousCreate.fallbackAXRef?.element),
            create.placementOrigin == previousCreate.placementOrigin,
            (create.deferredSpaceQuery == nil) == (previousCreate.deferredSpaceQuery == nil)
         {

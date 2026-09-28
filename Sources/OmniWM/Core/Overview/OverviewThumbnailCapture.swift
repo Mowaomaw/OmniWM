@@ -119,14 +119,6 @@ final class OverviewThumbnailCapture {
         memoryPressure.cancel()
     }
 
-    func preview(for handle: WindowHandle) -> OverviewPreviewFrame? {
-        guard let cached = previewCache[handle], cached.token == handle.token else { return nil }
-        nextRequestedUse &+= 1
-        previewCache[handle]?.lastRequestedUse = nextRequestedUse
-        sources[ObjectIdentifier(handle)]?.lastRequestedUse = nextRequestedUse
-        return cached.frame
-    }
-
     var hasPendingFirstFrames: Bool {
         sources.values.contains { !$0.published && $0.status != .failed && $0.status != .completed }
     }
@@ -184,15 +176,6 @@ final class OverviewThumbnailCapture {
         if added { environment.onThumbnailCaptureStarted() }
         startQueuedSources()
         onReadinessChange()
-    }
-
-    func remove(token: WindowToken) {
-        let handles = Set(previewCache.compactMap { handle, cached in
-            cached.token == token || handle.token == token ? handle : nil
-        }).union(sources.values.compactMap { source in
-            source.request.token == token || source.request.handle.token == token ? source.request.handle : nil
-        })
-        for handle in handles { remove(handle: handle) }
     }
 
     func remove(handle: WindowHandle) {
@@ -361,6 +344,23 @@ final class OverviewThumbnailCapture {
 }
 
 extension OverviewThumbnailCapture {
+    func preview(for handle: WindowHandle) -> OverviewPreviewFrame? {
+        guard let cached = previewCache[handle], cached.token == handle.token else { return nil }
+        nextRequestedUse &+= 1
+        previewCache[handle]?.lastRequestedUse = nextRequestedUse
+        sources[ObjectIdentifier(handle)]?.lastRequestedUse = nextRequestedUse
+        return cached.frame
+    }
+
+    func remove(token: WindowToken) {
+        let handles = Set(previewCache.compactMap { handle, cached in
+            cached.token == token || handle.token == token ? handle : nil
+        }).union(sources.values.compactMap { source in
+            source.request.token == token || source.request.handle.token == token ? source.request.handle : nil
+        })
+        for handle in handles { remove(handle: handle) }
+    }
+
     private func trimRetainedPreviews() {
         guard cachedByteCount > maximumRetainedBytes else { return }
         var remaining = maximumRetainedBytes

@@ -122,9 +122,7 @@ extension AXEventHandler {
             )
         case let .focused(token, source, observationGeneration, callbackGeneration):
             let execution = AdmissionRetryExecution(
-                windowId: windowId,
-                generation: state.generation,
-                executionOwner: executionOwner
+                windowId: windowId, generation: state.generation, executionOwner: executionOwner
             )
             requestFocusedAdmissionFacts(
                 continuation: .init(
