@@ -293,6 +293,10 @@ final class WorkspaceSwipePresentation {
 }
 
 extension WorkspaceSwipePresentation {
+    func windowRemoved(_ token: WindowToken) {
+        preview?.remove(token: token)
+    }
+
     func previewSurface(_ controller: WMController) -> WorkspaceSwipePreview {
         if let preview { return preview }
         let preview = WorkspaceSwipePreview(ownedWindowRegistry: controller.ownedWindowRegistry)

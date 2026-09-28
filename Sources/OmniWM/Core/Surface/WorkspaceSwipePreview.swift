@@ -90,6 +90,11 @@ final class WorkspaceSwipePreview {
         stop()
     }
 
+    func remove(token: WindowToken) {
+        tokens = tokens.filter { $0.value != token && $0.key.token != token }
+        capture.remove(token: token)
+    }
+
     func prepare(source: [Item], destination: [Item], monitor: Monitor, workingFrame: CGRect? = nil) {
         reconcile(
             source: source,
