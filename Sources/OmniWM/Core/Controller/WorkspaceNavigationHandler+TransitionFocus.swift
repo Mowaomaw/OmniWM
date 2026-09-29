@@ -53,6 +53,8 @@ extension WorkspaceNavigationHandler {
         placementInvalidated: LayoutRefreshController.PostLayoutAction? = nil
     ) {
         guard let controller else { return }
+        // The tabbed-mode pill describes a column on the workspace being left
+        controller.niriLayoutHandler.columnModeToast.hide()
         let handoff = resolveWorkspaceTransitionFocusHandoff(for: targetWorkspaceId)
         if let monitor {
             controller.layoutRefreshController.stopScrollAnimation(for: monitor.displayId)

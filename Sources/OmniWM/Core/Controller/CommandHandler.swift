@@ -274,28 +274,6 @@ final class CommandHandler {
         }
     }
 
-    func toggleColumnTabbedInNiri() {
-        guard let controller else { return }
-        controller.niriLayoutHandler.withNiriWorkspaceContext { engine, wsId, motion, state, _, _, _, orientation in
-            if engine.toggleColumnTabbed(
-                in: wsId,
-                state: state,
-                motion: motion,
-                orientation: orientation
-            ) {
-                controller.workspaceManager.recordReconcileEvent(
-                    .layoutOperationPerformed(workspaceId: wsId, operation: .displayModeChanged, source: .command)
-                )
-                controller.layoutRefreshController.requestLayoutCommandRelayout(
-                    affectedWorkspaceIds: [wsId]
-                )
-                if engine.hasAnyWindowAnimationsRunning(in: wsId) {
-                    controller.layoutRefreshController.startScrollAnimation(for: wsId)
-                }
-            }
-        }
-    }
-
     private func currentLayoutType() -> LayoutType {
         guard let controller else { return .niri }
         guard let ws = controller.activeWorkspace() else { return .niri }
