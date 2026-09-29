@@ -123,9 +123,9 @@ struct SystemStatsView: View {
         return min(max(Double(used) / Double(total), 0), 1)
     }
 
-    nonisolated static func percentText(_ fraction: Double?) -> String {
+    nonisolated static func percentText(_ fraction: Double?, locale: Locale = .current) -> String {
         guard let fraction else { return "—" }
-        return fraction.formatted(.percent.precision(.fractionLength(0)))
+        return fraction.formatted(.percent.precision(.fractionLength(0)).locale(locale))
     }
 
     nonisolated static func uptimeText(_ uptime: TimeInterval) -> String {
