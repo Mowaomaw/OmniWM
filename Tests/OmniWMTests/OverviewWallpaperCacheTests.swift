@@ -17,6 +17,28 @@ final class OverviewWallpaperCacheTests: XCTestCase {
         XCTAssertEqual(OverviewWallpaperCache.bucketedPixelSize(9000), 4096)
     }
 
+    func testCapturedImageStateTracksCaptureFrameClearAndUnavailability() throws {
+        let image = try makeSolidImage(gray: 0.5)
+        let frame = CGRect(x: 0, y: 0, width: 400, height: 200)
+        var wallpaper: CGImage? = image
+        let cache = OverviewWallpaperCache()
+        cache.desktopImageURL = { _ in nil }
+        cache.captureWallpaper = { _ in wallpaper }
+
+        XCTAssertFalse(cache.hasCapturedImage(for: 999, maxPixelSize: 64, frame: frame))
+        XCTAssertNotNil(cache.image(for: 999, maxPixelSize: 64, frame: frame))
+        XCTAssertTrue(cache.hasCapturedImage(for: 999, maxPixelSize: 64, frame: frame))
+        XCTAssertFalse(cache.hasCapturedImage(for: 999, maxPixelSize: 512, frame: frame))
+        XCTAssertFalse(cache.hasCapturedImage(for: 999, maxPixelSize: 64, frame: frame.offsetBy(dx: 400, dy: 0)))
+
+        cache.clear()
+        XCTAssertFalse(cache.hasCapturedImage(for: 999, maxPixelSize: 64, frame: frame))
+
+        wallpaper = nil
+        XCTAssertNil(cache.image(for: 999, maxPixelSize: 64, frame: frame))
+        XCTAssertFalse(cache.hasCapturedImage(for: 999, maxPixelSize: 64, frame: frame))
+    }
+
     func testRenderedColoursStayDisplaySpecificWithSharedFallbackURL() throws {
         let url = try makeImageFile(width: 400, height: 200)
         defer { try? FileManager.default.removeItem(at: url) }

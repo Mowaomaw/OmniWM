@@ -95,6 +95,7 @@ final class MinimizedWindowFrameSuppressionTests: XCTestCase {
                 windows: windows,
                 suppression: delivery.retryRaiseSuppression,
                 job: RunLoopJob(),
+                awaitingSubmittedFocus: {},
                 raiseWindow: { _ in
                     raises += 1
                     return true

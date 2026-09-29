@@ -14,10 +14,19 @@ final class WorkspaceSwipeBackdrop {
     }
 
     func image(for monitor: Monitor) -> CGImage? {
-        wallpaperCache.image(
-            for: monitor.displayId,
-            maxPixelSize: OverviewWallpaperCache.bucketedPixelSize(max(monitor.frame.width, monitor.frame.height)),
-            frame: ScreenCoordinateSpace.toWindowServer(rect: monitor.frame)
+        let key = cacheKey(for: monitor)
+        return wallpaperCache.image(for: monitor.displayId, maxPixelSize: key.maxPixelSize, frame: key.frame)
+    }
+
+    func hasImage(for monitor: Monitor) -> Bool {
+        let key = cacheKey(for: monitor)
+        return wallpaperCache.hasCapturedImage(for: monitor.displayId, maxPixelSize: key.maxPixelSize, frame: key.frame)
+    }
+
+    private func cacheKey(for monitor: Monitor) -> (maxPixelSize: Int, frame: CGRect) {
+        (
+            OverviewWallpaperCache.bucketedPixelSize(max(monitor.frame.width, monitor.frame.height)),
+            ScreenCoordinateSpace.toWindowServer(rect: monitor.frame)
         )
     }
 

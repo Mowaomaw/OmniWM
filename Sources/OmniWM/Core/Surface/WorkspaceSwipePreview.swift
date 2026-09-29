@@ -69,7 +69,11 @@ final class WorkspaceSwipePreview {
         ownedWindowRegistry: OwnedWindowRegistry,
         previewCapture: OverviewThumbnailCapture? = nil,
         backdrop: WorkspaceSwipeBackdrop = WorkspaceSwipeBackdrop(),
-        hasCaptureAccess: @escaping @MainActor () -> Bool = { CGPreflightScreenCaptureAccess() }
+        hasCaptureAccess: @escaping @MainActor () -> Bool = {
+            MainThreadAXSpanTrace.measure(.screenCapturePreflight) {
+                CGPreflightScreenCaptureAccess()
+            } succeeded: { $0 }
+        }
     ) {
         self.ownedWindowRegistry = ownedWindowRegistry
         self.hasCaptureAccess = hasCaptureAccess
@@ -116,7 +120,7 @@ final class WorkspaceSwipePreview {
         isWarming = false
         let frame = workingFrame ?? monitor.visibleFrame
         let items = (source + destination).filter { $0.frame.intersects(frame) }
-        if hasCaptureAccess() { _ = backdrop.image(for: monitor) }
+        if !backdrop.hasImage(for: monitor), hasCaptureAccess() { _ = backdrop.image(for: monitor) }
         let represented = Set(items.map(\.handle))
         for item in items where tokens[item.handle] != nil && tokens[item.handle] != item.handle.token {
             capture.remove(handle: item.handle)

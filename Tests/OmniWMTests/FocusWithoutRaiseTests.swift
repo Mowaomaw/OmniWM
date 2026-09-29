@@ -10,6 +10,7 @@ final class FocusWithoutRaiseTests: XCTestCase {
     private enum FocusOperation: Equatable {
         case activate(pid_t)
         case focus(WindowToken)
+        case submittedFocus(WindowToken)
         case deactivate(WindowToken)
         case activateSameApp(WindowToken)
         case raise
@@ -435,7 +436,7 @@ final class FocusWithoutRaiseTests: XCTestCase {
             let request = try XCTUnwrap(fixture.controller.focusWindow(
                 target, raisesWindow: false, defersRetryRaise: true
             ))
-            XCTAssertEqual(fixture.recorder.operations, [.activate(target.pid), .focus(target)])
+            XCTAssertEqual(fixture.recorder.operations, [.submittedFocus(target)])
             XCTAssertEqual(fixture.recorder.queuedRaises.count, sameApp ? 1 : 0)
             fixture.recorder.operations.removeAll()
             var probes = 0
@@ -447,7 +448,7 @@ final class FocusWithoutRaiseTests: XCTestCase {
             fixture.controller.axEventHandler.handleIntentExpired(request.requestId)
             fixture.controller.axEventHandler.handleIntentExpired(request.requestId)
 
-            XCTAssertEqual(fixture.recorder.operations, sameApp ? [] : [.activate(target.pid), .focus(target)])
+            XCTAssertEqual(fixture.recorder.operations, sameApp ? [] : [.submittedFocus(target)])
             XCTAssertEqual(fixture.recorder.queuedRaises.count, 1)
             XCTAssertEqual(probes, 0)
             XCTAssertEqual(fixture.controller.workspaceManager.nativeManagedFocusToken, source)
@@ -460,7 +461,7 @@ final class FocusWithoutRaiseTests: XCTestCase {
 
             fixture.controller.axEventHandler.handleIntentExpired(request.requestId)
 
-            XCTAssertEqual(fixture.recorder.operations, [.activate(target.pid), .focus(target)])
+            XCTAssertEqual(fixture.recorder.operations, [.submittedFocus(target)])
             XCTAssertEqual(fixture.recorder.queuedRaises.count, 2)
             XCTAssertEqual(probes, 1)
         }
@@ -606,14 +607,14 @@ final class FocusWithoutRaiseTests: XCTestCase {
                 fixture.recorder.operations.removeAll()
                 fixture.controller.axEventHandler.handleIntentExpired(request.requestId)
             }
-            XCTAssertEqual(fixture.recorder.operations, [.activate(target.pid), .focus(target)])
+            XCTAssertEqual(fixture.recorder.operations, [.submittedFocus(target)])
             XCTAssertEqual(probes, 1)
             XCTAssertEqual(fixture.controller.intentLedger.activeManagedRequest?.requestId, request.requestId)
             XCTAssertTrue(fixture.recorder.queuedRaises.isEmpty)
         }
     }
 
-    func testSkippingInitialRaisePreservesActivationExactFocusAndFullRetry() throws {
+    func testSkippingInitialRaiseFocusesExactWindowWithoutActivationAndFullRetry() throws {
         for sameApp in [false, true] {
             let fixture = try makeFixture()
             let source = addWindow(
@@ -633,7 +634,7 @@ final class FocusWithoutRaiseTests: XCTestCase {
 
             let request = try XCTUnwrap(fixture.controller.focusWindow(target, raisesWindow: false))
 
-            XCTAssertEqual(fixture.recorder.operations, [.activate(target.pid), .focus(target)])
+            XCTAssertEqual(fixture.recorder.operations, [.submittedFocus(target)])
             XCTAssertEqual(request.origin, .keyboardOrProgrammatic)
             XCTAssertEqual(request.phase, .awaitingConfirmation)
             XCTAssertEqual(fixture.controller.workspaceManager.pendingFocusedToken, target)
@@ -1501,6 +1502,9 @@ final class FocusWithoutRaiseTests: XCTestCase {
                 activateApp: { recorder.operations.append(.activate($0)) },
                 focusSpecificWindow: { pid, windowId, _ in
                     recorder.operations.append(.focus(WindowToken(pid: pid, windowId: Int(windowId))))
+                },
+                submitFocusSpecificWindow: { pid, windowId, _ in
+                    recorder.operations.append(.submittedFocus(WindowToken(pid: pid, windowId: Int(windowId))))
                 },
                 deactivateSameAppWindow: { pid, windowId in
                     recorder.operations.append(.deactivate(WindowToken(pid: pid, windowId: Int(windowId))))

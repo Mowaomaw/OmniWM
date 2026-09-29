@@ -166,7 +166,8 @@ final class CommandPaletteFocusSession {
             return false
         }
 
-        if let focusedWindow = target.focusedWindow,
+        WindowFocusDispatcher.shared.drain()
+        if target.focusedWindow != nil,
            let windowId = target.focusedWindowID
         {
             if let wmController {
@@ -177,8 +178,7 @@ final class CommandPaletteFocusSession {
 
             focusWindow(
                 pid: target.app.processIdentifier,
-                windowId: UInt32(windowId),
-                windowRef: focusedWindow
+                windowId: UInt32(windowId)
             )
         }
 

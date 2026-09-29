@@ -112,7 +112,7 @@ final class MainThreadAXSpanTraceTests: XCTestCase {
         let minimum = MainThreadAXSpanTrace.windowServerMinimumNanoseconds
         let operations: [MainThreadAXSpanTrace.Operation] = [
             .windowServerBounds, .windowServerQuery, .windowServerBatchQuery,
-            .windowServerVisibleQuery, .windowServerCommit
+            .windowServerVisibleQuery, .windowServerCommit, .borderLiveBounds
         ]
         for operation in operations {
             for (windowId, duration) in [(1, minimum - 1), (2, minimum)] {

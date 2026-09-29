@@ -50,6 +50,11 @@ final class OverviewWallpaperCache {
         return fileImage(for: displayId, maxPixelSize: maxPixelSize)
     }
 
+    func hasCapturedImage(for displayId: CGDirectDisplayID, maxPixelSize: Int, frame: CGRect) -> Bool {
+        guard let capture = capturesByDisplay[displayId], capture.frame == frame else { return false }
+        return capture.thumbnails[maxPixelSize] != nil
+    }
+
     private func capturedImage(for displayId: CGDirectDisplayID, frame: CGRect, maxPixelSize: Int) -> CGImage? {
         if capturesByDisplay[displayId]?.frame != frame {
             capturesByDisplay[displayId] = Capture(frame: frame)

@@ -48,6 +48,7 @@ final class HiddenBarLifecyclePolicyTests: XCTestCase {
         hiddenBar.setup()
 
         XCTAssertFalse(hiddenBar.observation.hasScreenParametersObserverForTests)
+        XCTAssertFalse(hiddenBar.observation.hasRunningApplicationsObservationForTests)
         XCTAssertFalse(hiddenBar.isItemServiceRunningForTests)
         hiddenBar.cleanup()
     }
@@ -58,14 +59,17 @@ final class HiddenBarLifecyclePolicyTests: XCTestCase {
         let hiddenBar = controller.hiddenBarController
         hiddenBar.setup()
         XCTAssertTrue(hiddenBar.observation.hasScreenParametersObserverForTests)
+        XCTAssertTrue(hiddenBar.observation.hasRunningApplicationsObservationForTests)
         XCTAssertTrue(hiddenBar.isItemServiceRunningForTests)
 
         hiddenBar.setEnabled(false)
         XCTAssertFalse(hiddenBar.observation.hasScreenParametersObserverForTests)
+        XCTAssertFalse(hiddenBar.observation.hasRunningApplicationsObservationForTests)
         XCTAssertFalse(hiddenBar.isItemServiceRunningForTests)
 
         hiddenBar.setEnabled(true)
         XCTAssertTrue(hiddenBar.observation.hasScreenParametersObserverForTests)
+        XCTAssertTrue(hiddenBar.observation.hasRunningApplicationsObservationForTests)
         XCTAssertTrue(hiddenBar.isItemServiceRunningForTests)
         hiddenBar.cleanup()
     }
@@ -124,6 +128,74 @@ final class HiddenBarLifecyclePolicyTests: XCTestCase {
         }
 
         XCTAssertEqual(hiddenBar.performance.end()?.refreshEvents, 0)
+    }
+
+    @MainActor
+    func testApplicationActivationSyncsFallbackIconWithoutRefreshingItems() async {
+        let controller = WindowAdmissionTestSupport.controller(prefix: "HiddenBarActivationRefresh")
+        let hiddenBar = controller.hiddenBarController
+        hiddenBar.setup()
+        hiddenBar.performance.begin()
+
+        hiddenBar.observation.enqueueApplicationActivatedForTests()
+        for _ in 0 ..< 8 {
+            await Task.yield()
+        }
+
+        XCTAssertEqual(hiddenBar.performance.end()?.refreshEvents, 0)
+        hiddenBar.cleanup()
+    }
+
+    @MainActor
+    func testRunningApplicationsChangesCoalesceIntoOneRefreshPerTurn() async {
+        let controller = WindowAdmissionTestSupport.controller(prefix: "HiddenBarRunningAppsCoalesce")
+        let hiddenBar = controller.hiddenBarController
+        var refreshes = 0
+        hiddenBar.observation.onRunningApplicationsRefreshForTests = { refreshes += 1 }
+
+        for _ in 0 ..< 3 {
+            hiddenBar.observation.enqueueRunningApplicationsChangedForTests()
+        }
+        let refreshedOnce = await waitUntil { refreshes == 1 }
+        for _ in 0 ..< 8 {
+            await Task.yield()
+        }
+        XCTAssertTrue(refreshedOnce)
+        XCTAssertEqual(refreshes, 1)
+
+        hiddenBar.observation.enqueueRunningApplicationsChangedForTests()
+        let refreshedAgain = await waitUntil { refreshes == 2 }
+        XCTAssertTrue(refreshedAgain)
+        hiddenBar.cleanup()
+    }
+
+    @MainActor
+    func testCleanupDropsQueuedRunningApplicationsRefreshWithoutBlockingLaterOnes() async {
+        let controller = WindowAdmissionTestSupport.controller(prefix: "HiddenBarRunningAppsCleanup")
+        let hiddenBar = controller.hiddenBarController
+        var refreshes = 0
+        hiddenBar.observation.onRunningApplicationsRefreshForTests = { refreshes += 1 }
+        hiddenBar.setup()
+
+        hiddenBar.observation.enqueueRunningApplicationsChangedForTests()
+        await Task.yield()
+        hiddenBar.cleanup()
+        for _ in 0 ..< 8 {
+            await Task.yield()
+        }
+        XCTAssertEqual(refreshes, 0)
+
+        hiddenBar.setup()
+        hiddenBar.observation.enqueueRunningApplicationsChangedForTests()
+        let refreshed = await waitUntil { refreshes >= 1 }
+        XCTAssertTrue(refreshed)
+        hiddenBar.cleanup()
+    }
+
+    func testRunningAppsSnapshotReadsNamesOnlyWhenRequested() {
+        let snapshot = HiddenBarRunningAppsSnapshot.current()
+        XCTAssertFalse(snapshot.candidates.isEmpty)
+        XCTAssertTrue(snapshot.candidates.allSatisfy { $0.name == $0.bundleID })
     }
 
     func testLaunchCaptureStaysAllowedDuringAnotherAppsReveal() {

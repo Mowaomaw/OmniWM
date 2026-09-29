@@ -33,6 +33,11 @@ enum MainThreadAXSpanTrace {
         case windowServerBatchQuery = "ws-window-batch-query"
         case windowServerVisibleQuery = "ws-visible-window-query"
         case windowServerCommit = "ws-transaction-commit"
+        case screenCapturePreflight = "screen-capture-preflight"
+        case borderLiveBounds = "border-live-bounds"
+        case focusProbe = "focus-probe"
+        case hiddenBarActivation = "hidden-bar-activation"
+        case hiddenBarRunningApps = "hidden-bar-running-apps"
 
         var minimumNanoseconds: UInt64 {
             switch self {
@@ -40,7 +45,8 @@ enum MainThreadAXSpanTrace {
                  .windowServerQuery,
                  .windowServerBatchQuery,
                  .windowServerVisibleQuery,
-                 .windowServerCommit:
+                 .windowServerCommit,
+                 .borderLiveBounds:
                 MainThreadAXSpanTrace.windowServerMinimumNanoseconds
             default:
                 0

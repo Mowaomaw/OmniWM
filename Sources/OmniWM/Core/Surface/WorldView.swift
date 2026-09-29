@@ -214,7 +214,9 @@ struct WorldView {
             return liveBoundsProvider(windowId)
         }
         guard windowId > 0,
-              let bounds = SkyLight.shared.getWindowBounds(UInt32(windowId)),
+              let bounds = MainThreadAXSpanTrace.measure(.borderLiveBounds, windowId: windowId, {
+                  SkyLight.shared.getWindowBounds(UInt32(windowId))
+              }, succeeded: { $0 != nil }),
               bounds.width > 0, bounds.height > 0
         else {
             return nil

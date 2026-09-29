@@ -153,6 +153,84 @@ final class WorkspaceSwipePreviewTests: XCTestCase {
         XCTAssertEqual(captures, 2)
     }
 
+    func testCachedBackdropSkipsCaptureAccessCheckUntilItIsCleared() throws {
+        let image = try makeWallpaperImage()
+        var captures = 0
+        var accessChecks = 0
+        let cache = OverviewWallpaperCache()
+        cache.desktopImageURL = { _ in nil }
+        cache.captureWallpaper = { _ in
+            captures += 1
+            return image
+        }
+        let preview = WorkspaceSwipePreview(
+            ownedWindowRegistry: OwnedWindowRegistry(),
+            backdrop: WorkspaceSwipeBackdrop(wallpaperCache: cache),
+            hasCaptureAccess: {
+                accessChecks += 1
+                return true
+            }
+        )
+        defer { preview.stop() }
+
+        for _ in 0 ..< 3 {
+            preview.warm(source: [], destination: [], monitor: monitor)
+        }
+        XCTAssertEqual(accessChecks, 1)
+        XCTAssertEqual(captures, 1)
+
+        XCTAssertTrue(preview.begin(source: [], destination: [], monitor: monitor))
+        XCTAssertEqual(accessChecks, 2)
+        preview.stop()
+        preview.warm(source: [], destination: [], monitor: monitor)
+        XCTAssertEqual(accessChecks, 3)
+        XCTAssertEqual(captures, 2)
+    }
+
+    func testDeniedCaptureAccessIsCheckedOnEveryWarmAndNeverCaptures() {
+        var captures = 0
+        var accessChecks = 0
+        let cache = OverviewWallpaperCache()
+        cache.desktopImageURL = { _ in nil }
+        cache.captureWallpaper = { _ in
+            captures += 1
+            return nil
+        }
+        let preview = WorkspaceSwipePreview(
+            ownedWindowRegistry: OwnedWindowRegistry(),
+            backdrop: WorkspaceSwipeBackdrop(wallpaperCache: cache),
+            hasCaptureAccess: {
+                accessChecks += 1
+                return false
+            }
+        )
+        defer { preview.stop() }
+
+        for _ in 0 ..< 3 {
+            preview.warm(source: [], destination: [], monitor: monitor)
+        }
+        XCTAssertEqual(accessChecks, 3)
+        XCTAssertEqual(captures, 0)
+    }
+
+    func testRevokedAccessStillBlocksOverlayAfterCachedWarm() throws {
+        let access = CaptureAccess()
+        let preview = try WorkspaceSwipePreview(
+            ownedWindowRegistry: OwnedWindowRegistry(),
+            backdrop: makeBackdrop(),
+            hasCaptureAccess: { access.check() }
+        )
+        defer { preview.stop() }
+
+        preview.warm(source: [], destination: [], monitor: monitor)
+        access.granted = false
+        preview.warm(source: [], destination: [], monitor: monitor)
+        XCTAssertEqual(access.checks, 1)
+        XCTAssertFalse(preview.begin(source: [], destination: [], monitor: monitor))
+        XCTAssertFalse(preview.isVisible)
+        XCTAssertEqual(access.checks, 2)
+    }
+
     private func makeBackdrop() throws -> WorkspaceSwipeBackdrop {
         let cache = OverviewWallpaperCache()
         cache.desktopImageURL = { _ in nil }
@@ -194,5 +272,15 @@ final class WorkspaceSwipePreviewTests: XCTestCase {
         capture.onPreview = { _, preview in if preview === frame { published.fulfill() } }
         stream.output.offer(frame)
         await fulfillment(of: [published], timeout: 1)
+    }
+
+    private final class CaptureAccess {
+        var granted = true
+        var checks = 0
+
+        func check() -> Bool {
+            checks += 1
+            return granted
+        }
     }
 }

@@ -29,7 +29,10 @@ extension WMController {
         {
             dispatchRetryRaise(for: request, refronting: false)
         }
-        if intentLedger.activeManagedRequest(requestId: request.requestId)?.phase == .awaitingConfirmation {
+        windowFocusOperations.afterSubmittedFocus { [weak self] in
+            guard let self,
+                  intentLedger.activeManagedRequest(requestId: request.requestId)?.phase == .awaitingConfirmation
+            else { return }
             axEventHandler.probeFocusedWindowAfterFronting(
                 expectedToken: request.token,
                 workspaceId: request.workspaceId

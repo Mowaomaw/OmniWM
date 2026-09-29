@@ -68,7 +68,7 @@ final class HiddenBarController {
 
     func detectMenuBarApps() async -> [DetectedMenuBarApp] {
         guard settings.hiddenBar.enabled, didSetup, itemService.isRunning else { return [] }
-        let snapshot = HiddenBarRunningAppsSnapshot.current()
+        let snapshot = HiddenBarRunningAppsSnapshot.current(includingNames: true)
         let apps = await itemService.scan(
             candidates: snapshot.candidates,
             ownBundleID: Bundle.main.bundleIdentifier
