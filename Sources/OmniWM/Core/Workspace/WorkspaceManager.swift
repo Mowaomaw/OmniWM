@@ -377,6 +377,7 @@ extension WorkspaceManager {
         let clamped = max(0, min(64, size))
         guard clamped != gaps else { return }
         gaps = clamped
+        invalidateNiriCachedPrimarySpans()
         noteInvalidation(workspaceId: nil, domains: [.workspace, .layout])
         onGapsChanged?()
     }

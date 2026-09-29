@@ -81,6 +81,23 @@ final class NiriEdgeGapsTests: XCTestCase {
         XCTAssertEqual(frames[1].minX - frames[0].maxX, 10, accuracy: 0.5)
     }
 
+    func testChangingGlobalInnerGapResizesLaidOutColumns() throws {
+        let settings = makeSettingsStore()
+        settings.niri.edgeGaps = false
+        let (controller, workspaceId) = try makeNiriController(settings: settings)
+        let tokens = [
+            addWindow(pid: 101, windowId: 201, to: workspaceId, controller: controller),
+            addWindow(pid: 102, windowId: 202, to: workspaceId, controller: controller)
+        ]
+        try layout(workspaceId, controller: controller, tokens: tokens)
+
+        controller.setGapSize(20)
+        let frames = try layout(workspaceId, controller: controller, tokens: tokens).sorted { $0.minX < $1.minX }
+
+        XCTAssertEqual(frames[1].maxX - frames[0].minX, workingFrame.width, accuracy: 0.5)
+        XCTAssertEqual(frames[1].minX - frames[0].maxX, 20, accuracy: 0.5)
+    }
+
     func testDisabledEdgeGapsKeepCustomSingleWindowInsideWorkingFrame() throws {
         let settings = makeSettingsStore()
         settings.niri.edgeGaps = false
@@ -89,6 +106,45 @@ final class NiriEdgeGapsTests: XCTestCase {
         let token = addWindow(pid: 101, windowId: 201, to: workspaceId, controller: controller)
 
         let frame = try XCTUnwrap(layout(workspaceId, controller: controller, tokens: [token]).first)
+
+        XCTAssertEqual(frame, workingFrame)
+    }
+
+    func testDisabledEdgeGapsKeepMouseResizedColumnInsideWorkingFrame() throws {
+        let settings = makeSettingsStore()
+        settings.niri.edgeGaps = false
+        let (controller, workspaceId) = try makeNiriController(settings: settings)
+        let tokens = [
+            addWindow(pid: 101, windowId: 201, to: workspaceId, controller: controller),
+            addWindow(pid: 102, windowId: 202, to: workspaceId, controller: controller)
+        ]
+        try layout(workspaceId, controller: controller, tokens: tokens)
+        let engine = try XCTUnwrap(controller.niriEngine)
+        let node = try XCTUnwrap(engine.findNode(for: tokens[0], in: workspaceId))
+        let geometry = controller.niriInteractionGeometry(for: makeMonitor())
+
+        XCTAssertTrue(engine.interactiveResizeBegin(
+            windowId: node.id,
+            edges: .right,
+            startLocation: .zero,
+            in: workspaceId,
+            orientation: .horizontal,
+            viewOffset: controller.workspaceManager.niriViewportState(for: workspaceId).viewOffset
+        ))
+        XCTAssertTrue(engine.interactiveResizeUpdate(
+            currentLocation: CGPoint(x: workingFrame.width * 2, y: 0),
+            monitorFrame: geometry.workingFrame,
+            gaps: LayoutGaps(horizontal: geometry.innerGap, vertical: geometry.innerGap)
+        ))
+        controller.workspaceManager.withNiriViewportState(for: workspaceId) { state in
+            engine.interactiveResizeEnd(
+                motion: .disabled,
+                state: &state,
+                workingFrame: geometry.workingFrame,
+                gaps: geometry.innerGap
+            )
+        }
+        let frame = try XCTUnwrap(layout(workspaceId, controller: controller, tokens: [tokens[0]]).first)
 
         XCTAssertEqual(frame, workingFrame)
     }

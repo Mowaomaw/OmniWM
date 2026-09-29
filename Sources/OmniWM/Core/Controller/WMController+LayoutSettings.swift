@@ -30,11 +30,7 @@ extension WMController {
     }
 
     func updateMonitorGapSettings() {
-        if let niriEngine {
-            workspaceManager.withEngineMutationScope(label: "gap_settings_changed") {
-                niriEngine.invalidateCachedPrimarySpans()
-            }
-        }
+        workspaceManager.invalidateNiriCachedPrimarySpans()
         workspaceManager.invalidateAllLayouts()
         layoutRefreshController.requestRelayout(reason: .monitorSettingsChanged)
         publishDisplayChanged()
