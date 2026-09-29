@@ -238,7 +238,7 @@ The per-monitor workspace bar. Per-monitor exceptions live in [`monitorBarOverri
 | `notchActiveZoneWidth` | float | `180.0` | Width in points of the active zone around the notch. |
 | `systemStatsButton` | boolean | `false` | Adds a system stats button to the bar. |
 | `deduplicateAppIcons` | boolean | `false` | Collapses repeated icons of the same app within a pill. |
-| `hideEmptyWorkspaces` | boolean | `false` | Hides pills for workspaces with no windows. |
+| `hideEmptyWorkspaces` | boolean | `false` | Hides inactive empty workspaces in the bar and Overview; next/previous navigation skips them. |
 | `excludedBundleIDs` | string array | `[]` | Bundle IDs whose windows never contribute icons to the bar. |
 | `iconOverrides` | table | `{}` | Bundle ID → custom icon source (see below). |
 | `reserveLayoutSpace` | boolean | `false` | Reserves tiled layout space using the configured bar height. |

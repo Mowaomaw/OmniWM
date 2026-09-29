@@ -67,6 +67,7 @@ extension WMController {
         workspaceManager.invalidateAllLayouts()
         layoutRefreshController.requestRelayout(reason: .monitorSettingsChanged)
         surfaceReconciler.noteWorldChanged()
+        windowActionHandlerStorage?.refreshOverviewProjection(affectedWorkspaceIds: [])
         syncWorkspaceBarRevealMonitor()
         hiddenBarController.dismissPanel()
     }
