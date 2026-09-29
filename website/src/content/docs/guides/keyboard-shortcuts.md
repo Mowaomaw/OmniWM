@@ -66,6 +66,17 @@ Confirm the binding and any registration warning in **Settings > Hotkeys**, then
 | Toggle Overview | `Option + Shift + O` | `Shared` |
 | Toggle System Stats | `Unassigned` | `Shared` |
 
+### Window marks in the Command Palette
+
+These shortcuts are available while the Command Palette is open in **Windows** mode. They act on the selected window row and are shown beside the matching Palette actions.
+
+| Action | Shortcut |
+|--------|----------|
+| Mark selected window | `Control + Option + M` |
+| Remove a mark from the selected window | `Control + Option + R` |
+
+They are Palette-local shortcuts, not separate actions in **Settings > Hotkeys**. Outside the Palette, the same key combinations retain their configured global behavior.
+
 ## Move Window
 
 | Action | Default Shortcut | Layout |

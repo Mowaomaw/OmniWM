@@ -84,7 +84,10 @@ struct CommandPaletteView: View {
         if controller.selectedMode == .windows {
             HStack(spacing: 10) {
                 Button(action: { controller.setMarkOnSelectedWindow() }) {
-                    Label("Mark selected window…", systemImage: "tag")
+                    HStack(spacing: 6) {
+                        Label("Mark selected window…", systemImage: "tag")
+                        CommandPaletteShortcutBadge(text: CommandPalettePresentation.setMarkShortcut)
+                    }
                 }
                 .accessibilityHint(
                     "Marks the selected window row. Shortcut Control-Option-M."
@@ -92,7 +95,10 @@ struct CommandPaletteView: View {
                 .help("Mark the selected window (Control-Option-M)")
 
                 Button(action: { controller.removeMarkFromSelectedWindow() }) {
-                    Label("Remove mark…", systemImage: "tag.slash")
+                    HStack(spacing: 6) {
+                        Label("Remove mark…", systemImage: "tag.slash")
+                        CommandPaletteShortcutBadge(text: CommandPalettePresentation.removeMarkShortcut)
+                    }
                 }
                 .accessibilityHint(
                     "Choose a mark to remove from the selected window. Shortcut Control-Option-R."

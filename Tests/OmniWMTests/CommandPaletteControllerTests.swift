@@ -167,6 +167,39 @@ final class CommandPaletteControllerTests: XCTestCase {
         )
     }
 
+    func testMarkActionShortcutsStayVisibleAndMapToPaletteActions() {
+        let markModifiers: NSEvent.ModifierFlags = [.control, .option]
+
+        XCTAssertEqual(CommandPalettePresentation.setMarkShortcut, "⌃⌥M")
+        XCTAssertEqual(CommandPalettePresentation.removeMarkShortcut, "⌃⌥R")
+        XCTAssertEqual(
+            CommandPalettePresentation.markAction(
+                forKeyCode: UInt16(kVK_ANSI_M),
+                relevantModifiers: markModifiers
+            ),
+            .set
+        )
+        XCTAssertEqual(
+            CommandPalettePresentation.markAction(
+                forKeyCode: UInt16(kVK_ANSI_R),
+                relevantModifiers: markModifiers
+            ),
+            .remove
+        )
+        XCTAssertNil(
+            CommandPalettePresentation.markAction(
+                forKeyCode: UInt16(kVK_ANSI_M),
+                relevantModifiers: .control
+            )
+        )
+        XCTAssertNil(
+            CommandPalettePresentation.markAction(
+                forKeyCode: UInt16(kVK_ANSI_X),
+                relevantModifiers: markModifiers
+            )
+        )
+    }
+
     func testCompactModePickerLeaves326PointSearchField() {
         XCTAssertEqual(CommandPaletteModePicker.compactWidth, 304)
         XCTAssertEqual(CommandPalettePanel.width - CommandPaletteModePicker.compactWidth - 10, 326)
