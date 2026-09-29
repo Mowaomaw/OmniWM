@@ -6,8 +6,6 @@ import Foundation
 import QuartzCore
 
 extension NiriLayoutEngine {
-    /// `preservesCenteredView`: layout passes keep any view centered on the active column (explicit Center Column);
-    /// real removals only keep it while an adjacent pair still overflows (`.onOverflow`).
     func correctViewportAfterColumnRemoval(
         context: NiriInteractionContext,
         state: inout ViewportState,
@@ -104,7 +102,6 @@ extension NiriLayoutEngine {
         ))
         guard abs(clampedStart - viewport.viewStart) > 0.5 else { return false }
 
-        // Keep a centered active column overscrolling a content edge when the caller or an overflowing pair justifies it
         if preservesCenteredView || (centerMode == .onOverflow && adjacentPairOverflows(viewport, context: context)),
            isCenteredOnActiveColumn(viewport, context: context, state: state)
         {

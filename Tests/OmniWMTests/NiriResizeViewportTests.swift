@@ -277,7 +277,6 @@ final class NiriResizeViewportTests: XCTestCase {
         )
         let centeredOffset = -(fixture.workingFrame.width - fixture.columnSpan) / 2
 
-        // Centering an edge column overscrolls the content edge and must not be clamped back
         for index in [0, fixture.columns.count - 1] {
             fixture.state.activeColumnIndex = index
             fixture.state.selectedNodeId = fixture.columns[index].windowNodes.first?.id
@@ -296,7 +295,6 @@ final class NiriResizeViewportTests: XCTestCase {
             column.width = .fixed(span)
             column.cachedWidth = span
         }
-        // Middle column of a former [400, 600, 700] strip, still auto-centered after the 700 column was removed
         fixture.state.activeColumnIndex = 1
         fixture.state.jumpOffset(to: -200)
 
