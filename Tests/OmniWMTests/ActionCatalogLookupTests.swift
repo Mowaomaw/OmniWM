@@ -17,7 +17,6 @@ final class ActionCatalogLookupTests: XCTestCase {
 
     func testUncataloguedCommandsKeepDisplayFallbacks() {
         let commands: [HotkeyCommand] = [
-            .workspace(.switchTo(9999)),
             .column(.moveToIndex(123)),
             .sizing(.setContainerPrimarySpan(.setFixed(3.14159)))
         ]

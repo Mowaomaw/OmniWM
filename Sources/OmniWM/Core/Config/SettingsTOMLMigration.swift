@@ -59,7 +59,8 @@ enum SettingsTOMLMigration {
     static func migrate(_ raw: inout [String: TOMLNode], from version: Int) throws -> SettingsMigrationReport {
         let versionOneReport = version == 0 ? try migrateVersionZero(&raw) : nil
         let versionTwoAddedHotkeyIDs = version <= 1 ? migrateVersionOne(&raw) : []
-        let versionThreeDefaultedPaths = try migrateVersionTwo(&raw)
+        let versionThreeDefaultedPaths = version <= 2 ? try migrateVersionTwo(&raw) : []
+        raw["schemaVersion"] = .integer(4)
         canonicalizeMigratedHotkeys(in: &raw)
         return SettingsMigrationReport(
             fromVersion: version,

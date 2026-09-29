@@ -730,6 +730,8 @@ Settings > Hotkeys lists all actions that can be assigned a shortcut, including 
 | Move Column to Workspace Up | `Control + Option + Shift + Page Up` | `Niri` |
 | Move Column to Workspace Down | `Control + Option + Shift + Page Down` | `Niri` |
 
+When you create workspace 10 or higher, Settings > Hotkeys adds its Switch, Move, and Move Column actions as `Unassigned`.
+
 #### Focus
 
 | Action | Default Shortcut | Layout |

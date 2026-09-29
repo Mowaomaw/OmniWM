@@ -23,6 +23,10 @@ extension WMController {
                 _ = commandHandler.handleHotkeyInvocation(invocation)
             }
         }
+        settings.onWorkspaceHotkeysChanged = { [weak self] in
+            guard let self else { return }
+            updateHotkeyBindings(settings.hotkeyBindings)
+        }
     }
 
     func configureSurfaceCallbacks() {
