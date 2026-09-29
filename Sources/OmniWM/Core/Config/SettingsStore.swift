@@ -37,6 +37,7 @@ final class SettingsStore {
     var onConfigNoticeChanged: (@MainActor () -> Void)?
     var onTrackpadGestureAvailabilityChanged: (@MainActor (Bool) -> Void)?
     var onWorkspaceHotkeysChanged: (@MainActor () -> Void)?
+    var liveWorkspaceNamesForHotkeys: (@MainActor () -> [String])?
     private(set) var configNotice: SettingsConfigNotice?
 
     var hotkeysEnabled = SettingsStore.defaultExport.hotkeysEnabled {
@@ -489,11 +490,16 @@ extension SettingsStore {
     private func withWorkspaceNumberHotkeys(_ bindings: [HotkeyBinding]) -> [HotkeyBinding] {
         HotkeyBindingRegistry.reconcilingWorkspaceNumberBindings(
             bindings,
-            workspaceNames: workspaces.configuredNames()
+            workspaceNames: workspaces.configuredNames() + (liveWorkspaceNamesForHotkeys?() ?? [])
         )
     }
 
     private func workspacesDidChange() {
+        reconcileWorkspaceNumberHotkeys()
+        scheduleSave()
+    }
+
+    func reconcileWorkspaceNumberHotkeys() {
         let reconciled = withWorkspaceNumberHotkeys(hotkeyBindings)
         if reconciled != hotkeyBindings {
             hotkeyBindings = reconciled
@@ -501,7 +507,6 @@ extension SettingsStore {
                 onWorkspaceHotkeysChanged?()
             }
         }
-        scheduleSave()
     }
 
     func updateBinding(for commandId: String, newBinding: KeyBinding) {

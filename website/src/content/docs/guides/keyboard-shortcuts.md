@@ -42,6 +42,8 @@ Confirm the binding and any registration warning in **Settings > Hotkeys**, then
 | Move Column to Workspace Up | `Control + Option + Shift + Page Up` | `Niri` |
 | Move Column to Workspace Down | `Control + Option + Shift + Page Down` | `Niri` |
 
+**Unreleased:** Creating workspace 10 or higher adds its Switch, Move, and Move Column actions to **Settings > Hotkeys** as `Unassigned`. The rows disappear when the workspace is removed.
+
 ## Focus
 
 | Action | Default Shortcut | Layout |

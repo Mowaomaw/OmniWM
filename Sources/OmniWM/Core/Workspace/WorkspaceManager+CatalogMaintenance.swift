@@ -6,6 +6,13 @@ import Foundation
 import QuartzCore
 
 extension WorkspaceManager {
+    func configureWorkspaceNumberHotkeys() {
+        settings.liveWorkspaceNamesForHotkeys = { [weak self] in
+            self?.workspaceCatalog.descriptors.values.map(\.name) ?? []
+        }
+        settings.reconcileWorkspaceNumberHotkeys()
+    }
+
     func garbageCollectUnusedWorkspaces(focusedWorkspaceId: WorkspaceDescriptor.ID?) {
         let configured = configuredWorkspaceNameSet()
         let visible = visibleWorkspaceIds()

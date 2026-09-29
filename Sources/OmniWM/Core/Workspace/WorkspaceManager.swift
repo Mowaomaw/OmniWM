@@ -55,6 +55,7 @@ final class WorkspaceManager {
         }
         applySettings()
         reconcileInteractionMonitorState(notify: false)
+        configureWorkspaceNumberHotkeys()
     }
 
     var disconnectedWorkspaceAssignments: [MonitorRestoreKey: WorkspaceDescriptor.ID] {

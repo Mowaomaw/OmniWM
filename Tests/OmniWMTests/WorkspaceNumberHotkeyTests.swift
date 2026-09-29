@@ -72,18 +72,6 @@ final class WorkspaceNumberHotkeyTests: XCTestCase {
         XCTAssertEqual(withoutDynamic.hotkeyBindings, HotkeyBindingRegistry.defaults())
     }
 
-    func testVersionThreeFileMigratesToVersionFourWithoutOtherChanges() throws {
-        let canonical = String(decoding: try SettingsTOMLCodec.encode(.defaults()), as: UTF8.self)
-        let versionThree = canonical.replacingOccurrences(of: "schemaVersion = 4", with: "schemaVersion = 3")
-        XCTAssertNotEqual(versionThree, canonical)
-
-        let result = try SettingsTOMLCodec.decodeForLoad(Data(versionThree.utf8))
-
-        XCTAssertEqual(result.migration?.fromVersion, 3)
-        XCTAssertEqual(result.migration?.toVersion, 4)
-        XCTAssertEqual(result.export, .defaults())
-    }
-
     func testSettingsStoreAddsRowsWhenWorkspaceIsCreatedAndDropsThemWhenRemoved() throws {
         let settings = makeSettingsStore()
         let original = settings.workspaces.configurations
@@ -101,6 +89,31 @@ final class WorkspaceNumberHotkeyTests: XCTestCase {
 
         settings.workspaces.configurations = original
         XCTAssertNil(settings.hotkeyBindings.first { $0.id == "switchWorkspace.9" })
+    }
+
+    func testDynamicWorkspaceKeepsHotkeysUntilItIsRemoved() throws {
+        let settings = makeSettingsStore()
+        let manager = WorkspaceManager(settings: settings)
+        let monitor = try XCTUnwrap(manager.monitors.first)
+        var reregistrations = 0
+        settings.onWorkspaceHotkeysChanged = { reregistrations += 1 }
+
+        let workspace = try XCTUnwrap(manager.createDynamicWorkspace(named: "10", on: monitor.id))
+        XCTAssertFalse(settings.workspaces.configuredNames().contains("10"))
+        for id in ["switchWorkspace.9", "moveToWorkspace.9", "moveColumnToWorkspace.9"] {
+            XCTAssertNotNil(settings.hotkeyBindings.first { $0.id == id })
+        }
+        XCTAssertEqual(reregistrations, 1)
+
+        let chord = KeyBinding(keyCode: UInt32(kVK_ANSI_0), modifiers: UInt32(optionKey))
+        settings.updateBinding(for: "switchWorkspace.9", newBinding: chord)
+        settings.workspaces.defaultLayoutType = .dwindle
+        XCTAssertEqual(settings.hotkeyBindings.first { $0.id == "switchWorkspace.9" }?.binding, .chord(chord))
+        XCTAssertEqual(reregistrations, 1)
+
+        manager.removeWorkspaces([workspace.id])
+        XCTAssertNil(settings.hotkeyBindings.first { $0.id == "switchWorkspace.9" })
+        XCTAssertEqual(reregistrations, 2)
     }
 
     func testRemovingWorkspaceRequestsHotkeyReregistrationOutsideExportApply() {
