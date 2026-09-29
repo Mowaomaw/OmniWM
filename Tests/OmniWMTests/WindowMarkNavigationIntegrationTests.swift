@@ -118,6 +118,31 @@ final class WindowMarkNavigationIntegrationTests: XCTestCase {
         XCTAssertEqual(engine.activeToken(in: fixture.targetWorkspaceId), markedToken)
     }
 
+    func testConfigurableMarkHotkeysSetAndRemoveMarksOnFocusedWindow() throws {
+        let fixture = try makeFixture(layoutType: .niri, displayId: 77_104)
+        let controller = fixture.controller
+        let token = WindowToken(pid: 77_601, windowId: 77_701)
+        _ = WindowAdmissionTestSupport.track(token, in: fixture.sourceWorkspaceId, controller: controller)
+        _ = controller.workspaceManager.confirmManagedFocus(
+            token,
+            in: fixture.sourceWorkspaceId,
+            onMonitor: fixture.monitor.id,
+            activateWorkspaceOnMonitor: true
+        )
+        controller.commandHandler.frontmostFocusedWindowTokenProvider = { token }
+        controller.commandHandler.requestWindowMarkName = { "hotkey-mark" }
+
+        XCTAssertEqual(controller.commandHandler.performCommand(.windowMark(.set)), .executed)
+        XCTAssertEqual(controller.windowMarkRegistry.lookup("hotkey-mark"), .found(token))
+
+        controller.commandHandler.chooseWindowMarkNameToRemove = { names in
+            XCTAssertEqual(names, ["hotkey-mark"])
+            return names.first
+        }
+        XCTAssertEqual(controller.commandHandler.performCommand(.windowMark(.remove)), .executed)
+        XCTAssertEqual(controller.windowMarkRegistry.lookup("hotkey-mark"), .unknown)
+    }
+
     private func makeFixture(layoutType: LayoutType, displayId: UInt32) throws -> Fixture {
         let controller = WindowAdmissionTestSupport.controller(prefix: "OmniWMWindowMarkNavigation")
         let monitor = Monitor(

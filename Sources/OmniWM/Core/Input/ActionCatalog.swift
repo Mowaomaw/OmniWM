@@ -226,6 +226,7 @@ enum ActionCatalog {
              .rescueOffscreenWindows,
              .windowState,
              .openMenuAnywhere,
+             .windowMark,
              .presentation:
             .shared
         case let .focusNavigation(action):
@@ -266,6 +267,14 @@ enum ActionCatalog {
         case let .windowState(command): command.actionDisplayName()
         case .openMenuAnywhere: LocalizedStringResource(
                 "command.menu.openAnywhere", defaultValue: "Open Menu Anywhere", table: "Commands", bundle: .omniWM
+            )
+        case .windowMark(.set): LocalizedStringResource(
+                "command.windowMark.set", defaultValue: "Set Mark on Focused Window", table: "Commands",
+                bundle: .omniWM
+            )
+        case .windowMark(.remove): LocalizedStringResource(
+                "command.windowMark.remove", defaultValue: "Remove Mark from Focused Window", table: "Commands",
+                bundle: .omniWM
             )
         case let .presentation(command): command.actionDisplayName()
         case let .focusNavigation(action):
@@ -309,6 +318,8 @@ enum ActionCatalog {
             .windowState(command)
         case .openMenuAnywhere:
             .openMenuAnywhere
+        case .windowMark:
+            nil
         case let .focusNavigation(action):
             action.ipcCommandName()
         case let .windowMovement(action):

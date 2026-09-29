@@ -12577,6 +12577,28 @@
         }
       }
     },
+    "command.windowMark.remove" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Remove Mark from Focused Window"
+          }
+        }
+      }
+    },
+    "command.windowMark.set" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Set Mark on Focused Window"
+          }
+        }
+      }
+    },
     "command.workspace.backAndForth" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {

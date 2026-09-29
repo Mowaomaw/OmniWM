@@ -7,7 +7,7 @@ sidebar:
 
 ## Customization and the Hyper modifier
 
-All shortcuts are customizable in **Settings > Hotkeys**. `Hyper` is the literal `Control + Option + Shift + Command` chord by default; which modifiers make up `Hyper` is configurable in Settings > Hotkeys (for example, exclude `Shift` to keep `Hyper + Shift + …` free for extra bindings). Changing the combination retargets every shortcut that currently resolves to `Hyper` onto the new one, so the shortcut list updates in place as you toggle the modifiers.
+All global shortcuts are customizable in **Settings > Hotkeys**. `Hyper` is the literal `Control + Option + Shift + Command` chord by default; which modifiers make up `Hyper` is configurable in Settings > Hotkeys (for example, exclude `Shift` to keep `Hyper + Shift + …` free for extra bindings). Changing the combination retargets every shortcut that currently resolves to `Hyper` onto the new one, so the shortcut list updates in place as you toggle the modifiers.
 
 Optionally pick a **System Hyper Trigger** — a single key (Caps Lock, F13–F20, or a left- or right-side modifier) or an extra mouse button that acts as `Hyper` while held (this needs the Input Monitoring permission). Leave the trigger as `None` if you already produce `Hyper` another way, such as a Karabiner Elements remap.
 
@@ -59,6 +59,8 @@ Confirm the binding and any registration warning in **Settings > Hotkeys**, then
 | Focus Window 1-9 in Column | `Unassigned` | `Niri` |
 | Toggle Command Palette | `Control + Option + Space` | `Shared` |
 | Open Menu Anywhere | `Control + Option + M` | `Shared` |
+| Set Mark on Focused Window | `Unassigned` | `Shared` |
+| Remove Mark from Focused Window | `Unassigned` | `Shared` |
 | Close Focused Window | `Unassigned` | `Shared` |
 | Toggle Workspace Bar | `Unassigned` | `Shared` |
 | Toggle Hidden Icons Bar | `Unassigned` | `Shared` |
@@ -75,7 +77,7 @@ These shortcuts are available while the Command Palette is open in **Windows** m
 | Mark selected window | `Control + Option + M` |
 | Remove a mark from the selected window | `Control + Option + R` |
 
-They are Palette-local shortcuts, not separate actions in **Settings > Hotkeys**. Outside the Palette, the same key combinations retain their configured global behavior.
+These fixed shortcuts are local to the open Palette. **Set Mark on Focused Window** and **Remove Mark from Focused Window** are also available as separate, unassigned actions in **Settings > Hotkeys** for configurable global shortcuts. Outside the Palette, key combinations retain their configured global behavior.
 
 ## Move Window
 

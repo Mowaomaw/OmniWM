@@ -37,6 +37,20 @@ extension ActionCatalog {
                 binding: KeyBinding(keyCode: UInt32(kVK_ANSI_M), modifiers: UInt32(controlKey | optionKey)),
                 keywords: ["menu", "anywhere"]
             ),
+            action(
+                id: "setWindowMark",
+                command: .windowMark(.set),
+                category: .focus,
+                binding: .unassigned,
+                keywords: ["mark", "tag", "name", "focused window"]
+            ),
+            action(
+                id: "removeWindowMark",
+                command: .windowMark(.remove),
+                category: .focus,
+                binding: .unassigned,
+                keywords: ["mark", "tag", "remove", "focused window"]
+            ),
             IPCPresentationCommand.workspaceBar.actionSpec(),
             IPCPresentationCommand.hiddenBar.actionSpec(),
             IPCPresentationCommand.quakeTerminal.actionSpec(),

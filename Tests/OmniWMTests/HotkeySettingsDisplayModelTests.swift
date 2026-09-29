@@ -32,6 +32,19 @@ final class HotkeySettingsDisplayModelTests: XCTestCase {
         XCTAssertEqual(Set(searchIDs("column", bindings: bindings)), Set(ids))
     }
 
+    func testSearchFindsWindowMarkActionsAndTheyDefaultUnassigned() throws {
+        let ids = ["setWindowMark", "removeWindowMark"]
+        let bindings = HotkeyBindingRegistry.defaults().filter { ids.contains($0.id) }
+
+        XCTAssertEqual(Set(searchIDs("mark", bindings: bindings)), Set(ids))
+        XCTAssertEqual(bindings.count, ids.count)
+        XCTAssertTrue(bindings.allSatisfy(\.binding.isUnassigned))
+        XCTAssertEqual(
+            Set(bindings.map(\.command.displayName)),
+            Set(["Set Mark on Focused Window", "Remove Mark from Focused Window"])
+        )
+    }
+
     func testSearchFindsAdvancedCommandByConfiguredShortcut() throws {
         let shortcut = try XCTUnwrap(KeySymbolMapper.fromHumanReadable("Hyper+Minus"))
         let binding = try XCTUnwrap(HotkeyBindingRegistry.makeBinding(
