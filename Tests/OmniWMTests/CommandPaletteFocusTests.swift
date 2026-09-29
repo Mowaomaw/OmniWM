@@ -367,6 +367,48 @@ final class CommandPaletteFocusTests: XCTestCase {
         XCTAssertNil(observer)
     }
 
+    func testClipboardDisableWhileOpenClearsModeAndRejectsEdits() throws {
+        let item = ClipboardPaletteItem(
+            id: UUID(), title: "Saved", subtitle: "", kind: .text, sourceBundleIdentifier: nil,
+            lastCopiedAt: .distantPast, numberOfCopies: 1, byteCount: 5
+        )
+        var historyEnabled = true
+        var observer: (@MainActor @Sendable ([ClipboardPaletteItem]) -> Void)?
+        var mutationCalls = 0
+        let fixture = CommandPaletteFocusFixture(initialMode: .clipboard) { environment in
+            environment.clipboardItems = { _ in [item] }
+            environment.isClipboardHistoryEnabled = { _ in historyEnabled }
+            environment.observeClipboardItems = { _, callback in observer = callback }
+            environment.setClipboardItemPinned = { _, _, _ in
+                mutationCalls += 1
+                return []
+            }
+            environment.deleteClipboardItem = { _, _ in
+                mutationCalls += 1
+                return []
+            }
+            environment.confirmClearClipboardHistory = {
+                mutationCalls += 1
+                return true
+            }
+        }
+        defer { fixture.cleanup() }
+        _ = try fixture.show()
+        XCTAssertEqual(fixture.palette.selectedItemID, .clipboard(item.id))
+
+        historyEnabled = false
+        observer?([])
+
+        XCTAssertFalse(fixture.palette.isClipboardHistoryEnabled)
+        XCTAssertTrue(fixture.palette.clipboardItems.isEmpty)
+        XCTAssertNil(fixture.palette.selectedItemID)
+        XCTAssertNil(fixture.palette.clipboardPreview)
+        fixture.palette.setClipboardItemPinned(true, id: item.id)
+        fixture.palette.deleteClipboardItem(item.id)
+        fixture.palette.clearClipboardHistory()
+        XCTAssertEqual(mutationCalls, 0)
+    }
+
     func testClipboardClearFailureKeepsItemsAndShowsError() async throws {
         enum ClearFailure: Error { case saveFailed }
         let failed = expectation(description: "Clipboard clear failed")

@@ -11,6 +11,13 @@ struct OverviewSettingsTab: View {
 
     var body: some View {
         Form {
+            Section("Overview") {
+                Toggle("Enable Overview", isOn: Binding(
+                    get: { settings.overview.enabled },
+                    set: { controller.setOverviewEnabled($0) }
+                ))
+            }
+
             Section("Layout") {
                 SettingsSliderRow(
                     label: String(localized: "Zoom"),
@@ -24,6 +31,7 @@ struct OverviewSettingsTab: View {
                 }
                 SettingsCaption(localized: "Zoom changes made in Overview are remembered when it closes.")
             }
+            .disabled(!settings.overview.enabled)
 
             Section("Input") {
                 Toggle("Invert Scrolling Direction", isOn: Bindable(settings.overview).invertScrollDirection)
@@ -59,6 +67,7 @@ struct OverviewSettingsTab: View {
                     SettingsCaption(mouseButtonError)
                 }
             }
+            .disabled(!settings.overview.enabled)
 
             Section("Appearance") {
                 ColorPicker(
@@ -87,6 +96,7 @@ struct OverviewSettingsTab: View {
                 )
                 .disabled(settings.overview.matchFocusBorder)
             }
+            .disabled(!settings.overview.enabled)
         }
         .formStyle(.grouped)
     }

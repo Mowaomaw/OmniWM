@@ -6,12 +6,19 @@ import Foundation
 import OmniWMIPC
 
 extension WMController {
+    var workspaceBarRefreshIsEnabled: Bool {
+        settings.workspaceBar.enabled
+    }
+
     func setWorkspaceBarEnabled(_ enabled: Bool) {
         if settings.workspaceBar.enabled != enabled {
             settings.workspaceBar.enabled = enabled
         }
         pruneHiddenWorkspaceBarMonitorIds()
         workspaceBarManager.setup(controller: self, settings: settings)
+        if !enabled {
+            workspaceBarManager.cleanup()
+        }
         workspaceManager.invalidateAllLayouts()
         layoutRefreshController.requestRelayout(reason: .monitorSettingsChanged)
         surfaceReconciler.noteWorldChanged()
@@ -52,6 +59,7 @@ extension WMController {
     }
 
     func updateWorkspaceBarSettings(forceIconReload: Bool = false) {
+        workspaceBarManager.syncHoverPreview(controller: self, settings: settings)
         synchronizeWorkspaceBarIconOverrides(
             forceReload: forceIconReload
         )

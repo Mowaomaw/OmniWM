@@ -1,8 +1,502 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
+    "" : {},
+    "Enable Overview" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オーバービューを有効にする"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übersicht aktivieren"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiver oversikt"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivera översikt"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar vista general"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用概览"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ओवरव्यू सक्षम करें"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تفعيل النظرة العامة"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uključi pregled"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ενεργοποίηση επισκόπησης"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "הפעלת סקירה"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включить обзор"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włącz widok ogólny"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увімкнути огляд"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activer la vue d’ensemble"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overzicht inschakelen"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita panoramica"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ota yleiskatsaus käyttöön"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivér oversigt"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오버뷰 활성화"
+          }
+        }
+      }
+    },
+    "Enable the global Workspace Bar to use monitor settings." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モニターごとの設定を使用するには、グローバルのワークスペースバーを有効にしてください。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivieren Sie die globale Workspace-Leiste, um die Monitoreinstellungen zu verwenden."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiver den globale arbeidsområdelinjen for å bruke skjerminnstillingene."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivera det globala arbetsytefältet för att använda skärminställningarna."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activa la barra de espacios de trabajo global para usar los ajustes de cada monitor."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要使用显示器设置，请启用全局工作区栏。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "मॉनिटर सेटिंग्स का उपयोग करने के लिए वैश्विक कार्यस्थल बार सक्षम करें।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فعّل شريط مساحات العمل العام لاستخدام إعدادات الشاشات."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uključite globalnu traku radnih prostora da biste koristili podešavanja monitora."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ενεργοποιήστε την καθολική γραμμή χώρων εργασίας για να χρησιμοποιήσετε τις ρυθμίσεις οθονών."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "יש להפעיל את סרגל סביבות העבודה הגלובלי כדי להשתמש בהגדרות הצגים."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включите общую панель рабочих пространств, чтобы использовать настройки мониторов."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włącz globalny pasek obszarów roboczych, aby korzystać z ustawień monitorów."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увімкніть глобальну панель робочих просторів, щоб користуватися налаштуваннями моніторів."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activez la barre globale des espaces de travail pour utiliser les réglages des moniteurs."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schakel de globale werkruimtebalk in om de monitorinstellingen te gebruiken."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita la barra globale degli spazi di lavoro per usare le impostazioni dei monitor."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ota yleinen työtilapalkki käyttöön, jotta voit käyttää näyttökohtaisia asetuksia."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivér den globale arbejdsområdelinje for at bruge skærmindstillingerne."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모니터별 설정을 사용하려면 전역 워크스페이스 바를 활성화하세요."
+          }
+        }
+      }
+    },
+    "This feature is disabled." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この機能は無効になっています。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Funktion ist deaktiviert."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne funksjonen er deaktivert."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den här funktionen är inaktiverad."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta función está desactivada."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此功能已禁用。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "यह सुविधा अक्षम है।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هذه الميزة معطّلة."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ova funkcija je onemogućena."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτή η λειτουργία είναι απενεργοποιημένη."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "התכונה הזו מושבתת."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Эта функция отключена."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta funkcja jest wyłączona."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Цю функцію вимкнено."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette fonctionnalité est désactivée."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze functie is uitgeschakeld."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa funzione è disabilitata."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä ominaisuus on poistettu käytöstä."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne funktion er deaktiveret."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 기능은 비활성화되어 있습니다."
+          }
+        }
+      }
+    },
+    "Window Hover Previews" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウィンドウのホバープレビュー"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fenstervorschau beim Darüberfahren"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forhåndsvisning av vinduer ved musepeking"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Förhandsvisning av fönster vid hovring"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vista previa de ventanas al pasar el cursor"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "悬停时预览窗口"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "होवर करने पर विंडो का पूर्वावलोकन"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "معاينة النوافذ عند تمرير المؤشر"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pregled prozora pri prelasku pokazivačem"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προεπισκόπηση παραθύρων κατά την τοποθέτηση του δείκτη"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "תצוגה מקדימה של חלונות בריחוף"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Предпросмотр окон при наведении"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podgląd okien po najechaniu kursorem"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попередній перегляд вікон після наведення"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aperçu des fenêtres au survol"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Venstervoorbeelden bij aanwijzen"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anteprime delle finestre al passaggio del puntatore"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikkunoiden esikatselu osoittimen ollessa niiden kohdalla"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forhåndsvisning af vinduer ved markørplacering"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마우스를 올렸을 때 창 미리보기"
+          }
+        }
+      }
     },
     "\n\n%@ is not currently in your PATH, so Terminal may not find `omniwmctl` until you add that directory." : {
       "localizations" : {
@@ -16448,6 +16942,130 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "应用程序图标覆盖——所有显示器"
+          }
+        }
+      }
+    },
+    "App Language" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لغة التطبيق"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appens sprog"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Sprache"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Γλώσσα εφαρμογής"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma de la aplicación"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sovelluksen kieli"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langue de l’application"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שפת היישום"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ऐप की भाषा"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingua dell’app"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリの言語"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 언어"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Språk i appen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taal van de app"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Język aplikacji"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Язык приложения"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jezik aplikacije"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appens språk"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мова застосунку"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用语言"
           }
         }
       }
@@ -53316,6 +53934,130 @@
         }
       }
     },
+    "Follow macOS" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استخدام لغة macOS"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brug macOS-sproget"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS-Sprache verwenden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Χρήση γλώσσας του macOS"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar el idioma de macOS"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytä macOS:n kieltä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utiliser la langue de macOS"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שימוש בשפה של macOS"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS की भाषा का उपयोग करें"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa la lingua di macOS"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOSの言語を使用"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS 언어 사용"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruk macOS-språket"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taal van macOS gebruiken"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Użyj języka macOS"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Использовать язык macOS"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koristi jezik sistema macOS"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Använd macOS-språket"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Використовувати мову macOS"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用 macOS 语言"
+          }
+        }
+      }
+    },
     "For equal-size displays, any order is fine." : {
       "localizations" : {
         "ar" : {
@@ -68204,6 +68946,254 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "种类"
+          }
+        }
+      }
+    },
+    "Language" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اللغة"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprog"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Γλώσσα"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Idioma"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kieli"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langue"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שפה"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "भाषा"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lingua"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "언어"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Språk"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taal"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Język"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Язык"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jezik"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Språk"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мова"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "语言"
+          }
+        }
+      }
+    },
+    "Language changes take effect after you restart OmniWM." : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تُطبَّق تغييرات اللغة بعد إعادة تشغيل OmniWM."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprogændringer træder i kraft, når du genstarter OmniWM."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprachänderungen werden nach einem Neustart von OmniWM wirksam."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Οι αλλαγές γλώσσας εφαρμόζονται μετά την επανεκκίνηση του OmniWM."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los cambios de idioma se aplicarán después de reiniciar OmniWM."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kielimuutokset tulevat voimaan, kun käynnistät OmniWM:n uudelleen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les changements de langue prennent effet après le redémarrage d’OmniWM."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "שינויי השפה ייכנסו לתוקף לאחר הפעלה מחדש של OmniWM."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM को फिर से शुरू करने के बाद भाषा में बदलाव लागू होंगे।"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le modifiche alla lingua avranno effetto dopo il riavvio di OmniWM."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "言語の変更はOmniWMを再起動すると反映されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "언어 변경 사항은 OmniWM을 다시 시작한 후 적용됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Språkendringer trer i kraft når du starter OmniWM på nytt."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taalwijzigingen worden van kracht nadat je OmniWM opnieuw hebt gestart."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmiany języka zaczną obowiązywać po ponownym uruchomieniu OmniWM."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изменения языка вступят в силу после перезапуска OmniWM."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promene jezika stupaju na snagu nakon ponovnog pokretanja aplikacije OmniWM."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Språkändringarna börjar gälla när du startar om OmniWM."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зміни мови набудуть чинності після перезапуску OmniWM."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更改语言后，需重新启动 OmniWM 才能生效。"
           }
         }
       }
@@ -88363,7 +89353,2488 @@
         "he" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OmniWM סידור ניתוב"
+            "value" : "OmniWM הגדרות"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Настройки"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustawienia OmniWM"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налаштування OmniWM"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paramètres OmniWM"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Instellingen"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impostazioni OmniWM"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Asetukset"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Indstillinger"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 설정"
+          }
+        }
+      }
+    },
+    "OmniWM Update Available" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 更新可能"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Update verfügbar"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Oppdatering tilgjengelig"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Uppdatering tillgänglig"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Actualización disponible"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 更新可用"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM अपडेट उपलब्ध है"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM التحديث متاح"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Ažuriranje dostupno"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαθέσιμη ενημέρωση OmniWM"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM העדכון זמין"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Обновление доступно"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dostępna aktualizacja OmniWM"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оновлення OmniWM доступне"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mise à jour disponible OmniWM"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Beschikbaar bijwerken"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Aggiornamento disponibile"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Päivitys saatavilla"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Opdatering tilgængelig"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 업데이트 가능"
+          }
+        }
+      }
+    },
+    "OmniWM cannot measure physical screen size, so choose the display yourself." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは物理的な画面サイズを測定できないため、自分でディスプレイを選択してください。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kann die physische Bildschirmgröße nicht messen, wählen Sie daher den Bildschirm selbst aus."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kan ikke måle den fysiske skjermstørrelsen, så velg skjermen selv."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kan inte mäta skärmstorleken på den fysiska skärmen, så välj skärmen själv."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM no puede medir el tamaño físico de la pantalla, por lo que elija la pantalla usted mismo."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM无法测量物理屏幕尺寸，所以请自行选择显示器。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM भौतिक स्क्रीन आकार को माप नहीं सकता, इसलिए डिस्प्ले स्वयं चुनें।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM لا يمكنه قياس حجم الشاشة المادي، لذا اختر الشاشة بنفسك."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ne može da meri fizičku veličinu ekrana, pa izaberite ekran sami."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM δεν μπορεί να μετρήσει το φυσικό μέγεθος οθόνης, έτσι επιλέξτε την οθόνη μόνοι σας."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM אין אפשרות למדוד את גודל המסך הפיזי, אז בחר את התצוגה בעצמך."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не может измерять физический размер экрана, поэтому самостоятельно выбирайте дисплей."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nie może zmierzyć rzeczywistej wielkości ekranu, więc wybierz ekran sam."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не може виміряти фізичний розмір екрана, тому виберіть дисплей самостійно."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ne peut pas mesurer la taille de l'écran physique, alors choisissez l'affichage vous-même."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kan fysieke schermgrootte niet meten, dus kies zelf het scherm."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM non può misurare le dimensioni dello schermo fisico, quindi scegli tu stesso il display."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ei pysty mittaamaan fyysistä näytön kokoa, joten valitse näyttö itse."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kan ikke måle fysisk skærmstørrelse, så vælg selv skærmen."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM은 물리적 화면 크기를 측정할 수 없으므로 직접 디스플레이를 선택하세요."
+          }
+        }
+      }
+    },
+    "OmniWM checks the latest GitHub release once per day on launch. Updates stay manual and the popup includes both the GitHub page and the Homebrew command." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは、起動時に毎日最新のGitHubリリースを確認します。更新は手動で行われ、ポップアップにはGitHubページとHomebrewコマンドの両方が含まれています。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM prüft die neueste GitHub-Version einmal täglich beim Start. Updates bleiben manuell und die Pop-up-Anzeige enthält sowohl die GitHub-Seite als auch den Homebrew-Befehl."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM sjekker den nyeste GitHub-utgivelsen én gang om dagen ved lansering. Oppdateringene forblir manuelle, og popup-vinduet inkluderer både GitHub-siden og Homebrew-kommandoen."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kontrollerar den senaste GitHub-utgåvan en gång om dagen vid lansering. Uppdateringarna förblir manuella och popup-fönstret inkluderar både GitHub-sidan och Homebrew-kommandot."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM verifica la última versión de GitHub una vez al día en el lanzamiento. Las actualizaciones siguen siendo manuales y la ventana emergente incluye tanto la página GitHub como el comando Homebrew."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM在每次发布时检查最新的GitHub版本。更新仍然是手动进行的，弹出窗口包含GitHub页面和Homebrew命令。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM लॉन्च के समय प्रतिदिन नवीनतम GitHub रिलीज़ की जांच करता है। अपडेट मैन्युअल रूप से रहते हैं और पॉपअप में GitHub पेज और Homebrew कमांड दोनों शामिल होते हैं।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تفحص OmniWM أحدث إصدار من GitHub مرة واحدة في اليوم عند الإطلاق. تبقى التحديثات يدوية ويتضمن التنبيه المفتوح كل من صفحة GitHub والأمر Homebrew."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM jednom dnevno pri pokretanju proverava najnovije izdanje na GitHub-u. Ažuriranja ostaju ručna, a iskačući prozor sadrži vezu ka GitHub stranici i Homebrew komandu."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM ελέγχει την τελευταία έκδοση στο GitHub μία φορά την ημέρα κατά την εκκίνηση. Οι ενημερώσεις παραμένουν χειροκίνητες και το αναδυόμενο παράθυρο περιλαμβάνει τη σελίδα GitHub και την εντολή Homebrew."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM בודק את העדכון האחרון GitHub שחרור פעם ביום על השקה. עדכונים נשארים ידניים וההופעות כוללות את שניהם GitHub עמוד והעמוד Homebrew פקודה."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM проверяет последнюю выпускную версию GitHub один раз в день при запуске. Обновления остаются ручными, и всплывающая панель включает как страницу GitHub, так и команду Homebrew."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM sprawdza najnowszy wydruk z GitHub raz dziennie przy uruchomieniu. Aktualizacje pozostają ręczne, a okno powiadomienia zawiera zarówno stronę GitHub, jak i polecenie Homebrew."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM перевіряє найновіший випуск на GitHub раз на день під час запуску. Оновлення залишаються ручними, а спливне вікно містить посилання на сторінку GitHub і команду Homebrew."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM vérifie la dernière version GitHub une fois par jour au lancement. Les mises à jour restent manuel et le popup comprend à la fois la page GitHub et la commande Homebrew."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM controleert de laatste GitHub release eenmaal per dag bij lancering. Updates blijven handmatig en de popup bevat zowel de GitHub pagina als het Homebrew commando."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM controlla l'ultima release GitHub una volta al giorno al lancio. Gli aggiornamenti rimangono manuali e il popup include sia la pagina GitHub che il comando Homebrew."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM tarkistaa viimeisimmän GitHub julkaisun kerran päivässä laukaisun yhteydessä. Päivitykset pysyvät ohjekirjana ja ponnahdusikkuna sisältää sekä GitHub-sivun että Homebrew-komennon."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kontrollerer den seneste GitHub frigivelse én gang om dagen ved lanceringen. Opdateringer stay manual og popup indeholder både GitHub side og Homebrew kommandoen."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM은 출시 시 매일 최신 GitHub 릴리즈를 확인합니다. 업데이트는 수동으로 이루어지며 팝업에는 GitHub 페이지와 Homebrew 명령어가 모두 포함됩니다."
+          }
+        }
+      }
+    },
+    "OmniWM could not decode %@ and left the file untouched: %@ The active settings were not changed." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "OmniWM could not decode %1$@ and left the file untouched: %2$@ The active settings were not changed."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは%1$@をデコードできませんでした。そして、ファイルはそのまま残されました：%2$@ 有効な設定は変更されませんでした。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM konnte %1$@ nicht decodieren und ließ die Datei unverändert: %2$@ Die aktiven Einstellungen wurden nicht geändert."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kunne ikke dekode %1$@ og lot filen være uendret: %2$@ De aktive innstillingene ble ikke endret."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kunde inte dekoda %1$@ och lämnade filen orörd: %2$@ De aktiva inställningarna ändrades inte."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM no pudo decodificar %1$@ y dejó el archivo sin cambios: %2$@ La configuración activa no se modificó."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM无法解码%1$@，并保留了文件不变：%2$@ 激活的设置未更改。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM %1$@ को डिकोड नहीं कर सका और फ़ाइल को अपरिवर्तित छोड़ दिया: %2$@ सक्रिय सेटिंग्स नहीं बदली गईं।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM لم يتمكن من فك تشفير %1$@ وترك الملف دون تغيير: %2$@ لم يتم تغيير الإعدادات النشطة."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nije mogao da dekodira %1$@ i ostavi datoteku bez dodiranja: %2$@ Aktivne podešavanja nisu promenjene."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM δεν μπόρεσε να αποκωδικοποιήσει %1$@ και άφησε το αρχείο ανέγγιχτο: %2$@ Οι ενεργές ρυθμίσεις δεν άλλαξαν."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM לא הצליח לפענח את %1$@ והשאיר את הקובץ ללא שינוי: %2$@ ההגדרות הפעילות לא השתנו."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не смог декодировать %1$@ и оставил файл без изменений: %2$@ Активные настройки не были изменены."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nie mógł zdekodować %1$@ i zostawił plik bez zmian: %2$@ Aktywne ustawienia nie zostały zmienione."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не зміг декодувати %1$@ і залишив файл без змін: %2$@ Активні налаштування не змінено."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM n’a pas pu décoder %1$@ et a laissé le fichier intact : %2$@ Les réglages actifs n’ont pas été modifiés."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kon %1$@ niet decoderen en liet het bestand ongerept: %2$@ De actieve instellingen zijn niet gewijzigd."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM non è stato possibile decodificare %1$@ e ha lasciato il file intatto: %2$@ Le impostazioni attive non sono state modificate."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ei pystynyt purkamaan koodia %1$@ ja jätti tiedoston koskematta: %2$@ Aktiivisia asetuksia ei muutettu."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kunne ikke afkode %1$@ og efterlod filen uberørt: %2$@ De aktive indstillinger blev ikke ændret."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM이 %1$@을(를) 해독할 수 없어 파일을 변경하지 않았습니다: %2$@ 활성 설정도 변경되지 않았습니다."
+          }
+        }
+      }
+    },
+    "OmniWM could not decode %@: %@ The exact rejected bytes were preserved at %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "OmniWM could not decode %1$@: %2$@ The exact rejected bytes were preserved at %3$@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは%1$@をデコードできませんでした：%2$@ 拒否された正確なバイトは%3$@に保持されました。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM konnte %1$@ nicht decodieren: %2$@ Die exakten abgelehnten Bytes wurden an %3$@ gespeichert."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kunne ikke dekode %1$@: %2$@ De nøyaktige avviste byteene ble bevart på %3$@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kunde inte dekodera %1$@: %2$@ De exakta avvisade bytearna bevarades vid %3$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM no pudo decodificar %1$@: %2$@ Los bytes exactos rechazados se conservaron en %3$@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM无法解码%1$@：%2$@ 确切的拒绝字节在%3$@处被保留。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM %1$@ को डिकोड नहीं कर सका: %2$@ सटीक अस्वीकृत बाइट्स %3$@ पर संरक्षित किए गए थे।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM لم يتمكن من فك تشفير %1$@: %2$@ تم الحفاظ على البايتات المرفوضة بدقة في %3$@."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nije mogao da dekodira %1$@: %2$@ Tačni odbijeni bitovi su sačuvani na %3$@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM δεν μπόρεσε να αποκωδικοποιήσει %1$@: %2$@ Οι ακριβείς απορριπτόμενες ψηφιολέξεις διατηρούνται σε %3$@."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM לא הצליח לפענח את %1$@: %2$@ הבייטים המדויקים שנדחו נשמרו ב-%3$@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не удалось декодировать %1$@: %2$@ Точные отклоненные байты были сохранены в %3$@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nie mógł zdekodować %1$@: %2$@ Dokładne odrzucane bajty zostały zachowane w %3$@."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не вдалося прочитати %1$@: %2$@ Точні відхилені байти збережено у %3$@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM n’a pas pu décoder %1$@ : %2$@ Les octets exacts rejetés ont été conservés dans %3$@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kon %1$@ niet decoderen: %2$@ De exacte afgewezen bytes werden bewaard op %3$@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM non è stato possibile decodificare %1$@: %2$@ I byte rifiutati esatti sono stati conservati a %3$@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ei pystynyt purkamaan koodia %1$@: %2$@ Tarkat hylätyt tavut säilytettiin %3$@-asteella."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kunne ikke afkode %1$@: %2$@ De nøjagtige afviste bytes blev bevaret ved %3$@."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM이 %1$@을(를) 해독할 수 없었습니다: %2$@ 거부된 원본 바이트는 %3$@에 그대로 보존되었습니다."
+          }
+        }
+      }
+    },
+    "OmniWM could not determine its current version." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは現在のバージョンを決定できませんでした。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM konnte seine aktuelle Version nicht bestimmen."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kunne ikke bestemme sin nåværende versjon."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kunde inte bestämma sin nuvarande version."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM no pudo determinar su versión actual."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM无法确定其当前版本。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM अपनी वर्तमान संस्करण निर्धारित नहीं कर सका।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM لم يتمكن من تحديد نسخته الحالية."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nije mogao da utvrdi njegovu trenutnu verziju."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM δεν μπόρεσε να καθορίσει την τρέχουσα έκδοση του."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM אין אפשרות לקבוע את הגרסה הנוכחית."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не мог определить свою текущую версию."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nie może określić swojej bieżącej wersji."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не вдалося визначити свою поточну версію."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM n'a pas pu déterminer sa version actuelle."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kon de huidige versie niet bepalen."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM non è stato possibile determinare la sua versione corrente."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ei pystynyt määrittämään sen nykyistä versiota."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kunne ikke bestemme sin nuværende version."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM는 현재 버전을 결정할 수 없었습니다."
+          }
+        }
+      }
+    },
+    "OmniWM creates one fresh diagnostic log with any evidence you selected, then opens GitHub." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは、選択したすべての証拠を含む新しい診断ログを作成し、その後GitHubを開きます。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM erstellt einen neuen Diagnostik-Log mit allen von Ihnen ausgewählten Beweisen und öffnet dann GitHub."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM oppretter en fersk diagnostisk logg med all beviset du har valgt, og åpner deretter GitHub."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM skapar en ny diagnostisk logg med alla bevis du har valt, och öppnar sedan GitHub."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM crea un registro de diagnóstico nuevo con cualquier evidencia que hayas seleccionado, luego abre GitHub."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 创建一个带有您选择的所有证据的全新诊断日志，然后打开GitHub。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM आपके द्वारा चयनित किसी भी सबूत के साथ एक नया नैदानिक लॉग बनाता है, फिर GitHub खोलता है।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ينشئ سجل تشخيصي جديدًا يحتوي على أي دليل اخترته، ثم يفتح GitHub."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kreira jedan novi dijagnostički dnevnik sa bilo kojim dokazama koje ste izabrali, a zatim otvara GitHub."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM δημιουργεί ένα φρέσκο διαγνωστικό αρχείο καταγραφής με κάθε στοιχείο που επιλέξατε και στη συνέχεια ανοίγει το GitHub."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM יוצר יומן אבחון אחד חדש עם כל ראיה שבחרת, ואז פותח GitHub."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM создает один новый диагностический журнал с любыми выбранными вами доказательствами, затем открывает GitHub."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM tworzy jeden nowy dziennik diagnostyczny z dowolnymi dowodami, które wybraliście, a następnie otwiera GitHub."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM створює один новий діагностичний журнал лише з вибраними вами додатковими даними, а потім відкриває GitHub."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM crée un nouveau journal de diagnostic avec toutes les preuves que vous avez sélectionnées, puis ouvre GitHub."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM creëert een nieuw kenmerkend logboek met elk bewijs dat u hebt geselecteerd, opent dan GitHub."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM crea un nuovo log diagnostico con tutte le prove selezionate, quindi si apre GitHub."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM luo yhden tuoreen diagnostisen lokin, jossa on kaikki valitsemasi todisteet, ja avaa sitten GitHub."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM skaber en frisk diagnostisk log med ethvert bevis, du har valgt, og åbner derefter GitHub."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM은 선택한 모든 증거를 포함한 새로운 진단 로그를 생성한 다음 GitHub을 엽니다."
+          }
+        }
+      }
+    },
+    "OmniWM has not started because it could not identify process %d (see `ps -p %d`). It retries every second; click Check Again to retry now, or quit OmniWM." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "OmniWM has not started because it could not identify process %1$d (see `ps -p %2$d`). It retries every second; click Check Again to retry now, or quit OmniWM."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは開始されませんでした。なぜなら、プロセス%1$dを識別できなかったためです（詳細は`ps -p %2$d`を参照してください）。秒ごとに再試行されます。今すぐ再試行するには「もう一度確認」をクリックするか、OmniWMを終了してください。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM hat nicht begonnen, weil es den Prozess %1$d nicht identifizieren konnte (siehe `ps -p %2$d`). Es versucht jede Sekunde erneut; klicken Sie auf Nochmals überprüfen, um jetzt erneut zu versuchen, oder beenden Sie OmniWM."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM har ikke startet fordi den ikke kunne identifisere prosess %1$d (se `ps -p %2$d`). Den prøver igjen hvert sekund; klikk på Sjekk igjen for å prøve igjen nå, eller avslutt OmniWM."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM har inte startat eftersom det inte kunde identifiera processen %1$d (se `ps -p %2$d`). Det försöker igen varje sekund; klicka på Kontrollera igen för att försöka igen nu, eller avsluta OmniWM."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM no ha comenzado porque no pudo identificar el proceso %1$d (ver `ps -p %2$d`). Lo vuelve a intentar cada segundo; haga clic en Revisar de nuevo para volver a intentarlo ahora, o cierre OmniWM."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM没有开始，因为它无法识别过程%1$d（见`ps -p %2$d`）。它每秒重试一次；点击“再次检查”现在重试，或退出OmniWM。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM शुरू नहीं हुआ है क्योंकि यह प्रक्रिया %1$d की पहचान नहीं कर सका (देखें `ps -p %2$d`)। यह हर सेकंड पुनः प्रयास करता है; अब पुनः प्रयास करने के लिए Check Again पर क्लिक करें, या OmniWM को बंद करें।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لم يبدأ OmniWM لأنه لم يتمكن من تحديد العملية %1$d (انظر `ps -p %2$d`). يحاول مرة أخرى كل ثانية؛ انقر على التحقق مرة أخرى للمحاولة مرة أخرى الآن، أو أوقف OmniWM."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM se nije pokrenuo jer nije mogao da prepozna proces %1$d (pogledajte `ps -p %2$d`). Pokušava ponovo svake sekunde; kliknite na Proveri ponovo da biste odmah ponovili pokušaj ili zatvorite OmniWM."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM δεν ξεκίνησε επειδή δεν μπόρεσε να εντοπίσει τη διαδικασία %1$d (βλέπε `ps -p %2$d`). Επανέρχεται κάθε δευτερόλεπτο; κάντε κλικ στο Check ξανά για να ξαναδοκιμάσετε τώρα, ή να εγκαταλείψετε OmniWM."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM לא הופעל כי לא הצליח לזהות את התהליך %1$d (ראו `ps -p %2$d`). הוא מנסה שוב מדי שנייה; לחצו על ״בדוק שוב״ כדי לנסות כעת, או צאו מ-OmniWM."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не запустился, поскольку не удалось определить процесс %1$d (см. `ps -p %2$d`). Повторная попытка выполняется каждую секунду; нажмите «Проверить снова», чтобы повторить её немедленно, или завершите OmniWM."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nie uruchomił się, ponieważ nie udało się zidentyfikować procesu %1$d (zobacz `ps -p %2$d`). Aplikacja ponawia próbę co sekundę; kliknij „Sprawdź ponownie”, aby ponowić ją teraz, albo zakończ OmniWM."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не запустився, оскільки не вдалося визначити процес %1$d (див. `ps -p %2$d`). Повторна спроба виконується щосекунди; натисніть «Перевірити знову», щоб повторити її зараз, або завершіть роботу OmniWM."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM n’a pas démarré, car il n’a pas pu identifier le processus %1$d (voir `ps -p %2$d`). Il réessaie toutes les secondes ; cliquez sur Vérifier à nouveau pour réessayer immédiatement, ou quittez OmniWM."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM is niet gestart omdat proces %1$d niet kon worden geïdentificeerd (zie `ps -p %2$d`). Het probeert het elke seconde opnieuw; klik op Opnieuw controleren om direct opnieuw te proberen, of sluit OmniWM af."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM non è stato avviato perché non è riuscito a identificare il processo %1$d (vedi `ps -p %2$d`). Riprova ogni secondo; fai clic su Ricontrolla per riprovare subito oppure esci da OmniWM."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ei ole käynnistynyt, koska prosessia %1$d ei voitu tunnistaa (katso `ps -p %2$d`). Se yrittää uudelleen sekunnin välein; napsauta Tarkista uudelleen yrittääksesi heti tai lopeta OmniWM."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM er ikke startet, fordi processen %1$d ikke kunne identificeres (se `ps -p %2$d`). Det prøver igen hvert sekund; klik på Tjek igen for at prøve nu, eller afslut OmniWM."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM이 프로세스 %1$d을(를) 식별할 수 없어 시작하지 못했습니다(`ps -p %2$d` 참조). 1초마다 다시 시도합니다. 지금 다시 시도하려면 다시 확인을 클릭하거나 OmniWM을 종료하세요."
+          }
+        }
+      }
+    },
+    "OmniWM has not started because it could not safely inspect every running process. It retries every second; click Check Again to retry now, or quit OmniWM." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは、すべての実行中のプロセスを安全に検査できなかったため、開始されませんでした。秒ごとに再試行されます。今すぐ再試行するには「もう一度確認」をクリックするか、OmniWMを終了してください。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM hat nicht begonnen, weil es jeden laufenden Prozess nicht sicher überprüfen konnte. Es versucht jede Sekunde erneut; klicken Sie auf „Nochmals überprüfen“, um jetzt erneut zu versuchen, oder beenden Sie OmniWM."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM har ikke startet fordi den ikke kunne inspisere hver kjørende prosess trygt. Den prøver igjen hvert sekund; klikk på Sjekk igjen for å prøve igjen nå, eller avslutt OmniWM."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM har inte startat eftersom det inte kunde inspektera alla körande processer på ett säkert sätt. Det försöker igen varje sekund; klicka på Kontrollera igen för att försöka igen nu, eller avsluta OmniWM."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM no ha comenzado porque no pudo inspeccionar de forma segura cada proceso en ejecución. Lo vuelve a intentar cada segundo; haga clic en Revisar de nuevo para volver a intentarlo ahora, o cierre OmniWM."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM没有启动，因为它无法安全地检查所有正在运行的进程。它每秒重试一次；点击“再次检查”立即重试，或退出OmniWM。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM शुरू नहीं हुआ है क्योंकि यह हर चल रहे प्रक्रिया की सुरक्षित रूप से जांच नहीं कर सका। यह हर सेकंड पुनः प्रयास करता है; अब पुनः प्रयास करने के लिए Check Again पर क्लिक करें, या OmniWM बंद करें।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لم يبدأ OmniWM لأنه لم يتمكن من فحص كل عملية تشغيل بشكل آمن. يحاول مرة أخرى كل ثانية؛ انقر على التحقق مرة أخرى للمحاولة مرة أخرى الآن، أو أغلق OmniWM."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM se nije pokrenuo jer nije mogao bezbedno da proveri sve pokrenute procese. Pokušava ponovo svake sekunde; kliknite na Proveri ponovo da biste odmah ponovili pokušaj ili zatvorite OmniWM."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM δεν έχει ξεκινήσει γιατί δεν μπορούσε να επιθεωρήσει με ασφάλεια κάθε διαδικασία εκτέλεσης. Επανέρχεται κάθε δευτερόλεπτο; κάντε κλικ στο Check ξανά για να ξαναδοκιμάσετε τώρα, ή να εγκαταλείψετε OmniWM."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM לא הופעל כי לא הצליח לבדוק בבטחה את כל התהליכים הפועלים. הוא מנסה שוב מדי שנייה; לחצו על ״בדוק שוב״ כדי לנסות כעת, או צאו מ-OmniWM."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не запустился, поскольку не удалось безопасно проверить все запущенные процессы. Повторная попытка выполняется каждую секунду; нажмите «Проверить снова», чтобы повторить её немедленно, или завершите OmniWM."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nie uruchomił się, ponieważ nie udało się bezpiecznie sprawdzić wszystkich działających procesów. Aplikacja ponawia próbę co sekundę; kliknij „Sprawdź ponownie”, aby ponowić ją teraz, albo zakończ OmniWM."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не запустився, оскільки не вдалося безпечно перевірити всі активні процеси. Повторна спроба виконується щосекунди; натисніть «Перевірити знову», щоб повторити її зараз, або завершіть роботу OmniWM."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM n’a pas démarré, car il n’a pas pu examiner en toute sécurité tous les processus en cours. Il réessaie toutes les secondes ; cliquez sur Vérifier à nouveau pour réessayer immédiatement, ou quittez OmniWM."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM is niet gestart omdat niet alle actieve processen veilig konden worden onderzocht. Het probeert het elke seconde opnieuw; klik op Opnieuw controleren om direct opnieuw te proberen, of sluit OmniWM af."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM non è stato avviato perché non è riuscito a esaminare in sicurezza tutti i processi in esecuzione. Riprova ogni secondo; fai clic su Ricontrolla per riprovare subito oppure esci da OmniWM."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ei ole käynnistynyt, koska se ei voinut turvallisesti tarkastaa kaikkia käynnissä olevia prosesseja. Se yrittää uudelleen sekunnin välein; napsauta Tarkista uudelleen yrittääksesi heti tai lopeta OmniWM."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM er ikke startet, fordi det ikke sikkert kunne undersøge alle kørende processer. Det prøver igen hvert sekund; klik på Tjek igen for at prøve nu, eller afslut OmniWM."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM이 실행 중인 모든 프로세스를 안전하게 검사할 수 없어 시작하지 못했습니다. 1초마다 다시 시도합니다. 지금 다시 시도하려면 다시 확인을 클릭하거나 OmniWM을 종료하세요."
+          }
+        }
+      }
+    },
+    "OmniWM has not started. Quit these window managers or stop their background services. OmniWM continues automatically once they are gone, or click Check Again:\n\n%@" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMが開始されていません。これらのウィンドウマネージャーを終了するか、バックグラウンドサービスを停止してください。OmniWMは、それらが終了すると自動的に続行されます。または、「もう一度確認」をクリックしてください：\n\n%@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM hat nicht begonnen. Beenden Sie diese Fenstermanager oder stoppen Sie ihre Hintergrunddienste. OmniWM wird automatisch fortgesetzt, sobald sie entfernt sind, oder klicken Sie auf Noch einmal überprüfen:\n\n%@"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM har ikke startet. Avslutt disse vindusbehandlerne eller stopp bakgrunnstjenestene deres. OmniWM fortsetter automatisk når de er borte, eller klikk Sjekk igjen:\n\n%@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM har inte startat. Stäng av dessa fönsterhanterare eller stoppa deras bakgrundstjänster. OmniWM fortsätter automatiskt när de är borta, eller klicka på Kontrollera igen:\n\n%@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM no ha comenzado. Cierre estos gestores de ventanas o detenga sus servicios de fondo. OmniWM continúa automáticamente una vez que hayan desaparecido, o haga clic en Revisar de nuevo:\n\n%@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 未启动。关闭这些窗口管理器或停止它们的后台服务。OmniWM 在它们消失后会自动继续运行，或者点击再次检查：\n\n%@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM शुरू नहीं हुआ है। इन विंडो मैनेजर को बंद करें या उनकी पृष्ठभूमि सेवाओं को रोक दें।OmniWM स्वचालित रूप से तब जारी रहता है जब वे चले जाते हैं, या फिर फिर से जांचें पर क्लिक करें:\n\n%@"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM لم يبدأ. أوقف مشغلي النوافذ هذه أو أوقف خدمات الخلفية الخاصة بها. OmniWM يستمر تلقائيًا بمجرد إزالتها، أو انقر على التحقق مرة أخرى:\n\n%@"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM se nije pokrenuo. Zatvorite ove menadžere prozora ili zaustavite njihove pozadinske usluge. OmniWM će automatski nastaviti kada se oni zatvore. Možete i da kliknete na Proveri ponovo:\n\n%@"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM δεν έχει ξεκινήσει. Παραιτήσου από αυτούς τους διαχειριστές παραθύρων ή σταμάτα τις υπηρεσίες τους. Το OmniWM συνεχίζει αυτόματα μόλις έχουν φύγει, ή κάντε κλικ στο Check ξανά:\n\n%@"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM לא הופעל. צאו ממנהלי החלונות האלה או הפסיקו את שירותי הרקע שלהם. OmniWM ימשיך אוטומטית כשלא יהיו פעילים עוד, או לחצו על ״בדוק שוב״:\n\n%@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не запустился. Завершите работу этих оконных менеджеров или остановите их фоновые службы. Когда они перестанут работать, OmniWM продолжит работу автоматически; также можно нажать «Проверить снова»:\n\n%@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nie uruchomił się. Zamknij te menedżery okien lub zatrzymaj ich usługi działające w tle. Gdy przestaną działać, OmniWM automatycznie wznowi uruchamianie; możesz też kliknąć „Sprawdź ponownie”:\n\n%@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM не запустився. Завершіть роботу цих менеджерів вікон або зупиніть їхні фонові служби. OmniWM автоматично продовжить запуск після їх зупинки; також можна натиснути «Перевірити знову»:\n\n%@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM n’a pas démarré. Quittez ces gestionnaires de fenêtres ou arrêtez leurs services en arrière-plan. OmniWM continuera automatiquement lorsqu’ils auront disparu, ou cliquez sur Vérifier à nouveau :\n\n%@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM is niet gestart. Sluit deze vensterbeheerders af of stop hun achtergrondservices. OmniWM gaat automatisch verder zodra ze zijn gestopt, of klik op Opnieuw controleren:\n\n%@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM non è stato avviato. Chiudi questi gestori di finestre o arresta i loro servizi in background. OmniWM prosegue automaticamente l’avvio quando sono terminati; in alternativa, fai clic su Ricontrolla:\n\n%@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ei ole käynnistynyt. Lopeta nämä ikkunanhallintaohjelmat tai pysäytä niiden taustapalvelut. OmniWM jatkaa käynnistymistä automaattisesti niiden päätyttyä; voit myös napsauttaa Tarkista uudelleen:\n\n%@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM er ikke startet. Afslut disse vinduesadministratorer, eller stop deres baggrundstjenester. OmniWM fortsætter automatisk, når de er væk; du kan også klikke på Tjek igen:\n\n%@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM이 시작하지 못했습니다. 다음 창 관리자를 종료하거나 백그라운드 서비스를 중지하세요. 모두 종료되면 OmniWM이 자동으로 계속 진행합니다. 지금 다시 시도하려면 다시 확인을 클릭하세요:\n\n%@"
+          }
+        }
+      }
+    },
+    "OmniWM is disabled." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMが無効になっています。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ist deaktiviert."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM er deaktivert."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM är inaktiverat."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM está deshabilitado."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM被禁用。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM अक्षम है।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM معطل."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM je onemogućen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM είναι απενεργοποιημένο."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM מנוטרל."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM отключен."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM jest wyłączony."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM вимкнено."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM est désactivé."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM is uitgeschakeld."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM è disabilitato."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM on pois käytöstä."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM er deaktiveret."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM이 비활성화되었습니다."
+          }
+        }
+      }
+    },
+    "OmniWM keyboard shortcuts are disabled while a password field or secure text entry is active." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMキーボードショートカットは、パスワードフィールドまたは安全なテキスト入力がアクティブになっている間無効になります。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Tastenkürzel sind deaktiviert, wenn ein Passwortfeld oder eine sichere Texteingabe aktiviert ist."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMs hurtigtaster er deaktivert mens et passordfelt eller sikker tekstinntasting er aktiv."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM tangentbordsgenvägar är inaktiverade medan ett lösenordsfält eller säker textinmatning är aktivt."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Los atajos de teclado están desactivados mientras que un campo de contraseña o una entrada de texto segura está activa."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 键盘快捷键在密码字段或安全文本输入功能启用时被禁用。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM कीबोर्ड शॉर्टकट तब अक्षम हो जाते हैं जब पासवर्ड फ़ील्ड या सुरक्षित टेक्स्ट एंट्री सक्रिय होती है।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تُعطّل اختصارات لوحة المفاتيح OmniWM أثناء تفعيل حقل كلمة المرور أو إدخال النص الآمن."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Ključne tastature su onemogućene dok je lozinsko polje ili siguran tekst ulaz aktivan."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Οι συντομεύσεις πληκτρολογίου OmniWM απενεργοποιούνται ενώ ένα πεδίο κωδικού πρόσβασης ή ασφαλής καταχώρηση κειμένου είναι ενεργή."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM קיצורי מקשים מנוטרלים בעוד שדה ססמה או רשומת טקסט מאובטחת פעילים."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM краткие клавиши клавиатуры отключены, пока поле для пароля или безопасное текстовое введение активно."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM skróty klawiaturowe są wyłączone, gdy jest aktywny pole hasła lub zabezpieczona wprowadzana tekst."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Клавіатурні скорочення OmniWM вимкнено, поки активне поле пароля або захищене введення тексту."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les raccourcis clavier OmniWM sont désactivés alors qu'un champ de mot de passe ou une entrée de texte sécurisée est actif."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM sneltoetsen zijn uitgeschakeld terwijl een wachtwoordveld of beveiligde tekstinvoer actief is."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le scorciatoie da tastiera OmniWM sono disattivate mentre è attivo un campo password o una voce di testo sicura."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM:n pikanäppäimet eivät ole käytössä, kun salasanakenttä tai suojattu tekstinsyöttö on aktiivinen."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM tastaturgenveje deaktiveres, mens et kodeordsfelt eller en sikker tekstindgang er aktiv."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 키보드 단축키는 비밀번호 필드 또는 보안 텍스트 입력이 활성화되어 있는 동안 비활성화됩니다."
+          }
+        }
+      }
+    },
+    "OmniWM left %@ untouched and blocked configuration writes: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "OmniWM left %1$@ untouched and blocked configuration writes: %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは%1$@を無傷でブロックされた構成書き込みを残しています：%2$@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM hinterließ %1$@ unberührt und blockierte Konfigurationsschreibungen: %2$@"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM lot %1$@ være uendret og blokkerte skriving til konfigurasjonen: %2$@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM lämnad %1$@ omodifierad och blockerade konfigurationsskrivningar: %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM dejó %1$@ intacto y bloqueó la escritura de la configuración: %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 留下了%1$@未受影响并被阻止的配置写入：%2$@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ने %1$@ को अनछुआ और अवरुद्ध कॉन्फ़िगरेशन लेखन छोड़ दिया: %2$@"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترك OmniWM الملف %1$@ دون تغيير ومنع كتابة الإعدادات: %2$@"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM levo %1$@ netaknuta i blokirana konfiguracija piše: %2$@"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM άφησε το %1$@ ανέπαφο και απέκλεισε τις εγγραφές ρυθμίσεων: %2$@"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM שמאל %1$@ תצורה שלא נגעו בה וחסומה כותבת: %2$@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM оставил %1$@ без изменений и заблокировав конфигурационные записи: %2$@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM zostawił %1$@ bez zmian i zablokował zapis konfiguracji: %2$@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM залишив %1$@ без змін і заблокував запис конфігурації: %2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM gauche %1$@ n'a pas été modifié et la configuration bloquée écrit: %2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM links %1$@ onaangeraakt en geblokkeerde configuratie schrijft: %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM left %1$@ writes intouched and blocked configuration: %2$@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM vasen %1$@ koskematon ja estetty kokoonpano kirjoittaa: %2$@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM venstre %1$@ uberørt og blokeret konfiguration skriver: %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM은 %1$@을(를) 변경하지 않고 설정 파일 쓰기를 차단했습니다: %2$@"
+          }
+        }
+      }
+    },
+    "OmniWM left %@ untouched and blocked configuration writes: %@ The exact original bytes are at %@." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "OmniWM left %1$@ untouched and blocked configuration writes: %2$@ The exact original bytes are at %3$@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは%1$@をそのままにして、ブロックされた構成書き込みを無視します：%2$@正確な元のバイトは%3$@にあります。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM hinterließ %1$@ unverändert und blockierte Konfigurationsschreibungen: %2$@ Die exakten ursprünglichen Bytes befinden sich bei %3$@."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM lot %1$@ være uendret og blokkerte skriving til konfigurasjonen: %2$@ De nøyaktige opprinnelige bytene finnes i %3$@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM lämnad %1$@ orörd och blockerade konfigurationsskrivningar: %2$@ De exakta ursprungliga bytearna finns på %3$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM dejó %1$@ intacto y bloqueó la escritura de la configuración: %2$@ Los bytes originales exactos están en %3$@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 留下了%1$@未修改，并阻止了配置写入：%2$@ 确切的原始字节位于%3$@。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ने %1$@ को अनछुआ और अवरुद्ध कॉन्फ़िगरेशन लेखन छोड़ दिया: %2$@ सटीक मूल बाइट्स %3$@ पर हैं।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترك OmniWM الملف %1$@ دون تغيير ومنع كتابة الإعدادات: %2$@ توجد البيانات الأصلية كما هي في %3$@."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM levo %1$@ netaknuta i blokirana konfiguracija piše: %2$@ Tačni originalni bitovi su na %3$@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM άφησε το %1$@ ανέπαφο και απέκλεισε τις εγγραφές ρυθμίσεων: %2$@ Τα ακριβή αρχικά δεδομένα βρίσκονται στο %3$@."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM שמאל %1$@ תצורה שלא נגעו בה וחסומה כותבת: %2$@ הבייטים המקוריים המדויקים נמצאים ב %3$@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM оставил %1$@ без изменений и блокировал конфигурационные записи: %2$@ Точные исходные байты находятся в %3$@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM zostawił %1$@ bez zmian i zablokował zapis konfiguracji: %2$@. Dokładne oryginalne bajty znajdują się na %3$@."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM залишив %1$@ без змін і заблокував запис конфігурації: %2$@ Точні вихідні байти збережено у %3$@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM gauche %1$@ configuration intacte et bloquée écrit: %2$@ Les octets originaux exacts sont à %3$@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM links %1$@ ongerepte en geblokkeerde configuratie schrijft: %2$@ De exacte originele bytes zijn op %3$@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM left %1$@ writes intouched and blocked configuration: %2$@ I byte originali esatti sono %3$@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM vasen %1$@ koskematon ja tukkeutunut kokoonpano kirjoittaa: %2$@ Tarkat alkuperäiset tavut ovat %3$@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM venstre %1$@ uberørt og blokeret konfiguration skriver: %2$@ De nøjagtige originale bytes er på %3$@."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM은 %1$@을(를) 변경하지 않고 설정 파일 쓰기를 차단했습니다: %2$@ 원본 바이트는 %3$@에 그대로 보존되어 있습니다."
+          }
+        }
+      }
+    },
+    "OmniWM needs Accessibility access to observe and manage windows." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは、ウィンドウを観察し、管理するためにアクセシビリティへのアクセスが必要です。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM benötigt Barrierefreiheitszugriff, um Fenster zu beobachten und zu verwalten."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM trenger tilgang til tilgjengelighet for å observere og administrere vinduer."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM behöver åtkomst till Hjälpmedel för att observera och hantera fönster."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM necesita acceso de accesibilidad para observar y gestionar las ventanas."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM需要访问辅助功能以观察和管理窗口。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "विंडो को देखने और प्रबंधित करने के लिए OmniWM को ऐक्सेसिबिलिटी अनुमति चाहिए।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM يحتاج إلى وصول إمكانية الوصول لمراقبة وإدارة النوافذ."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM-u je potreban pristup funkcijama pristupačnosti da bi pratio i upravljao prozorima."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM χρειάζεται πρόσβαση στην Προσβασιμότητα για να παρακολουθεί και να διαχειρίζεται παράθυρα."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM זקוק לגישה לנגישות כדי לעקוב אחר חלונות ולנהל אותם."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для отслеживания окон и управления ими OmniWM требуется доступ к Универсальному доступу."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM potrzebuje uprawnień dostępności, aby obserwować okna i nimi zarządzać."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM потрібен доступ до функцій Доступності, щоб спостерігати за вікнами й керувати ними."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM a besoin de l’accès aux fonctionnalités d’accessibilité pour observer et gérer les fenêtres."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM heeft toegang tot toegankelijkheid nodig om vensters te observeren en te beheren."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM richiede l’accesso ad Accessibilità per osservare e gestire le finestre."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM tarvitsee Käyttöapu-oikeuden ikkunoiden tarkkailuun ja hallintaan."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM behøver adgang til Tilgængelighed for at observere og styre vinduer."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM이 창을 관찰하고 관리하려면 손쉬운 사용 권한이 필요합니다."
+          }
+        }
+      }
+    },
+    "OmniWM preserved settings data it could not parse as settings.toml.corrupt or settings.toml.corrupt.1." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM は解析できなかった設定データを settings.toml.corrupt または settings.toml.corrupt.1 として保存しました。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM hat Einstellungsdaten, die es nicht einlesen konnte, als settings.toml.corrupt oder settings.toml.corrupt.1 gesichert."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM lagret innstillingsdata det ikke kunne tolke, i settings.toml.corrupt eller settings.toml.corrupt.1."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM har sparat inställningsdata som inte gick att tolka i filen settings.toml.corrupt eller settings.toml.corrupt.1."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM conservó los datos de configuración que no pudo analizar en settings.toml.corrupt o settings.toml.corrupt.1."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 已将无法解析的设置数据保存为 settings.toml.corrupt 或 settings.toml.corrupt.1。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ने सेटिंग्स का जो डेटा पढ़ नहीं पाया, उसे settings.toml.corrupt या settings.toml.corrupt.1 के रूप में सुरक्षित रखा है।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "احتفظ OmniWM ببيانات الإعدادات التي تعذّر عليه تحليلها في settings.toml.corrupt أو settings.toml.corrupt.1."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM je podatke podešavanja koje nije mogao da obradi sačuvao u datoteci settings.toml.corrupt ili settings.toml.corrupt.1."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM διατήρησε τα δεδομένα ρυθμίσεων που δεν μπόρεσε να αναλύσει στα αρχεία settings.toml.corrupt ή settings.toml.corrupt.1."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM שמר נתוני הגדרות שלא הצליח לפענח בקובץ settings.toml.corrupt או settings.toml.corrupt.1."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM сохранил данные настроек, которые не удалось разобрать, в файле settings.toml.corrupt или settings.toml.corrupt.1."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM zachował dane ustawień, których nie udało się odczytać, w pliku settings.toml.corrupt lub settings.toml.corrupt.1."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM зберіг дані параметрів, які не зміг прочитати, у файлі settings.toml.corrupt або settings.toml.corrupt.1."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM a conservé les données de réglages qu’il n’a pas pu analyser sous les noms settings.toml.corrupt ou settings.toml.corrupt.1."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM heeft instellingsgegevens die het niet kon lezen bewaard als settings.toml.corrupt of settings.toml.corrupt.1."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ha conservato in settings.toml.corrupt o settings.toml.corrupt.1 i dati delle impostazioni che non è riuscito a interpretare."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM tallensi asetustiedot, joita se ei pystynyt jäsentämään, tiedostoihin settings.toml.corrupt tai settings.toml.corrupt.1."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM har bevaret de indstillingsdata, som det ikke kunne fortolke, som settings.toml.corrupt eller settings.toml.corrupt.1."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM은 해석할 수 없었던 설정 데이터를 settings.toml.corrupt 또는 settings.toml.corrupt.1 파일로 보존했습니다."
+          }
+        }
+      }
+    },
+    "OmniWM recovered from a crash" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 事故から回復した"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM erholt sich von einem Unfall"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM gjenopprettet etter en krasj"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM återhämtad från en krasch"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM se ha recuperado de un fallo de la aplicación"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 从事故中恢复过来"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM एक दुर्घटना से बरामद हुआ"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعافى OmniWM من تعطّل"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM oporavio od nesreće"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η OmniWM ανακτάται από μια συντριβή"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM התאושש מהתרסקות."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM восстановился после аварии"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM odzyskany po awarii"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM відновився після збою"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM s’est remis d’un plantage"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM hersteld van een crash"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM recuperato da un crash"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM toipui kolarista"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM inddrives fra et nedbrud"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM이 충돌 후 복구되었습니다"
+          }
+        }
+      }
+    },
+    "OmniWM requires at least one configured workspace" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWMは少なくとも1つの構成されたワークスペースが必要です。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM erfordert mindestens einen konfigurierten Arbeitsbereich"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM krever minst ett konfigurert arbeidsområde"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kräver minst en konfigurerad arbetsyta"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM requiere al menos un espacio de trabajo configurado"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM要求至少有一个配置好的工作区"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM के लिए कम से कम एक कॉन्फ़िगर किया गया कार्यक्षेत्र आवश्यक है।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM يتطلب مساحة عمل واحدة على الأقل مُهيأة"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM zahteva najmanje jedan konfigurisani radni prostor"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM απαιτεί τουλάχιστον έναν διαμορφωμένο χώρο εργασίας"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM דורש לפחות מקום עבודה מוגדר אחד"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM требует не менее одного настроенного рабочего пространства"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM wymaga co najmniej jednego skonfigurowanego przestrzeni roboczej"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM вимагає щонайменше одного налаштованого робочого простору"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nécessite au moins un espace de travail configuré"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM vereist ten minste één geconfigureerde werkruimte"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM richiede almeno uno spazio di lavoro configurato"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM vaatii vähintään yhden konfiguroidun työtilan"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kræver mindst ét konfigureret arbejdsområde"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM은 최소한 하나의 구성된 작업 공간이 필요합니다."
+          }
+        }
+      }
+    },
+    "OmniWM requires the macOS setting “Displays have separate Spaces.” Turn it on in System Settings > Desktop & Dock > Mission Control, then log out and back in. Window management stays paused until it is enabled." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM は、macOS 設定「ディスプレイは個別のスペースを表示する」が必要です。システム設定 > Desktop & Dock > ミッションコントロールで有効にしてからログアウトして再度ログインしてください。ウィンドウ管理は有効になるまで一時停止されます。"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM benötigt die macOS-Einstellung „Monitore verwenden verschiedene Spaces“. Aktivieren Sie sie unter Systemeinstellungen > Schreibtisch & Dock > Mission Control und melden Sie sich anschließend ab und wieder an. Die Fensterverwaltung bleibt pausiert, bis diese Einstellung aktiviert ist."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM krever innstillingen macOS «Viser separate vindusplasser». Slå den på i Systeminnstillinger > Skrivebord og verktøylinje > Mission Control, og logg deretter ut og inn igjen. Vindushåndtering forblir midlertidig suspendert til den er aktivert."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kräver macOS-inställningen ”Bildskärmar har egna Spaces”. Aktivera den i Systeminställningar > Skrivbord och Dock > Mission Control och logga sedan ut och in igen. Fönsterhanteringen förblir pausad tills den aktiveras."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM requiere la configuración macOS “Las pantallas tienen espacios separados”. Actívala en Configuración del sistema > Escritorio y dock > Control de misiones, luego cierra sesión y vuelve a iniciar sesión. La gestión de ventanas permanece pausada hasta que se activa."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM 需要启用macOS设置“显示器具有独立空间”。在系统设置 > 桌面和Dock > 任务控制中将其打开，然后注销并重新登录。窗口管理将暂停，直到启用为止。"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM को macOS सेटिंग “Displays have separate Spaces.” की आवश्यकता होती है। इसे सिस्टम सेटिंग्स > डेस्कटॉप और डॉक > मिशन कंट्रोल में चालू करें, फिर लॉग आउट करें और वापस लॉग इन करें। विंडो प्रबंधन तब तक निलंबित रहता है जब तक कि इसे सक्षम नहीं किया जाता।"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يتطلب OmniWM تفعيل إعداد macOS «للشاشات مساحات منفصلة». فعّله من إعدادات النظام > سطح المكتب وDock > Mission Control، ثم سجّل الخروج وادخل مجددًا. تظل إدارة النوافذ متوقفة حتى يُفعّل."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM zahteva podešavanje macOS-a „Ogledala imaju odvojene prostore.“ Pokrenite ga u Podešavanja sistema > Desktop i Dock > Kontrola misija, a zatim se prijavite i vratite se. Upravljanje prozorom ostaje prekinuto dok se ne aktivira."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το OmniWM απαιτεί τη ρύθμιση του macOS «Οι οθόνες έχουν ξεχωριστούς Χώρους». Ενεργοποιήστε τη στις Ρυθμίσεις συστήματος > Γραφείο εργασίας και Dock > Mission Control και, στη συνέχεια, αποσυνδεθείτε και συνδεθείτε ξανά. Η διαχείριση παραθύρων παραμένει σε παύση μέχρι να ενεργοποιηθεί."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM מחייב להפעיל את ההגדרה ״הצגים כוללים Spaces נפרדים״ ב-macOS. הפעילו אותה בהגדרות המערכת > מכתבה ו-Dock > Mission Control, ואז התנתקו והתחברו מחדש. ניהול החלונות יישאר מושהה עד להפעלת ההגדרה."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для работы OmniWM в macOS должен быть включён параметр «Дисплеи имеют отдельные пространства». Включите его в меню «Системные настройки» > «Рабочий стол и Dock» > Mission Control, затем выйдите из учётной записи и войдите снова. Управление окнами останется приостановленным, пока параметр не будет включён."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM wymaga w macOS włączenia opcji „Osobne przestrzenie dla wyświetlaczy”. Włącz ją w Ustawieniach systemowych > Biurko i Dock > Mission Control, a następnie wyloguj się i zaloguj ponownie. Zarządzanie oknami pozostanie wstrzymane do czasu jej włączenia."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для OmniWM потрібен параметр macOS «Окремі простори на дисплеях». Увімкніть його в Системні параметри > Робочий стіл і Dock > Mission Control, потім вийдіть із системи й увійдіть знову. Керування вікнами залишатиметься призупиненим, доки параметр не буде ввімкнено."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM nécessite le réglage macOS « Les écrans disposent d’espaces distincts ». Activez-le dans Réglages Système > Bureau et Dock > Mission Control, puis fermez votre session et reconnectez-vous. La gestion des fenêtres reste suspendue jusqu’à l’activation de ce réglage."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM vereist de macOS-instelling ‘Beeldschermen hebben afzonderlijke spaces’. Schakel deze in via Systeeminstellingen > Bureaublad en Dock > Mission Control en log daarna uit en weer in. Vensterbeheer blijft onderbroken totdat de instelling is ingeschakeld."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM richiede l’impostazione macOS “I monitor hanno spazi separati”. Attivala in Impostazioni di Sistema > Scrivania e Dock > Mission Control, poi esci dalla sessione e accedi di nuovo. La gestione delle finestre resta in pausa finché l’impostazione non viene attivata."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM edellyttää macOS:n asetusta “Näytöissä on erilliset tilat”. Ota se käyttöön kohdassa Järjestelmäasetukset > Työpöytä ja Dock > Mission Control ja kirjaudu sitten ulos ja takaisin sisään. Ikkunanhallinta pysyy keskeytettynä, kunnes asetus on käytössä."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM kræver macOS-indstillingen “Skærme har separate Spaces”. Slå den til under Systemindstillinger > Skrivebord & Dock > Mission Control, og log derefter ud og ind igen. Vinduesstyring forbliver sat på pause, indtil indstillingen er slået til."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM에는 macOS의 “각각의 Spaces가 있는 디스플레이” 설정이 필요합니다. 시스템 설정 > 데스크탑 및 Dock > Mission Control에서 켠 다음 로그아웃했다가 다시 로그인하세요. 이 설정이 켜질 때까지 창 관리는 일시 중지됩니다."
+          }
+        }
+      }
+    },
+    "OmniWM routing arrangement" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM ルーティング配置"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM Routing-Einrichtung"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM rutingoppsett"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM routningsarrangemang"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM disposición de enrutamiento"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OmniWM路由安排"
           }
         },
         "hi" : {

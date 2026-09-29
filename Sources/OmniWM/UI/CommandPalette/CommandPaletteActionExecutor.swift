@@ -57,7 +57,7 @@ final class CommandPaletteActionExecutor {
                 case .executed:
                     ""
                 case .ignoredDisabled:
-                    String(localized: "OmniWM is disabled.")
+                    String(localized: "This feature is disabled.")
                 case .ignoredOverview:
                     String(localized: "The command is unavailable while Overview is open.")
                 case .ignoredLayoutMismatch:

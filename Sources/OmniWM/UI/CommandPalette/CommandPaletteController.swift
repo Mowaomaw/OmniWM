@@ -175,6 +175,7 @@ final class CommandPaletteController: NSObject, NSWindowDelegate {
         wmController.focusPolicyEngine.beginLease(owner: .commandPalette, reason: "command_palette", duration: nil)
         environment.observeClipboardItems(wmController) { [weak self] items in
             guard let self, self.isVisible else { return }
+            self.isClipboardHistoryEnabled = self.environment.isClipboardHistoryEnabled(wmController)
             self.clipboardItems = self.isClipboardHistoryEnabled ? items : []
         }
         updateSelectionAfterFilterChange()
@@ -322,33 +323,45 @@ final class CommandPaletteController: NSObject, NSWindowDelegate {
     }
 
     func setClipboardItemPinned(_ pinned: Bool, id: UUID) {
-        guard let wmController else { return }
+        guard let wmController, isClipboardHistoryEnabled,
+              environment.isClipboardHistoryEnabled(wmController)
+        else { return }
         Task { @MainActor [weak self, environment, wmController] in
             let items = await environment.setClipboardItemPinned(wmController, id, pinned)
-            self?.clipboardErrorText = nil
-            self?.clipboardItems = items
+            guard let self, self.isVisible, environment.isClipboardHistoryEnabled(wmController) else { return }
+            self.clipboardErrorText = nil
+            self.clipboardItems = items
         }
     }
 
     func deleteClipboardItem(_ id: UUID) {
-        guard let wmController else { return }
+        guard let wmController, isClipboardHistoryEnabled,
+              environment.isClipboardHistoryEnabled(wmController)
+        else { return }
         Task { @MainActor [weak self, environment, wmController] in
-            self?.clipboardItems = await environment.deleteClipboardItem(wmController, id)
-            self?.clipboardErrorText = nil
+            let items = await environment.deleteClipboardItem(wmController, id)
+            guard let self, self.isVisible, environment.isClipboardHistoryEnabled(wmController) else { return }
+            self.clipboardItems = items
+            self.clipboardErrorText = nil
         }
     }
 
     func clearClipboardHistory() {
-        guard let wmController else { return }
+        guard let wmController, isClipboardHistoryEnabled,
+              environment.isClipboardHistoryEnabled(wmController)
+        else { return }
         isConfirmingClipboardClear = true
         defer { isConfirmingClipboardClear = false }
         guard environment.confirmClearClipboardHistory() else { return }
         Task { @MainActor [weak self, environment, wmController] in
             do {
-                self?.clipboardItems = try await environment.clearClipboardHistory(wmController)
-                self?.clipboardErrorText = nil
+                let items = try await environment.clearClipboardHistory(wmController)
+                guard let self, self.isVisible, environment.isClipboardHistoryEnabled(wmController) else { return }
+                self.clipboardItems = items
+                self.clipboardErrorText = nil
             } catch {
-                self?.clipboardErrorText = String(localized: "Could not clear clipboard history.")
+                guard let self, self.isVisible, environment.isClipboardHistoryEnabled(wmController) else { return }
+                self.clipboardErrorText = String(localized: "Could not clear clipboard history.")
             }
         }
     }

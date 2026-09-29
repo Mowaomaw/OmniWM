@@ -66,6 +66,16 @@ struct GeneralSettingsTab: View {
         )
 
         Form {
+            Section("Language") {
+                Picker("App Language", selection: $settings.language) {
+                    Text("Follow macOS").tag(String?.none)
+                    ForEach(AppLanguagePreference.availableLanguages, id: \.self) { language in
+                        Text(AppLanguagePreference.nativeName(for: language)).tag(String?.some(language))
+                    }
+                }
+                SettingsCaption(localized: "Language changes take effect after you restart OmniWM.")
+            }
+
             Section("Appearance") {
                 Picker("Theme", selection: $settings.appearanceMode) {
                     ForEach(AppearanceMode.allCases, id: \.self) { mode in

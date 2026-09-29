@@ -217,8 +217,10 @@ extension CommandHandler {
         case .hiddenBar:
             controller.toggleHiddenBarPanel()
         case .quakeTerminal:
+            guard controller.settings.quakeTerminal.enabled else { return .ignoredDisabled }
             controller.toggleQuakeTerminal()
         case .overview:
+            guard controller.settings.overview.enabled else { return .ignoredDisabled }
             controller.toggleOverview()
         case .systemStats:
             controller.toggleSystemStats()

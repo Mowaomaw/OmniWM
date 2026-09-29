@@ -154,7 +154,13 @@ enum CommandPaletteSearch {
             uniquingKeysWith: { first, _ in first }
         )
 
-        return ActionCatalog.allSpecs().map { spec in
+        return ActionCatalog.allSpecs().filter { spec in
+            switch spec.command {
+            case .presentation(.overview): wmController.settings.overview.enabled
+            case .presentation(.quakeTerminal): wmController.settings.quakeTerminal.enabled
+            default: true
+            }
+        }.map { spec in
             let trigger = spec.visibility == .unassignable ? nil : triggersByID[spec.id]
             let hasShortcut = trigger?.isUnassigned == false
             let shortcut = if spec.visibility == .unassignable {

@@ -85,7 +85,7 @@ final class ClipboardHistoryStoreTests: XCTestCase {
         XCTAssertNil(remainingSave)
     }
 
-    func testDisabledRestartLoadsExistingHistoryWithoutOverwritingIt() async throws {
+    func testDisabledRestartLeavesHistoryUnloadedWithoutOverwritingIt() async throws {
         let (store, fileURL) = try makeStore(sleeper: ClipboardSaveSleeper())
         _ = await store.handleCapture(capture("saved"))
         try await store.flush()
@@ -101,11 +101,18 @@ final class ClipboardHistoryStoreTests: XCTestCase {
 
         let snapshots = await restartedStore.updateConfiguration(configuration)
 
-        XCTAssertEqual(snapshots.map(\.title), ["saved"])
+        XCTAssertTrue(snapshots.isEmpty)
+        let loadedWhileDisabled = await restartedStore.hasLoaded
+        XCTAssertFalse(loadedWhileDisabled)
         let pendingSave = await restartedStore.saveTask
         XCTAssertNil(pendingSave)
         try await restartedStore.flush()
         XCTAssertEqual(try Data(contentsOf: fileURL), originalData)
+
+        var enabled = configuration
+        enabled.isEnabled = true
+        let restored = await restartedStore.updateConfiguration(enabled)
+        XCTAssertEqual(restored.map(\.title), ["saved"])
     }
 
     func testCaptureAlreadyInFlightCannotSaveAfterHistoryIsDisabled() async throws {
@@ -124,8 +131,65 @@ final class ClipboardHistoryStoreTests: XCTestCase {
         let rejected = await store.handleCapture(capture("late"))
         try await store.flush()
 
-        XCTAssertEqual(rejected.map(\.title), ["saved"])
+        XCTAssertTrue(rejected.isEmpty)
+        let loadedWhileDisabled = await store.hasLoaded
+        XCTAssertFalse(loadedWhileDisabled)
         XCTAssertEqual(try persistedTitles(at: fileURL), ["saved"])
+    }
+
+    func testDisabledStoreRejectsEditsWithoutReloadingHistory() async throws {
+        let (store, fileURL) = try makeStore(sleeper: ClipboardSaveSleeper())
+        let captured = await store.handleCapture(capture("saved"))
+        let id = try XCTUnwrap(captured.first?.id)
+        try await store.flush()
+        let originalData = try Data(contentsOf: fileURL)
+        var disabled = ClipboardHistoryConfiguration(
+            isEnabled: true,
+            maxItems: 10,
+            maxItemBytes: 4096,
+            maxTotalBytes: 40960,
+            storageDirectory: fileURL.deletingLastPathComponent()
+        )
+        disabled.isEnabled = false
+
+        _ = await store.updateConfiguration(disabled)
+
+        let pinned = await store.pin(id: id, isPinned: true)
+        let deleted = await store.delete(id: id)
+        let cleared = try await store.clear()
+        let item = await store.item(id: id)
+        let loadedWhileDisabled = await store.hasLoaded
+        XCTAssertTrue(pinned.isEmpty)
+        XCTAssertTrue(deleted.isEmpty)
+        XCTAssertTrue(cleared.isEmpty)
+        XCTAssertNil(item)
+        XCTAssertFalse(loadedWhileDisabled)
+        XCTAssertEqual(try Data(contentsOf: fileURL), originalData)
+    }
+
+    func testDisableRetainsDirtyItemsUntilFailedSaveCanRetry() async throws {
+        let (store, fileURL) = try makeStore(sleeper: ClipboardSaveSleeper())
+        _ = await store.handleCapture(capture("pending"))
+        try FileManager.default.createDirectory(at: fileURL, withIntermediateDirectories: false)
+        let disabled = ClipboardHistoryConfiguration(
+            isEnabled: false,
+            maxItems: 10,
+            maxItemBytes: 4096,
+            maxTotalBytes: 40960,
+            storageDirectory: fileURL.deletingLastPathComponent()
+        )
+
+        let hidden = await store.updateConfiguration(disabled)
+
+        XCTAssertTrue(hidden.isEmpty)
+        let retainedAfterFailure = await store.hasLoaded
+        XCTAssertTrue(retainedAfterFailure)
+        try FileManager.default.removeItem(at: fileURL)
+        try await store.flush()
+        _ = await store.updateConfiguration(disabled)
+        let loadedAfterRetry = await store.hasLoaded
+        XCTAssertFalse(loadedAfterRetry)
+        XCTAssertEqual(try persistedTitles(at: fileURL), ["pending"])
     }
 
     func testCaptureAlreadyInFlightHonorsCurrentIgnoredTypes() async throws {
