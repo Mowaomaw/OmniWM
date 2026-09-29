@@ -237,6 +237,7 @@ struct NodeActivationOptions {
         let layoutFrames = controller.layoutFrames(for: monitor, scale: scale)
         let workingArea = WorkingAreaContext(
             workingFrame: workingFrame,
+            singleWindowFrame: layoutFrames.workingFrame,
             borderSafeFillFrame: layoutFrames.borderSafeFillFrame,
             fullscreenLayoutFrame: layoutFrames.fullscreenLayoutFrame,
             viewFrame: monitor.frame,

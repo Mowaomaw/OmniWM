@@ -105,7 +105,7 @@ extension WindowActionHandler {
                let monitor = controller.workspaceManager.monitor(for: workspaceId)
             {
                 let gap = controller.innerGap(for: monitor)
-                let workingFrame = controller.insetWorkingFrame(for: monitor)
+                let workingFrame = controller.niriWorkingFrame(for: monitor)
                 let orientation = controller.settings.monitors.effectiveOrientation(for: monitor)
                 controller.workspaceManager.withEngineMutationScope {
                     engine.activateWindow(niriWindow.id, in: workspaceId)

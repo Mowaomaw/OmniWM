@@ -101,7 +101,7 @@ extension NiriLayoutHandler {
         }
 
         let workspaceId = entry.workspaceId
-        let workingFrame = controller.insetWorkingFrame(for: monitor)
+        let workingFrame = controller.niriWorkingFrame(for: monitor)
         let gaps = controller.innerGap(for: monitor)
         let orientation = resolvedOrientation(
             for: workspaceId,

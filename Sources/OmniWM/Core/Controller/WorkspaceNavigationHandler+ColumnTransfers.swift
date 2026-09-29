@@ -63,7 +63,7 @@ extension WorkspaceNavigationHandler {
         }
 
         let movedTokens = column.windowNodes.map(\.token)
-        let targetWorkingFrame = controller.insetWorkingFrame(for: targetMonitor)
+        let targetWorkingFrame = controller.niriWorkingFrame(for: targetMonitor)
         let gaps = controller.innerGap(for: targetMonitor)
         let motion = controller.motionPolicy.snapshot()
         let orientation = controller.settings.monitors.effectiveOrientation(for: targetMonitor)

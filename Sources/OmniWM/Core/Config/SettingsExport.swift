@@ -140,6 +140,7 @@ struct SettingsExport: Equatable {
         var singleWindowFit: SingleWindowFit
         var containerPrimarySpanPresets: [Double]?
         var defaultContainerPrimarySpan: Double?
+        var edgeGaps: Bool?
     }
 
     struct Dwindle: Codable, Equatable {
@@ -375,7 +376,8 @@ extension SettingsExport.Niri {
             alwaysCenterSingleColumn: false,
             singleWindowFit: .fullScreen,
             containerPrimarySpanPresets: BuiltInSettingsDefaults.niriContainerPrimarySpanPresets,
-            defaultContainerPrimarySpan: 0.5
+            defaultContainerPrimarySpan: 0.5,
+            edgeGaps: true
         )
     }
 }
