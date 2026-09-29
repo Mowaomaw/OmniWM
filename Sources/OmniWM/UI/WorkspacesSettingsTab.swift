@@ -43,7 +43,7 @@ enum WorkspaceConfigurationAddPolicy {
     static let addButtonHelp = String(localized: "Add the lowest unused workspace ID")
     static let footerText =
         String(
-            localized: "Workspace IDs use positive numeric slots. Display Name stays editable. Direct workspace hotkeys remain limited to 1-9; add 10+ here or through IPC/CLI."
+            localized: "Workspace IDs use positive numeric slots. Display Name stays editable. Workspaces 10+ start with unassigned direct hotkeys; add them here or through IPC/CLI."
         )
 }
 
