@@ -113,7 +113,6 @@ enum StructuralMutationOutcome: Equatable {
     }
 
     var scrollAnimationByDisplay: [CGDirectDisplayID: WorkspaceDescriptor.ID] = [:]
-    let columnModeToast = ColumnModeToastController()
 
     init(controller: WMController?) {
         self.controller = controller

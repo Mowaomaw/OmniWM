@@ -197,6 +197,8 @@ final class WMController {
     @ObservationIgnored
     let ownedWindowRegistry: OwnedWindowRegistry
     @ObservationIgnored
+    let columnModeToast: ColumnModeToastController
+    @ObservationIgnored
     var warpMouseCursorPosition: (CGPoint) -> Void = { CGWarpMouseCursorPosition($0) }
     @ObservationIgnored
     var currentMouseLocation: () -> CGPoint = { NSEvent.mouseLocation }
@@ -237,6 +239,7 @@ final class WMController {
         traceCaptureCoordinator = RuntimeTraceCaptureCoordinator(diagnosticsDirectory: diagnosticsDirectory)
         self.windowFocusOperations = windowFocusOperations
         self.ownedWindowRegistry = ownedWindowRegistry
+        columnModeToast = ColumnModeToastController(ownedWindowRegistry: ownedWindowRegistry)
         workspaceManager = WorkspaceManager(settings: settings)
         focusPolicyEngine = FocusPolicyEngine()
         if self.workspaceBarIconResolver.synchronize(

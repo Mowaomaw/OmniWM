@@ -4,8 +4,6 @@
 import Foundation
 
 extension NiriLayoutHandler {
-    /// Confirms the selected column's display mode with a transient pill.
-    /// Skips columns that have no rendered frame yet rather than guessing a position.
     func showColumnModeToast(
         engine: NiriLayoutEngine,
         workspaceId: WorkspaceDescriptor.ID,
@@ -23,15 +21,15 @@ extension NiriLayoutHandler {
               frame.width > 0,
               frame.height > 0
         else {
-            // Never leave an earlier pill showing a mode this toggle just changed
-            columnModeToast.hide()
+            controller?.columnModeToast.hide()
             return
         }
-        columnModeToast.show(
+        controller.columnModeToast.show(
             isTabbed: column.isTabbed,
             columnFrame: frame,
             visibleFrame: monitor.visibleFrame,
-            motion: motion
+            motion: motion,
+            source: .init(workspaceId: workspaceId, monitorId: monitor.id)
         )
     }
 }

@@ -4,66 +4,71 @@
 import AppKit
 import SwiftUI
 
-/// Transient, click-through pill confirming a column display mode change.
 @MainActor
 final class ColumnModeToastController {
+    struct Source: Equatable {
+        let workspaceId: UUID
+        let monitorId: Monitor.ID
+    }
+
     static let surfaceId = "column-mode-toast"
     static let topInset: CGFloat = 16
+    private static let displayDuration: Duration = .milliseconds(1500)
+    private static let fadeDuration: TimeInterval = 0.2
 
     private let ownedWindowRegistry: OwnedWindowRegistry
-    private let displayDuration: Duration
-    private let fadeDuration: TimeInterval
+    private let sleep: @MainActor (Duration) async throws -> Void
     private var surface: (panel: NSPanel, hostingView: NSHostingView<ColumnModeToastView>)?
-    private var dismissalTask: Task<Void, Never>?
-    private var generation = 0
-
-    /// Visible and not faded out; an invisible-but-ordered-in panel counts as hidden
-    var isShowing: Bool {
-        guard let panel = surface?.panel else { return false }
-        return panel.isVisible && panel.alphaValue > 0.99
-    }
+    private(set) var dismissalTask: Task<Void, Never>?
+    private(set) var generation = 0
+    private(set) var source: Source?
 
     init(
         ownedWindowRegistry: OwnedWindowRegistry = .shared,
-        displayDuration: Duration = .milliseconds(1500),
-        fadeDuration: TimeInterval = 0.2
+        sleep: @escaping @MainActor (Duration) async throws -> Void = { try await Task.sleep(for: $0) }
     ) {
         self.ownedWindowRegistry = ownedWindowRegistry
-        self.displayDuration = displayDuration
-        self.fadeDuration = fadeDuration
+        self.sleep = sleep
     }
 
     isolated deinit {
         destroy()
     }
 
-    func show(isTabbed: Bool, columnFrame: CGRect, visibleFrame: CGRect, motion: MotionSnapshot) {
-        // A non-activating panel never triggers .moveToActiveSpace; recreate it if it is visible on another Space
+    func show(
+        isTabbed: Bool,
+        columnFrame: CGRect,
+        visibleFrame: CGRect,
+        motion: MotionSnapshot,
+        source: Source
+    ) {
         if let visiblePanel = surface?.panel, visiblePanel.isVisible, !visiblePanel.isOnActiveSpace {
             destroy()
         }
         let (panel, hostingView) = surface ?? makeSurface()
 
-        // Replace any pill already on screen: new content, new position, fresh timer
         dismissalTask?.cancel()
         generation += 1
+        self.source = source
         hostingView.rootView = ColumnModeToastView(isTabbed: isTabbed)
         panel.setFrame(
             Self.pillFrame(size: hostingView.fittingSize, columnFrame: columnFrame, visibleFrame: visibleFrame),
             display: true
         )
-        // Reset through the animator so an in-flight fade-out is superseded, not left running
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0
             panel.animator().alphaValue = 1
         }
         panel.orderFrontRegardless()
 
-        // Fade out after the display duration unless another toggle replaces it
         let shownGeneration = generation
-        let displayDuration = displayDuration
+        let sleep = sleep
         dismissalTask = Task { @MainActor [weak self] in
-            try? await Task.sleep(for: displayDuration)
+            do {
+                try await sleep(Self.displayDuration)
+            } catch {
+                return
+            }
             guard !Task.isCancelled else { return }
             self?.fadeOut(generation: shownGeneration, animated: motion.animationsEnabled)
         }
@@ -72,6 +77,7 @@ final class ColumnModeToastController {
     func hide() {
         dismissalTask?.cancel()
         dismissalTask = nil
+        source = nil
         surface?.panel.orderOut(nil)
     }
 
@@ -83,8 +89,6 @@ final class ColumnModeToastController {
         self.surface = nil
     }
 
-    /// Centered on the column, just below its top edge, clamped into the visible screen area.
-    /// Frames use AppKit screen coordinates (origin bottom-left, y grows upward).
     static func pillFrame(size: CGSize, columnFrame: CGRect, visibleFrame: CGRect) -> CGRect {
         let x = columnFrame.midX - size.width / 2
         let y = columnFrame.maxY - topInset - size.height
@@ -99,18 +103,20 @@ final class ColumnModeToastController {
             return
         }
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = fadeDuration
+            context.duration = Self.fadeDuration
             panel.animator().alphaValue = 0
         } completionHandler: { [weak self] in
             MainActor.assumeIsolated {
-                // A toggle during the fade shows a new pill; leave that one alone
-                guard let self, self.generation == shownGeneration else { return }
-                self.hide()
+                self?.finishFade(generation: shownGeneration)
             }
         }
     }
 
-    // Borderless, non-activating, click-through panel; clear background so the glass renders
+    func finishFade(generation shownGeneration: Int) {
+        guard generation == shownGeneration else { return }
+        hide()
+    }
+
     private func makeSurface() -> (panel: NSPanel, hostingView: NSHostingView<ColumnModeToastView>) {
         let panel = NSPanel(
             contentRect: .zero,
@@ -127,7 +133,6 @@ final class ColumnModeToastController {
         panel.isReleasedWhenClosed = false
         panel.animationBehavior = .none
         panel.level = .floating
-        // Live only on the Space where it is shown, not on every Space (show() recreates it across Spaces)
         panel.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary, .stationary, .ignoresCycle]
 
         let hostingView = NSHostingView(rootView: ColumnModeToastView(isTabbed: false))
@@ -137,7 +142,7 @@ final class ColumnModeToastController {
             panel,
             surfaceId: Self.surfaceId,
             policy: SurfacePolicy(
-                kind: .utility,
+                kind: .columnModeToast,
                 hitTestPolicy: .passthrough,
                 capturePolicy: .excluded,
                 suppressesManagedFocusRecovery: false
