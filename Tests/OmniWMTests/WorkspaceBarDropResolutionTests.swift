@@ -176,6 +176,34 @@ final class WorkspaceBarDropResolutionTests: XCTestCase {
         XCTAssertEqual(result.action, .niriMoveColumn(ws1, oneBasedIndex: 4))
     }
 
+    func testVerticalDropZonesMatchHorizontalOrderingAcrossWorkspaces() {
+        let transform = CGAffineTransform(a: 0, b: -1, c: 1, d: 0, tx: -500, ty: 2400)
+        let vertical = WorkspaceBarDropGeometry(workspaces: geometry.workspaces.map { workspace in
+            .init(
+                id: workspace.id, name: workspace.name, layout: workspace.layout,
+                hitFrame: workspace.hitFrame.applying(transform),
+                icons: workspace.icons.map {
+                    .init(
+                        tokens: $0.tokens,
+                        frame: $0.frame.applying(transform),
+                        appName: $0.appName,
+                        placement: $0.placement
+                    )
+                },
+                columnCount: workspace.columnCount, orientation: .vertical
+            )
+        })
+        let source = WorkspaceBarDragSource(tokens: [a], workspaceId: ws1, isFloating: false)
+        for x in [40, 49, 56, 83, 2018, 2026, 2043] {
+            let point = CGPoint(x: x, y: 12)
+            XCTAssertEqual(
+                WorkspaceBarDropResolver.resolve(source: source, at: point.applying(transform), in: vertical),
+                WorkspaceBarDropResolver.resolve(source: source, at: point, in: geometry),
+                "x=\(x)"
+            )
+        }
+    }
+
     func testDropsOutsideEveryWorkspaceCancel() {
         let result = resolve([a], atX: 500)
         XCTAssertEqual(result.action, .cancel)

@@ -246,6 +246,7 @@ final class WorkspaceBarSettings {
     }
 
     private func resolved(override: MonitorBarSettings?) -> ResolvedBarSettings {
+        let position = override?.position ?? self.position
         return ResolvedBarSettings(
             enabled: enabled && (override?.enabled ?? true),
             showLabels: override?.showLabels ?? showLabels,
@@ -254,10 +255,10 @@ final class WorkspaceBarSettings {
             hideEmptyWorkspaces: override?.hideEmptyWorkspaces ?? hideEmptyWorkspaces,
             excludedBundleIDs: excludedBundleIDs,
             reserveLayoutSpace: override?.reserveLayoutSpace ?? reserveLayoutSpace,
-            notchMode: override?.notchMode ?? notchMode,
+            notchMode: position.usesNotch ? (override?.notchMode ?? notchMode) : .off,
             notchActiveZoneWidth: override?.notchActiveZoneWidth ?? notchActiveZoneWidth,
             systemStatsButton: systemStatsButton,
-            position: override?.position ?? position,
+            position: position,
             windowLevel: override?.windowLevel ?? windowLevel,
             height: override?.height ?? height,
             backgroundOpacity: override?.backgroundOpacity ?? backgroundOpacity,
