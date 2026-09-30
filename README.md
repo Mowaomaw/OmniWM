@@ -666,7 +666,7 @@ IPC is disabled by default. Enable `Enable IPC` from the menu bar before using t
 
 Diagnostics can be scripted with `omniwmctl capture start trace`, `omniwmctl capture start performance`, `omniwmctl capture stop`, and `omniwmctl capture status`.
 
-**Unreleased:** `omniwmctl window mark` can name, list, focus, summon, and remove runtime window marks when building from `main`. See [Window Marks](https://omniwm.app/reference/cli/actions/#window-marks).
+`omniwmctl window mark` can name, list, focus, summon, and remove runtime window marks. See [Window Marks](https://omniwm.app/reference/cli/actions/#window-marks).
 
 For setup, installation options, commands, queries, rules, subscriptions, and security details, see the [IPC & CLI Reference](https://omniwm.app/reference/cli/overview/).
 
@@ -772,8 +772,6 @@ When you create workspace 10 or higher, Settings > Hotkeys adds its Switch, Move
 | Toggle Overview | `Option + Shift + O` | `Shared` |
 | Toggle System Stats | `Unassigned` | `Shared` |
 
-**Unreleased:** The two window mark actions are available when building from `main`.
-
 #### Move Window
 
 | Action | Default Shortcut | Layout |
@@ -841,7 +839,7 @@ The window-to-monitor actions send the focused window directly to the current wo
 | Center Column | `Unassigned` | `Niri` |
 | Center Visible Columns | `Unassigned` | `Niri` |
 
-**Unreleased:** Niri grow/shrink actions use a configurable increment, defaulting to 5% instead of 10%, when building from `main`. Change **Resize Increment** in Niri settings or `[niri].resizeStepPercent` in TOML (1–100). Explicit `omniwmctl` size arguments keep their specified amounts.
+Niri grow/shrink actions use a configurable increment, defaulting to 5% instead of 10%. Change **Resize Increment** in Niri settings or `[niri].resizeStepPercent` in TOML (1–100). Explicit `omniwmctl` size arguments keep their specified amounts.
 
 `Consume or Expel Window Left / Right` exist as automation-only actions. They are reachable from `omniwmctl` but never appear in Settings > Hotkeys, because they intentionally cannot be bound to a shortcut.
 
@@ -907,15 +905,15 @@ Quickly search windows, app menus, clipboard history, OmniWM commands, applicati
 - Open it from the global shortcut shown in `Keyboard Shortcuts`
 - Use `Tab` / `Shift + Tab` to cycle forward or backward through the available modes
 - Use `Cmd + 1` for `Windows`, `Cmd + 2` for `Menu`, `Cmd + 3` for `Clipboard`, `Cmd + 4` for `Commands`, `Cmd + 5` for `Applications`, and `Cmd + 6` for `Files`
-- Type to search; **Unreleased** mark-name matches come first in Windows mode when building from `main`, then window title, app name, and workspace name, with focus recency breaking ties
-- **Unreleased:** Windows mode shows window marks and finds windows by mark name when building from `main`; its Mark and Remove Mark buttons act on the selected window
+- Type to search; mark-name matches come first in Windows mode, then window title, app name, and workspace name, with focus recency breaking ties
+- Windows mode shows window marks and finds windows by mark name; its Mark and Remove Mark buttons act on the selected window
 - Menu results always show keyboard shortcuts when available
 - Commands are grouped by category until you search; each row shows its layout and current shortcut, including unassigned commands
 - In Commands mode, `Enter` runs the selected command; commands for another layout stay visible but cannot be selected
 - `Up` / `Down` move the selection
 - `Enter` activates the selected result
 - Windows from macOS-hidden apps remain searchable with a Hidden badge; selecting one unhides its app and focuses that exact window
-- In Windows mode, `Shift + Enter` summons the selected window to the right when available. **Unreleased:** Builds from `main` move it into an empty current workspace instead, including floating windows; floating windows cannot be summoned right
+- In Windows mode, `Shift + Enter` summons the selected window to the right when available, or moves it into an empty current workspace, including floating windows. Floating windows cannot be summoned right
 - In Clipboard mode, `Enter` copies the selected entry; `Shift + Enter` pastes it into the previous app when that target is still available
 - Applications and Files open in a browse grid; switch either mode to a list from the view menu
 - Files shows recent documents before typing, supports type filters, and can reveal a selection in Finder with `Cmd + Enter`
@@ -967,7 +965,7 @@ Workspace-bar appearance controls are optional and also support per-monitor over
 - **Inactive Icon Opacity** adjusts non-focused app icons. Leaving it unset preserves the standard opacity for each kind of item; hidden-app icons retain their hidden-state appearance. Values are limited to 0–1, and nonfinite values are treated as unset.
 - Disable **Show Item Backgrounds** to remove the backgrounds behind workspace groups, floating windows, scratchpads, and the stats button.
 - Disable **Show Accent Highlights** to remove focused-item accent outlines and glows without changing focus behavior.
-- **Bottom / Left / Right placement** (**Unreleased**, available when building from `main`) docks at the usable display edge. Side bars stack upright content and scroll when needed; **Bar Thickness** controls their width. See [Workspace Bar](website/src/content/docs/features/workspace-bar.md) for details.
+- **Bottom / Left / Right placement** docks at the usable display edge. Side bars stack upright content and scroll when needed; **Bar Thickness** controls their width. See [Workspace Bar](website/src/content/docs/features/workspace-bar.md) for details.
 - **Fill Left of Notch** covers the menu-bar band from the display's left edge to the notch, or to the display midpoint when no notch is present. This deliberately covers application menus; choose another notch mode to access them again. At top positions, this mode uses the menu-bar height, overrides position/offset/height controls, and does not reserve extra tiled layout space. It always hides on displays showing native fullscreen content. Bottom/Left/Right ignore notch modes and follow **Hide in Native Fullscreen**.
 
 Existing appearance stays unchanged until you opt in. For example, edit these keys inside the existing `[workspaceBar]` table (do not replace the complete configuration with this fragment):
@@ -981,7 +979,7 @@ showAccentHighlights = false
 notchMode = "fillLeftOfNotch"
 ```
 
-These optional settings keep configuration schema 3. Omitted keys preserve the existing appearance without migrating the settings file.
+Omitted keys preserve the existing appearance.
 
 Workspace-bar icon overrides can also be configured in `settings.toml`. Quote bundle IDs so TOML treats each dotted identifier as one key:
 

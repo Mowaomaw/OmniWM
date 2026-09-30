@@ -7,7 +7,7 @@ sidebar:
 
 The workspace bar is a floating island centered along the selected edge of each display. It shows a chip per workspace — with the workspace's name, emoji-friendly — and the icons of the apps open there.
 
-**Unreleased:** Builds from `main` can turn off window hover previews separately. Turning off the global Workspace Bar hides it on every monitor, while saved monitor overrides take effect again when it is re-enabled.
+Window hover previews can be turned off separately. Turning off the global Workspace Bar hides it on every monitor, while saved monitor overrides take effect again when it is re-enabled.
 
 ## Clicking the bar
 
@@ -35,8 +35,6 @@ Configure position, height, and appearance in Settings:
 - **Per-monitor overrides** — change an individual display's bar independently.
 
 ### Bottom and side placement
-
-**Unreleased** — available when building from `main`.
 
 ```toml
 [workspaceBar]

@@ -22,8 +22,6 @@ The current schema is strict — a missing required key in a version 4 file inva
 
 ## File schema
 
-**Unreleased:** Schema version 4 and its unassigned set/remove window-mark hotkeys are available when building from `main`.
-
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `schemaVersion` | integer | `4` | Version of the complete `settings.toml` schema. This top-level key appears before the first table. |
@@ -166,7 +164,7 @@ Options for the scrolling (Niri) layout.
 | `resizeStepPercent` *(optional)* | integer | `5` | Increment for Niri grow/shrink actions in percentage points, clamped to 1–100. Applies to container primary, window primary, and window secondary spans. Explicit CLI sizes are unaffected. |
 | `edgeGaps` *(optional)* | boolean | `true` | Keeps the inner gap between columns and the screen edges, in addition to the outer gaps. `false` uses the inner gap only between columns and between stacked windows. A lone window is unaffected. |
 
-**Unreleased:** `edgeGaps` and `resizeStepPercent` are available when building from `main`. The resize increment defaults to 5% instead of the previous fixed 10%.
+The resize increment defaults to 5% instead of the previous fixed 10%.
 
 ## dwindle
 
@@ -212,8 +210,6 @@ Border and gradient colors resolve per macOS appearance: dark values apply when 
 
 Zoom and colors for the Overview.
 
-**Unreleased:** `enabled` is available when building from `main`.
-
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `enabled` *(optional)* | boolean | `true` | Enables Overview. When off, its shortcuts, mouse button, trackpad gesture, and direct commands cannot open it; saved input assignments remain available when re-enabled. |
@@ -227,8 +223,6 @@ Zoom and colors for the Overview.
 
 The per-monitor workspace bar. Per-monitor exceptions live in [`monitorBarOverrides`](#per-monitor-overrides).
 
-**Unreleased:** `hoverPreviewsEnabled` and global-off precedence are available when building from `main`.
-
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `enabled` | boolean | `true` | Shows the workspace bar. When off, all monitors' bars are off, including monitors with `enabled = true` overrides; those preferences return when the global bar is re-enabled. |
@@ -236,7 +230,7 @@ The per-monitor workspace bar. Per-monitor exceptions live in [`monitorBarOverri
 | `showLabels` | boolean | `true` | Shows workspace names next to their numbers. |
 | `showFloatingWindows` | boolean | `false` | Includes floating windows' icons in workspace pills. |
 | `windowLevel` | string | `"popup"` | Bar window level: `normal`, `floating`, `status`, `popup`, `screensaver`. |
-| `position` | string | `"overlappingMenuBar"` | `overlappingMenuBar`, `belowMenuBar`, `bottom`, `left`, or `right`. Bottom and side placements (**Unreleased**, available when building from `main`) follow the usable display edge, avoiding a visible Dock. |
+| `position` | string | `"overlappingMenuBar"` | `overlappingMenuBar`, `belowMenuBar`, `bottom`, `left`, or `right`. Bottom and side placements follow the usable display edge, avoiding a visible Dock. |
 | `notchMode` | string | `"moveBelowMenuBar"` | Notch handling: `off`, `moveBelowMenuBar`, `splitActiveLeft`, `splitActiveRight`, or `fillLeftOfNotch`. The last fills the menu-bar area left of the notch and covers app menus; without a notch it uses the left half of the menu bar. At top positions, this mode overrides `position`, `xOffset`, `yOffset`, `height`, and `reserveLayoutSpace`: the bar uses the menu-bar height and reserves no layout space. Bottom/left/right ignore notch modes without changing the saved preference. |
 | `notchActiveZoneWidth` | float | `180.0` | Width in points of the active zone around the notch. |
 | `systemStatsButton` | boolean | `false` | Adds a system stats button to the bar. |
@@ -394,7 +388,7 @@ id = "toggleScratchpad.1"
 ```
 
 - `binding` is a human-readable chord: `+`-joined modifiers (`Control`, `Option`, `Shift`, `Command`, or the `Hyper` shorthand for the full [`hyperKeyModifiers`](#general) set) followed by a key name — or `"Unassigned"`. A `Left `/`Right ` prefix pins a modifier to one side (e.g. `"Left Option+H"`).
-- The array is validated strictly: every required action must appear **exactly once**. **Unreleased:** workspace `10+` action IDs are optional and appear while those workspaces exist. An unknown, unassignable, duplicate, or missing required action id rejects the whole file, so rebind by editing `binding` values in place.
+- The array is validated strictly: every required action must appear **exactly once**. Workspace `10+` action IDs are optional and appear while those workspaces exist. An unknown, unassignable, duplicate, or missing required action id rejects the whole file, so rebind by editing `binding` values in place.
 - The numeric suffix is zero-based for `switchWorkspace.N`, `moveToWorkspace.N`, `focusColumn.N`, and `moveColumnToWorkspace.N` — `switchWorkspace.0` is *Switch to Workspace 1* (`Option + 1` by default) — and one-based for `switchWorkspaceSlot.N`, `moveToWorkspaceSlot.N`, `focusWindowInColumn.N`, `moveColumnToIndex.N`, `toggleScratchpad.N`, and `assignFocusedWindowToScratchpad.N`.
 
 The default bindings are listed in the [keyboard shortcuts guide](/guides/keyboard-shortcuts/); assignable actions appear in **Settings > Hotkeys**.
@@ -459,7 +453,7 @@ minWidth = 574.0
 
 Five arrays hold per-monitor exceptions to the global tables. Every entry requires `monitorName`. Use the display’s `monitorDisplayUUID`; for a display without a UUID, supply both `monitorDisplayId` and `monitorName`. A name alone does not match a display. All entries except orientation also carry an `id` UUID identifying the override row, not the display. Override keys are all optional — an omitted key falls back to the corresponding global setting. All five arrays default to empty. Custom routing grids live separately in [`routing.arrangements`](#routing).
 
-When `workspaceBar.enabled = false`, no monitor can show its bar. Saved `monitorBarOverrides.enabled` values take effect again when the global bar is enabled. **Unreleased:** This precedence applies when building from `main`.
+When `workspaceBar.enabled = false`, no monitor can show its bar. Saved `monitorBarOverrides.enabled` values take effect again when the global bar is enabled.
 
 | Array | Overridable keys |
 | --- | --- |

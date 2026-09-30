@@ -24,15 +24,13 @@ The palette has six modes:
 
 - `Up` / `Down` move the selection.
 - `Enter` activates the selected result.
-- In Windows mode, `Shift + Enter` summons the selected window to the right of the focused one, when available. **Unreleased:** Builds from `main` move it into an empty current workspace instead, including floating windows; floating windows cannot be summoned right.
+- In Windows mode, `Shift + Enter` summons the selected window to the right of the focused one when available, or moves it into an empty current workspace, including floating windows. Floating windows cannot be summoned right.
 - In Applications and Files, `Cmd + Enter` reveals the selection in Finder.
 - `Escape` dismisses the palette.
 
 Windows from macOS-hidden apps remain searchable and carry a **Hidden** badge; selecting one unhides its app and focuses that exact window. In Menu mode, results always show keyboard shortcuts when available.
 
 ## Window marks
-
-**Unreleased** — available when building from `main`.
 
 In Windows mode, **Mark selected window** (`Control + Option + Shift + M`) names the selected result, and **Remove mark** (`Control + Option + Shift + R`) removes one of its marks. The buttons remain available if an enabled global shortcut uses either chord. Marks appear beside windows and match searches by name. Names are unique across windows and last until the window closes or OmniWM quits. Separate global set/remove actions default to **Unassigned** in [Settings > Hotkeys](/guides/keyboard-shortcuts/#focus).
 
@@ -50,7 +48,7 @@ Applications and Files open as browse grids. Use the view menu to switch either 
 
 ## How search ranks results
 
-Window search uses substring matching with tiered ranking. **Unreleased:** Builds from `main` rank mark-name matches first, followed by window title, app name, and workspace name. Typing part of the literal word "hidden" surfaces windows of hidden apps. Title, app, and workspace matches closer to the start rank higher; ties and mark matches retain the window list's order.
+Window search uses substring matching with tiered ranking. Mark-name matches rank first, followed by window title, app name, and workspace name. Typing part of the literal word "hidden" surfaces windows of hidden apps. Title, app, and workspace matches closer to the start rank higher; ties and mark matches retain the window list's order.
 
 With no search, windows use focus history, then app name and title, with hidden apps last.
 

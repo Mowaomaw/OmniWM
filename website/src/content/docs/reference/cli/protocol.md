@@ -151,7 +151,7 @@ Workspace requests use this flat wire shape. For `move-to-monitor`, `force` is o
 
 `workspaceTarget` is required by `move-to-workspace` and rejected by every other window action.
 
-**Unreleased — window marks, available when building from `main`:**
+**Window marks:**
 
 ```json
 {
@@ -180,7 +180,7 @@ Workspace requests use this flat wire shape. For `move-to-monitor`, `force` is o
 
 Optional response fields are omitted when unavailable. For example, a successful response has no `code` key; it does not send `"code": null`.
 
-An **Unreleased** `window mark list` response has `kind: "window-mark"` and `result.kind: "window-marks"`. Its `result.payload.marks` array contains each mark's `name`, `workspace` (`id`, `rawName`, `displayName`, optional `number`), `app` (`name`, optional `bundleId`), and optional window `title`. Other mark actions return `status: "executed"` without a result payload.
+A `window mark list` response has `kind: "window-mark"` and `result.kind: "window-marks"`. Its `result.payload.marks` array contains each mark's `name`, `workspace` (`id`, `rawName`, `displayName`, optional `number`), `app` (`name`, optional `bundleId`), and optional window `title`. Other mark actions return `status: "executed"` without a result payload.
 
 Authorization, protocol, validation, and routing failures keep the originating response `kind`. For example:
 
@@ -264,8 +264,6 @@ This envelope is produced locally by the CLI, so it does not include IPC fields 
 | `duplicate_mark` | The name is already assigned to another window |
 | `invalid_mark` | The mark name is empty or contains control characters |
 | `internal_error` | Unexpected server-side error |
-
-The eight mark-specific codes above are **Unreleased**, available when building from `main`.
 
 Malformed opaque window IDs return `invalid_arguments`. For window actions, a valid current-session ID whose window is no longer managed returns `not_found`.
 

@@ -93,7 +93,7 @@ The three workspace flags answer different questions. `is-focused` marks the wor
 | `subscriptions` | — | — | Subscription registry |
 | `capabilities` | — | — | Full protocol capabilities, including `windowMarkActions` |
 
-**Unreleased:** `window mark` descriptors in `commands` and `capabilities` are available when building from `main`. List live marks with [`omniwmctl window mark list`](/reference/cli/actions/#window-marks).
+`window mark` descriptors in `commands` and `capabilities` are available. List live marks with [`omniwmctl window mark list`](/reference/cli/actions/#window-marks).
 
 **Examples:**
 

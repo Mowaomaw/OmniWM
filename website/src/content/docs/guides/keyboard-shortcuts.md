@@ -42,7 +42,7 @@ Confirm the binding and any registration warning in **Settings > Hotkeys**, then
 | Move Column to Workspace Up | `Control + Option + Shift + Page Up` | `Niri` |
 | Move Column to Workspace Down | `Control + Option + Shift + Page Down` | `Niri` |
 
-**Unreleased:** Creating workspace 10 or higher adds its Switch, Move, and Move Column actions to **Settings > Hotkeys** as `Unassigned`. The rows disappear when the workspace is removed.
+Creating workspace 10 or higher adds its Switch, Move, and Move Column actions to **Settings > Hotkeys** as `Unassigned`. The rows disappear when the workspace is removed.
 
 ## Focus
 
@@ -70,7 +70,7 @@ Confirm the binding and any registration warning in **Settings > Hotkeys**, then
 | Toggle Overview | `Option + Shift + O` | `Shared` |
 | Toggle System Stats | `Unassigned` | `Shared` |
 
-**Unreleased:** The Set Mark and Remove Mark global actions and the Command Palette mark shortcuts below are available when building from `main`.
+The Set Mark and Remove Mark global actions and the Command Palette mark shortcuts below are available.
 
 ### Window marks in the Command Palette
 
@@ -150,7 +150,7 @@ The window-to-monitor actions send the focused window directly to the current wo
 | Center Column | `Unassigned` | `Niri` |
 | Center Visible Columns | `Unassigned` | `Niri` |
 
-**Unreleased:** Niri grow/shrink actions use a configurable increment, defaulting to 5% instead of 10%, when building from `main`. Change **Resize Increment** in Niri settings or `[niri].resizeStepPercent` in TOML (1–100). Explicit `omniwmctl` size arguments keep their specified amounts.
+Niri grow/shrink actions use a configurable increment, defaulting to 5% instead of 10%. Change **Resize Increment** in Niri settings or `[niri].resizeStepPercent` in TOML (1–100). Explicit `omniwmctl` size arguments keep their specified amounts.
 
 `Consume or Expel Window Left / Right` exist as automation-only actions. They are reachable from `omniwmctl` but never appear in Settings > Hotkeys, because they intentionally cannot be bound to a shortcut.
 

@@ -18,7 +18,7 @@ omniwmctl window move-to-workspace <opaque-id> <workspace>
 |--------|-------------|
 | `focus` | Focus a managed window by opaque ID |
 | `navigate` | Navigate to a managed window (switches workspace if needed) |
-| `summon-right` | Summon a window to the right of the currently focused window. **Unreleased:** Floating targets return `window_action_failed` in builds from `main` |
+| `summon-right` | Summon a window to the right of the currently focused window. Floating targets return `window_action_failed` |
 | `close` | Close a managed window through its close button; returns `window_action_failed` when the window has no close button or refuses the press. The window leaves the managed set only when macOS reports it destroyed |
 | `move-to-workspace` | Move a window to a workspace by raw workspace ID or unambiguous display name. Focus stays where it is; if the window is the focused one, the configured follow-focus behavior applies. A window already on the target returns `no_change`; an ambiguous display name returns `invalid_arguments` |
 
@@ -27,8 +27,6 @@ Window IDs are session-scoped. They become stale after OmniWM restarts. Obtain I
 ---
 
 ## Window Marks
-
-**Unreleased** — available when building from `main`.
 
 Marks give live managed windows unique names across workspaces. They last until the window closes or OmniWM quits; they are not saved in settings. Unlike window actions by opaque ID, mark actions use the name you choose:
 

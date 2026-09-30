@@ -7,7 +7,7 @@ sidebar:
 
 Press `Option + Shift + O` and all of your workspaces' windows fly into a scrollable overview of thumbnails. Workspaces with no windows are hidden. Configure the 50–150% baseline zoom plus backdrop and window-border colors in **Settings → Overview**.
 
-**Unreleased:** Builds from `main` can turn Overview off in Settings. Its shortcut, mouse button, gesture, and commands then stop opening it; saved input assignments return when it is re-enabled.
+Turn Overview off in Settings. Its shortcut, mouse button, gesture, and commands then stop opening it; saved input assignments return when it is re-enabled.
 
 ## Finding and focusing windows
 

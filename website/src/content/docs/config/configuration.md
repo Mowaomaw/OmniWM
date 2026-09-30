@@ -5,10 +5,10 @@ sidebar:
   order: 1
 ---
 
-OmniWM stores its editable configuration at `${XDG_CONFIG_HOME:-$HOME/.config}/omniwm/settings.toml`. `XDG_CONFIG_HOME` is honored only when it is an absolute path beginning with `/`; otherwise OmniWM uses `~/.config/omniwm/settings.toml`. That file is the canonical settings source: it is live-reloaded whenever you save it from an editor, and OmniWM configuration changes made in the Settings window are written back to it. Builds from `main` write the top-level key `schemaVersion = 4` (**Unreleased**).
+OmniWM stores its editable configuration at `${XDG_CONFIG_HOME:-$HOME/.config}/omniwm/settings.toml`. `XDG_CONFIG_HOME` is honored only when it is an absolute path beginning with `/`; otherwise OmniWM uses `~/.config/omniwm/settings.toml`. That file is the canonical settings source: it is live-reloaded whenever you save it from an editor, and OmniWM configuration changes made in the Settings window are written back to it. OmniWM writes the top-level key `schemaVersion = 4`.
 
 :::caution[The schema is strict]
-After version upgrades, `settings.toml` is validated as a whole. In a version 4 file, a missing required key invalidates the **entire file**, and the `hotkeys` array must contain every required action **exactly once** — an unknown, duplicate, or missing required action id rejects the file. **Unreleased:** workspace `10+` hotkey entries are optional. Enumerated string keys must use one of their listed values; an unknown value rejects the whole file too. Conflicting trackpad gesture finger-count assignments (see [gestures](/config/settings-reference/#gestures)) reject the whole file as well. The safest way to edit is to change values in place (or use the Settings window) rather than deleting keys. See the [Settings Reference](/config/settings-reference/) for every key and its default.
+After version upgrades, `settings.toml` is validated as a whole. In a version 4 file, a missing required key invalidates the **entire file**, and the `hotkeys` array must contain every required action **exactly once** — an unknown, duplicate, or missing required action id rejects the file. Workspace `10+` hotkey entries are optional. Enumerated string keys must use one of their listed values; an unknown value rejects the whole file too. Conflicting trackpad gesture finger-count assignments (see [gestures](/config/settings-reference/#gestures)) reject the whole file as well. The safest way to edit is to change values in place (or use the Settings window) rather than deleting keys. See the [Settings Reference](/config/settings-reference/) for every key and its default.
 :::
 
 ## Opening the file
@@ -35,8 +35,6 @@ Most settings are editable in the SwiftUI Settings window, organized into 14 sec
 - Unrecognized keys are preserved on save and reported by the built-in diagnostics rather than deleted. If an unrecognized key belongs to an array element that cannot be matched unambiguously after an edit, OmniWM leaves the file untouched and blocks writes instead of attaching the key to the wrong element.
 
 ### Automatic version upgrades
-
-**Unreleased:** The schema 4 upgrade and pre-v4 backup described below are available when building from `main`.
 
 A file without `schemaVersion` is a legacy version 0 file; OmniWM v0.6.4 emitted version 1 files. OmniWM guarantees automatic upgrades for settings emitted by v0.6.2 through v0.6.4 and upgrades valid version 2 and 3 files as well. Version 0 files pass through all four migration steps in memory. Version 1, 2, and 3 files start at their next step without rerunning earlier migrations. Only the final strict version 4 file is written:
 
