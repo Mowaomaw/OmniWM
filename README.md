@@ -391,6 +391,9 @@ OmniWM is a free, open-source, Developer ID-signed and Apple-notarized tiling wi
       <a href="https://github.com/balazshevesi" title="Balazs Hevesi">
         <img src="https://github.com/balazshevesi.png?size=96" width="72" alt="Balazs Hevesi">
       </a>
+      <a href="https://github.com/binghan1227" title="binghan1227">
+        <img src="https://github.com/binghan1227.png?size=96" width="72" alt="binghan1227">
+      </a>
       <a href="https://github.com/bps" title="Brian Smyth">
         <img src="https://github.com/bps.png?size=96" width="72" alt="Brian Smyth">
       </a>
@@ -403,11 +406,17 @@ OmniWM is a free, open-source, Developer ID-signed and Apple-notarized tiling wi
       <a href="https://github.com/cypressf" title="Cypress Frankenfeld">
         <img src="https://github.com/cypressf.png?size=96" width="72" alt="Cypress Frankenfeld">
       </a>
+      <a href="https://github.com/DereckAn" title="Dereck Angeles">
+        <img src="https://github.com/DereckAn.png?size=96" width="72" alt="Dereck Angeles">
+      </a>
       <a href="https://github.com/nekonora" title="Filippo Zaffoni">
         <img src="https://github.com/nekonora.png?size=96" width="72" alt="Filippo Zaffoni">
       </a>
       <a href="https://github.com/Fletcher-Alderton" title="Fletcher Alderton">
         <img src="https://github.com/Fletcher-Alderton.png?size=96" width="72" alt="Fletcher Alderton">
+      </a>
+      <a href="https://github.com/georgiansarghi" title="georgian">
+        <img src="https://github.com/georgiansarghi.png?size=96" width="72" alt="georgian">
       </a>
       <a href="https://github.com/henrikhestnes" title="Henrik Larsson Hestnes">
         <img src="https://github.com/henrikhestnes.png?size=96" width="72" alt="Henrik Larsson Hestnes">
@@ -420,6 +429,9 @@ OmniWM is a free, open-source, Developer ID-signed and Apple-notarized tiling wi
       </a>
       <a href="https://github.com/jthomaschewski" title="Janek Thomaschewski">
         <img src="https://github.com/jthomaschewski.png?size=96" width="72" alt="Janek Thomaschewski">
+      </a>
+      <a href="https://github.com/janosmiko" title="Janos Miko">
+        <img src="https://github.com/janosmiko.png?size=96" width="72" alt="Janos Miko">
       </a>
       <a href="https://github.com/Jonathanm10" title="Jonathan Macheret">
         <img src="https://github.com/Jonathanm10.png?size=96" width="72" alt="Jonathan Macheret">
