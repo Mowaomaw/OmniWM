@@ -18,6 +18,7 @@ extension WMController {
         workspaceBarManager.setup(controller: self, settings: settings)
         if !enabled {
             workspaceBarManager.cleanup()
+            hiddenBarController.statusItems.syncFallbackIcon()
         }
         workspaceManager.invalidateAllLayouts()
         layoutRefreshController.requestRelayout(reason: .monitorSettingsChanged)
