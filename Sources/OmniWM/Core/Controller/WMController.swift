@@ -234,7 +234,10 @@ final class WMController {
         )
         self.workspaceBarIconResolver = workspaceBarIconResolver
             ?? WorkspaceBarIconResolver(settingsFileURL: settings.settingsFileURL)
-        motionPolicy = MotionPolicy(animationsEnabled: settings.animationsEnabled)
+        motionPolicy = MotionPolicy(
+            animationsEnabled: settings.animationsEnabled,
+            animationSpeed: settings.animationSpeed
+        )
         self.hiddenBarController = hiddenBarController ?? HiddenBarController(settings: settings)
         self.clipboardHistoryDirectory = clipboardHistoryDirectory
         self.diagnosticsDirectory = diagnosticsDirectory

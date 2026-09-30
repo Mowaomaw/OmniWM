@@ -173,6 +173,17 @@ final class SettingsStore {
         didSet { scheduleSave() }
     }
 
+    var animationSpeed = SettingsStore.defaultExport.animationSpeed {
+        didSet {
+            let normalized = AnimationSpeed.normalized(animationSpeed)
+            guard animationSpeed == normalized else {
+                animationSpeed = normalized
+                return
+            }
+            scheduleSave()
+        }
+    }
+
     var language = SettingsStore.defaultExport.language {
         didSet { scheduleSave() }
     }
@@ -347,6 +358,12 @@ final class SettingsStore {
         persistence.scheduleSave(toExport())
     }
 
+    func scratchpadLabel(for index: Int) -> String? {
+        scratchpadLabels[String(index)]
+    }
+}
+
+extension SettingsStore {
     static func normalizedScratchpadLabels(_ labels: [String: String]) -> [String: String] {
         labels.reduce(into: [:]) { normalized, entry in
             guard let index = Int(entry.key.trimmingCharacters(in: .whitespacesAndNewlines)),
@@ -360,12 +377,6 @@ final class SettingsStore {
         }
     }
 
-    func scratchpadLabel(for index: Int) -> String? {
-        scratchpadLabels[String(index)]
-    }
-}
-
-extension SettingsStore {
     func toExport() -> SettingsExport {
         SettingsExport(
             hotkeysEnabled: hotkeysEnabled,
@@ -398,6 +409,7 @@ extension SettingsStore {
             statusBar: statusBar.export(),
             hiddenBar: hiddenBar.export(),
             animationsEnabled: animationsEnabled,
+            animationSpeed: animationSpeed,
             language: language,
             clipboard: clipboard.export(),
             quakeTerminal: quakeTerminal.export(),
@@ -407,7 +419,6 @@ extension SettingsStore {
     }
 
     func applyExport(_ export: SettingsExport) {
-        let baseline = SettingsStore.defaultExport
         let trackpadGesturesWereAvailable = effectiveTrackpadGesturesEnabled
         isApplyingExport = true
         defer {
@@ -429,14 +440,14 @@ extension SettingsStore {
         monitors.ranking = MonitorRanking.normalized(export.monitorRanking)
         gaps.apply(export.gaps)
 
-        niri.apply(export.niri, baseline: baseline.niri)
+        niri.apply(export.niri, baseline: SettingsStore.defaultExport.niri)
 
         workspaces.configurations = WorkspaceSettings.normalizedConfigurations(export.workspaceConfigurations)
         workspaces.defaultLayoutType = export.defaultLayoutType
 
         borders.apply(export.borders)
 
-        overview.apply(export.overview, baseline: baseline.overview)
+        overview.apply(export.overview, baseline: SettingsStore.defaultExport.overview)
 
         hyperKeyModifiersStorage = export.hyperKeyModifiers
         KeySymbolMapper.setHyperKeyModifiers(export.hyperKeyModifiers)
@@ -462,10 +473,11 @@ extension SettingsStore {
         statusBar.apply(export.statusBar)
         hiddenBar.apply(export.hiddenBar)
         animationsEnabled = export.animationsEnabled
+        animationSpeed = export.animationSpeed
         language = export.language
         clipboard.apply(export.clipboard)
 
-        quakeTerminal.apply(export.quakeTerminal, baseline: baseline.quakeTerminal)
+        quakeTerminal.apply(export.quakeTerminal, baseline: SettingsStore.defaultExport.quakeTerminal)
 
         appearanceMode = export.appearanceMode
         tabRailAppIcons = export.tabRailAppIcons

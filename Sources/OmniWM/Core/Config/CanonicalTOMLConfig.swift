@@ -41,6 +41,7 @@ struct CanonicalTOMLConfig: Codable, Equatable {
         var updateChecksEnabled: Bool
         var ipcEnabled: Bool
         var animationsEnabled: Bool
+        var animationSpeed: Double?
         var language: String?
     }
 
@@ -114,6 +115,7 @@ extension CanonicalTOMLConfig {
             updateChecksEnabled: export.updateChecksEnabled,
             ipcEnabled: export.ipcEnabled,
             animationsEnabled: export.animationsEnabled,
+            animationSpeed: AnimationSpeed.normalized(export.animationSpeed),
             language: export.language
         )
         focus = export.focus
@@ -188,6 +190,7 @@ extension CanonicalTOMLConfig {
             statusBar: statusBar,
             hiddenBar: hiddenBar,
             animationsEnabled: general.animationsEnabled,
+            animationSpeed: AnimationSpeed.normalized(general.animationSpeed ?? 1),
             language: general.language,
             clipboard: clipboard,
             quakeTerminal: quakeTerminal,

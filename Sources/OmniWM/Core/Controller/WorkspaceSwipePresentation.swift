@@ -182,7 +182,8 @@ final class WorkspaceSwipePresentation {
     func release(timestamp: TimeInterval, allowFlick: Bool) -> Bool {
         guard let flight, !flight.committing else { return false }
         guard flight.motion.release(
-            timestamp: timestamp, allowFlick: allowFlick, animationTime: mediaTimeProvider()
+            timestamp: timestamp, allowFlick: allowFlick, animationTime: mediaTimeProvider(),
+            motion: controller?.motionPolicy.snapshot() ?? .enabled
         ) else {
             cancel(reason: "invalid-release")
             return true

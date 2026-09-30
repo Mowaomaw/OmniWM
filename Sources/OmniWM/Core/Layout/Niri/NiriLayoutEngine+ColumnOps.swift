@@ -100,7 +100,7 @@ extension NiriLayoutEngine {
             window.animateMoveFrom(
                 displacement: displacement,
                 clock: animationClock,
-                config: windowMovementAnimationConfig,
+                config: context.motion.scaled(windowMovementAnimationConfig),
                 displayRefreshRate: displayRefreshRate(in: context.workspaceId),
                 animated: context.motion.animationsEnabled
             )
@@ -265,7 +265,7 @@ extension NiriLayoutEngine {
                         to: projectedWidthBounds(for: column, workspaceId: workspaceId)
                     ),
                     clock: animationClock,
-                    config: windowMovementAnimationConfig,
+                    config: motion.scaled(windowMovementAnimationConfig),
                     displayRefreshRate: displayRefreshRate(in: workspaceId),
                     animated: motion.animationsEnabled
                 )

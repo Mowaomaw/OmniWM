@@ -64,7 +64,7 @@ extension NiriLayoutEngine {
         column.animateWidthTo(
             newWidth: targetPixels,
             clock: animationClock,
-            config: windowMovementAnimationConfig,
+            config: context.motion.scaled(windowMovementAnimationConfig),
             displayRefreshRate: displayRefreshRate(in: context.workspaceId),
             animated: context.motion.animationsEnabled
         )
@@ -378,7 +378,7 @@ extension NiriLayoutEngine {
         column.animateWidthTo(
             newWidth: targetPixels,
             clock: animationClock,
-            config: windowMovementAnimationConfig,
+            config: context.motion.scaled(windowMovementAnimationConfig),
             displayRefreshRate: displayRefreshRate(in: context.workspaceId),
             animated: context.motion.animationsEnabled
         )
