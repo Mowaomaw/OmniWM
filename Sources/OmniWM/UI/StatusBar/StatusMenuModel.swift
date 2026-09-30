@@ -239,7 +239,7 @@ final class StatusMenuModel {
     }
 
     var canShowHiddenIcons: Bool {
-        settings.hiddenBar.enabled && controller?.isHiddenBarHidingAvailable == true
+        settings.effectiveHiddenBarEnabled && controller?.isHiddenBarHidingAvailable == true
     }
 
     func menuWillOpen() {

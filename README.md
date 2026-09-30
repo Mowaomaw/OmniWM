@@ -977,6 +977,7 @@ Workspace-bar icon overrides can also be configured in `settings.toml`. Quote bu
 Conceal selected menu-bar icons and reach them from a panel:
 - Concealment requires macOS 27 or later; core window management supports macOS 26
 - Pick the apps to hide in `Settings > Hidden Bar`
+- Hidden Bar runs while the workspace bar is on; turning the bar off shows the hidden icons again
 - Right-click (or Option-click) the OmniWM menu bar icon to open the Hidden Icons Bar; click an icon to reveal and use it
 - Revealed icons re-hide automatically after a configurable interval
 - An optional global hotkey is available and starts unassigned

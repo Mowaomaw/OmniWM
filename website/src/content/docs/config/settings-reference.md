@@ -312,7 +312,7 @@ Menu-bar icon concealment (concealment requires macOS 27+).
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `enabled` | boolean | `true` | Enables the Hidden Bar feature. |
+| `enabled` | boolean | `true` | Enables the Hidden Bar feature while the workspace bar is on. |
 | `hiddenBundleIDs` | string array | `[]` | Bundle IDs of menu-bar apps whose icons are concealed. |
 | `rehideIntervalSeconds` | float | `5.0` | Seconds before revealed icons re-hide automatically. |
 

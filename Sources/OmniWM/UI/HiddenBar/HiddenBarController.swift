@@ -67,13 +67,13 @@ final class HiddenBarController {
     }
 
     func detectMenuBarApps() async -> [DetectedMenuBarApp] {
-        guard settings.hiddenBar.enabled, didSetup, itemService.isRunning else { return [] }
+        guard settings.effectiveHiddenBarEnabled, didSetup, itemService.isRunning else { return [] }
         let snapshot = HiddenBarRunningAppsSnapshot.current(includingNames: true)
         let apps = await itemService.scan(
             candidates: snapshot.candidates,
             ownBundleID: Bundle.main.bundleIdentifier
         )
-        guard !Task.isCancelled, settings.hiddenBar.enabled, itemService.isRunning else { return [] }
+        guard !Task.isCancelled, settings.effectiveHiddenBarEnabled, itemService.isRunning else { return [] }
         hider.learn(apps)
         return apps
     }
@@ -96,7 +96,7 @@ final class HiddenBarController {
         if settings.hiddenBar.hiddenBundleIDs != normalizedBundleIDs {
             settings.hiddenBar.hiddenBundleIDs = normalizedBundleIDs
         }
-        guard settings.hiddenBar.enabled else {
+        guard settings.effectiveHiddenBarEnabled else {
             deactivate()
             return
         }
@@ -113,7 +113,7 @@ final class HiddenBarController {
         temporarilyRevealed.formIntersection(configured)
 
         guard HiddenBarConcealmentPolicy.wantsRefresh(
-            enabled: settings.hiddenBar.enabled,
+            enabled: settings.effectiveHiddenBarEnabled,
             available: hider.available,
             hiddenBundleIDs: configured
         ) else {
@@ -143,7 +143,7 @@ final class HiddenBarController {
     }
 
     func togglePanel(placement: HiddenBarPanelPlacement?) {
-        guard settings.hiddenBar.enabled, hider.available, let placement else { return }
+        guard settings.effectiveHiddenBarEnabled, hider.available, let placement else { return }
         if panel.isVisible {
             panel.dismiss()
             return
@@ -203,7 +203,7 @@ final class HiddenBarController {
         statusItems.syncFallbackIcon()
         let configured = Set(settings.hiddenBar.hiddenBundleIDs)
         guard HiddenBarConcealmentPolicy.wantsRefresh(
-            enabled: settings.hiddenBar.enabled,
+            enabled: settings.effectiveHiddenBarEnabled,
             available: hider.available,
             hiddenBundleIDs: configured
         ) else { return }
@@ -233,7 +233,7 @@ final class HiddenBarController {
     ) {
         let configured = Set(settings.hiddenBar.hiddenBundleIDs)
         guard HiddenBarConcealmentPolicy.wantsRefresh(
-            enabled: settings.hiddenBar.enabled,
+            enabled: settings.effectiveHiddenBarEnabled,
             available: hider.available,
             hiddenBundleIDs: configured
         ) else { return }
@@ -251,7 +251,7 @@ final class HiddenBarController {
 
 extension HiddenBarController {
     private func activateHiddenItem(_ key: MenuBarItemKey) {
-        guard settings.hiddenBar.enabled, hider.available,
+        guard settings.effectiveHiddenBarEnabled, hider.available,
               Set(settings.hiddenBar.hiddenBundleIDs).contains(key.bundleID)
         else { return }
         let cachedItems = iconCache.resolvedSnapshot(for: key.bundleID)
@@ -365,7 +365,7 @@ extension HiddenBarController {
     }
 
     private func temporarilyReveal(_ bundleID: String, ownerPID: pid_t) -> Bool {
-        guard settings.hiddenBar.enabled, hider.available else { return false }
+        guard settings.effectiveHiddenBarEnabled, hider.available else { return false }
         let hidden = Set(settings.hiddenBar.hiddenBundleIDs)
         let snapshot = HiddenBarRunningAppsSnapshot.current()
         guard hidden.contains(bundleID),
@@ -480,7 +480,7 @@ extension HiddenBarController {
     func handleRunningApplicationChanged(bundleID: String?, terminated: Bool) {
         let configured = Set(settings.hiddenBar.hiddenBundleIDs)
         guard HiddenBarConcealmentPolicy.wantsRefresh(
-            enabled: settings.hiddenBar.enabled,
+            enabled: settings.effectiveHiddenBarEnabled,
             available: hider.available,
             hiddenBundleIDs: configured
         ) else { return }
