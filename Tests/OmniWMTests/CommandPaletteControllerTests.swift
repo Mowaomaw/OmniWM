@@ -168,10 +168,24 @@ final class CommandPaletteControllerTests: XCTestCase {
     }
 
     func testMarkActionShortcutsStayVisibleAndMapToPaletteActions() {
-        let markModifiers: NSEvent.ModifierFlags = [.control, .option]
+        let markModifiers: NSEvent.ModifierFlags = [.control, .option, .shift]
 
-        XCTAssertEqual(CommandPalettePresentation.setMarkShortcut, "⌃⌥M")
-        XCTAssertEqual(CommandPalettePresentation.removeMarkShortcut, "⌃⌥R")
+        XCTAssertEqual(CommandPalettePresentation.setMarkShortcut, "⌃⌥⇧M")
+        XCTAssertEqual(CommandPalettePresentation.removeMarkShortcut, "⌃⌥⇧R")
+        XCTAssertEqual(
+            CommandPalettePresentation.availableMarkShortcut(
+                for: .set,
+                configuredBindings: DefaultHotkeyBindings.all()
+            ),
+            CommandPalettePresentation.setMarkShortcut
+        )
+        XCTAssertEqual(
+            CommandPalettePresentation.availableMarkShortcut(
+                for: .remove,
+                configuredBindings: DefaultHotkeyBindings.all()
+            ),
+            CommandPalettePresentation.removeMarkShortcut
+        )
         XCTAssertEqual(
             CommandPalettePresentation.markAction(
                 forKeyCode: UInt16(kVK_ANSI_M),
@@ -194,10 +208,45 @@ final class CommandPaletteControllerTests: XCTestCase {
         )
         XCTAssertNil(
             CommandPalettePresentation.markAction(
+                forKeyCode: UInt16(kVK_ANSI_M),
+                relevantModifiers: [.control, .option]
+            )
+        )
+        XCTAssertNil(
+            CommandPalettePresentation.markAction(
                 forKeyCode: UInt16(kVK_ANSI_X),
                 relevantModifiers: markModifiers
             )
         )
+    }
+
+    func testConfiguredGlobalMarkChordTakesPriorityOverPaletteShortcut() {
+        let setBinding = HotkeyBinding(
+            id: "openMenuAnywhere",
+            command: .openMenuAnywhere,
+            binding: KeyBinding(
+                keyCode: UInt32(kVK_ANSI_M),
+                modifiers: UInt32(controlKey | optionKey | shiftKey)
+            )
+        )
+        let removeBinding = HotkeyBinding(
+            id: "openMenuAnywhere",
+            command: .openMenuAnywhere,
+            binding: KeyBinding(
+                keyCode: UInt32(kVK_ANSI_R),
+                modifiers: UInt32(controlKey | optionKey | shiftKey)
+            ).settingSide(.right)
+        )
+
+        XCTAssertNil(CommandPalettePresentation.availableMarkShortcut(for: .set, configuredBindings: [setBinding]))
+        XCTAssertNotNil(CommandPalettePresentation.availableMarkShortcut(
+            for: .remove,
+            configuredBindings: [setBinding]
+        ))
+        XCTAssertNil(CommandPalettePresentation.availableMarkShortcut(
+            for: .remove,
+            configuredBindings: [removeBinding]
+        ))
     }
 
     func testCompactModePickerLeaves326PointSearchField() {
@@ -223,8 +272,45 @@ final class CommandPaletteControllerTests: XCTestCase {
         XCTAssertTrue(items[0].handle === wmController.workspaceManager.handle(for: visibleToken))
         XCTAssertTrue(items[1].handle === wmController.workspaceManager.handle(for: hiddenToken))
         XCTAssertEqual(CommandPaletteSearch.filterWindowItems(items, query: "hidden").map(\.id), [hiddenToken])
-        XCTAssertTrue(CommandPalettePresentation.allowsSummonRight(items[0]))
-        XCTAssertFalse(CommandPalettePresentation.allowsSummonRight(items[1]))
+        XCTAssertTrue(CommandPalettePresentation.allowsSummonRight(
+            items[0], isTiling: true, isCurrentWorkspaceEmpty: false
+        ))
+        XCTAssertFalse(CommandPalettePresentation.allowsSummonRight(
+            items[1], isTiling: true, isCurrentWorkspaceEmpty: false
+        ))
+    }
+
+    func testFloatingWindowAlternateActionRequiresEmptyWorkspace() throws {
+        let (wmController, _, floatingToken) = try makeWindowFixture()
+        wmController.workspaceManager.setAppHidden(false, pid: floatingToken.pid, source: .service)
+        XCTAssertTrue(wmController.workspaceManager.setWindowMode(.floating, for: floatingToken))
+        let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+        palette.wmController = wmController
+        palette.refreshWindowItems()
+        let item = try XCTUnwrap(palette.windows.first { $0.id == floatingToken })
+        palette.selectedItemID = .window(floatingToken)
+
+        XCTAssertFalse(palette.allowsWindowAlternateAction(item))
+        XCTAssertNil(palette.resolvedSelectionAction(for: .alternate))
+        XCTAssertEqual(
+            CommandPalettePresentation.windowsStatusText(
+                selectedItem: item,
+                isSummonRightAvailable: true,
+                isSelectedWindowEligibleForSummon: false
+            ),
+            "Enter jumps. Shift-Enter unavailable for this window."
+        )
+        XCTAssertTrue(CommandPalettePresentation.allowsSummonRight(
+            item, isTiling: false, isCurrentWorkspaceEmpty: true
+        ))
+
+        XCTAssertEqual(wmController.windowMarkRegistry.set("floating", for: floatingToken), .inserted)
+        palette.refreshWindowItems()
+        palette.selectedItemID = .window(floatingToken)
+        XCTAssertNil(palette.resolvedSelectionAction(for: .alternate))
+
+        XCTAssertTrue(wmController.workspaceManager.setWindowMode(.tiling, for: floatingToken))
+        XCTAssertTrue(palette.allowsWindowAlternateAction(item))
     }
 
     func testWindowRowsUseFocusRecencyForInitialSelectionAndChromeSearch() {
@@ -314,7 +400,7 @@ final class CommandPaletteControllerTests: XCTestCase {
         XCTAssertEqual(palette.selectedItemID, .window(currentToken))
     }
 
-    func testWindowSearchPrioritizesMatchingMarksThenKeepsOtherMatchesInFocusOrder() {
+    func testWindowSearchPrioritizesMatchingMarksThenTitleRelevance() {
         let recent = makeWindowItem(windowId: 92_130, title: "Home tabs", appName: "Google Chrome")
         let next = makeWindowItem(windowId: 92_131, title: "Omni notes", appName: "Google Chrome")
         let marked = makeWindowItem(
@@ -325,7 +411,7 @@ final class CommandPaletteControllerTests: XCTestCase {
         XCTAssertEqual(CommandPaletteSearch.filterWindowItems(windows, query: "").map(\.id), windows.map(\.id))
         XCTAssertEqual(
             CommandPaletteSearch.filterWindowItems(windows, query: "OM").map(\.id),
-            [marked.id, recent.id, next.id]
+            [marked.id, next.id, recent.id]
         )
 
         let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
@@ -333,6 +419,20 @@ final class CommandPaletteControllerTests: XCTestCase {
         XCTAssertEqual(palette.selectedItemID, .window(recent.id))
         palette.searchText = "OM"
         XCTAssertEqual(palette.selectedItemID, .window(marked.id))
+    }
+
+    func testWindowSearchRanksTitleBeforeAppBeforeWorkspaceAndUsesRecencyForTies() {
+        let workspace = makeWindowItem(windowId: 92_140, title: "Diary", appName: "Notes")
+        let app = makeWindowItem(windowId: 92_141, title: "Diary", appName: "Research App")
+        let title = makeWindowItem(windowId: 92_142, title: "Research", appName: "Notes")
+        let olderTitle = makeWindowItem(windowId: 92_143, title: "Research", appName: "Notes")
+        let windows = [workspace, app, title, olderTitle]
+
+        XCTAssertEqual(CommandPaletteSearch.filterWindowItems(windows, query: "").map(\.id), windows.map(\.id))
+        XCTAssertEqual(
+            CommandPaletteSearch.filterWindowItems(windows, query: "research").map(\.id),
+            [title.id, olderTitle.id, app.id, workspace.id]
+        )
     }
 
     func testMarkTargetsSelectedWindowEvenWhenSelectionChangesDuringPrompt() throws {

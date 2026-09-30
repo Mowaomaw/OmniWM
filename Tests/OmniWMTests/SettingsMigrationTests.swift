@@ -269,6 +269,58 @@ final class SettingsMigrationTests: XCTestCase {
     }
 
     @MainActor
+    func testVersionThreeStartupPreservesBindingsAndBacksUpExactBytes() throws {
+        let fixture = try makeFixture("version-three-window-marks")
+        defer { fixture.remove() }
+
+        var export = SettingsExport.defaults()
+        let focusBinding = KeyBinding(keyCode: UInt32(kVK_ANSI_J), modifiers: UInt32(optionKey))
+        let focusIndex = try XCTUnwrap(export.hotkeyBindings.firstIndex { $0.id == "focus.left" })
+        export.hotkeyBindings[focusIndex] = HotkeyBinding(
+            id: "focus.left", command: .focus(.left), binding: focusBinding
+        )
+
+        var original = try SettingsTOMLCodec.encode(export)
+        original = try removingHotkey(id: "setWindowMark", from: original)
+        original = try removingHotkey(id: "removeWindowMark", from: original)
+        original = Data(String(decoding: original, as: UTF8.self)
+            .replacingOccurrences(of: "schemaVersion = 4", with: "schemaVersion = 3").utf8)
+        try original.write(to: settingsURL(in: fixture))
+
+        let first = makePersistence(in: fixture).loadOutcome()
+        let migrated = try XCTUnwrap(first.export)
+        guard let notice = first.notice, case let .migrated(report, backupURL) = notice else {
+            return XCTFail("Expected version-three migration notice")
+        }
+
+        XCTAssertEqual(report.fromVersion, 3)
+        XCTAssertEqual(report.toVersion, 4)
+        XCTAssertEqual(Set(report.addedHotkeyIDs), expectedVersionFourHotkeyIDs)
+        XCTAssertEqual(backupURL, migrationBackupURL(in: fixture))
+        XCTAssertEqual(try Data(contentsOf: backupURL), original)
+        XCTAssertEqual(
+            migrated.hotkeyBindings.filter { !expectedVersionFourHotkeyIDs.contains($0.id) },
+            export.hotkeyBindings.filter { !expectedVersionFourHotkeyIDs.contains($0.id) }
+        )
+        XCTAssertEqual(try XCTUnwrap(hotkey("focus.left", in: migrated)).binding, .chord(focusBinding))
+        XCTAssertTrue(try XCTUnwrap(hotkey("setWindowMark", in: migrated)).binding.isUnassigned)
+        XCTAssertTrue(try XCTUnwrap(hotkey("removeWindowMark", in: migrated)).binding.isUnassigned)
+
+        let rewritten = try Data(contentsOf: settingsURL(in: fixture))
+        let rewrittenInode = try fileInode(at: settingsURL(in: fixture))
+        XCTAssertEqual(try SettingsTOMLCodec.decode(rewritten), migrated)
+        XCTAssertTrue(String(decoding: rewritten, as: UTF8.self).contains("schemaVersion = 4"))
+
+        let second = makePersistence(in: fixture).loadOutcome()
+        XCTAssertNil(second.notice)
+        XCTAssertEqual(second.export, migrated)
+        XCTAssertEqual(try Data(contentsOf: settingsURL(in: fixture)), rewritten)
+        XCTAssertEqual(try fileInode(at: settingsURL(in: fixture)), rewrittenInode)
+        XCTAssertEqual(try Data(contentsOf: backupURL), original)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: migrationBackupURL(in: fixture, index: 1).path))
+    }
+
+    @MainActor
     func testVersionTwoRoutingMigrationRejectsMissingMalformedArraysAndRowsWithoutChangingBytes() throws {
         let valid = String(decoding: try versionTwoData(), as: UTF8.self)
         let inputs = [

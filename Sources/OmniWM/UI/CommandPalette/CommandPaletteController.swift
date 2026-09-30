@@ -182,7 +182,6 @@ final class CommandPaletteController: NSObject, NSWindowDelegate {
         loadSelectedClipboardPreview()
         panel.orderFrontRegardless()
         panel.makeKey()
-        environment.activateOmniWM()
         presentation.reveal(panel)
 
         if selectedMode == .menu {
@@ -473,6 +472,12 @@ extension CommandPaletteController {
         }
     }
 
+    func restoreKeyWindowAfterMarkPrompt() {
+        if isVisible {
+            presentation.panel?.makeKey()
+        }
+    }
+
     private func handleKeyDown(_ event: NSEvent) -> Bool {
         if [UInt16(36), 48, 49, 51, 53, 76, 123, 124, 125, 126].contains(event.keyCode),
            let inputClient = presentation.panel?.firstResponder as? NSTextInputClient,
@@ -482,25 +487,7 @@ extension CommandPaletteController {
         }
         let relevantModifiers = event.modifierFlags.intersection([.shift, .command, .control, .option])
 
-        if selectedMode == .windows,
-           let markAction = CommandPalettePresentation.markAction(
-               forKeyCode: event.keyCode,
-               relevantModifiers: relevantModifiers
-           )
-        {
-            guard isExpanded else {
-                expandResults()
-                actionFeedbackText = "Select a window row before changing its marks."
-                return true
-            }
-            switch markAction {
-            case .set:
-                setMarkOnSelectedWindow()
-            case .remove:
-                removeMarkFromSelectedWindow()
-            }
-            return true
-        }
+        if handleMarkKeyDown(event, relevantModifiers: relevantModifiers) { return true }
 
         if handleLauncherKeyDown(event, relevantModifiers: relevantModifiers) {
             return true
@@ -539,6 +526,28 @@ extension CommandPaletteController {
             selectCurrent(trigger: trigger)
             return true
         }
+    }
+
+    private func handleMarkKeyDown(_ event: NSEvent, relevantModifiers: NSEvent.ModifierFlags) -> Bool {
+        guard selectedMode == .windows,
+              let markAction = CommandPalettePresentation.markAction(
+                  forKeyCode: event.keyCode,
+                  relevantModifiers: relevantModifiers
+              ),
+              markShortcut(for: markAction) != nil
+        else { return false }
+        guard isExpanded else {
+            expandResults()
+            actionFeedbackText = String(localized: "Select a window row before changing its marks.")
+            return true
+        }
+        switch markAction {
+        case .set:
+            setMarkOnSelectedWindow()
+        case .remove:
+            removeMarkFromSelectedWindow()
+        }
+        return true
     }
 
     private static func selectionTrigger(

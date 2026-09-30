@@ -69,6 +69,12 @@ final class NuCompletionTests: XCTestCase {
         }
     }
 
+    func testWindowMarkActionAndListFlagCompletions() throws {
+        try assertCompletions("omniwmctl window mark ", CLICompletionCatalog.windowMarkActionNames)
+        try assertCompletions("omniwmctl window mark list ", CLICompletionCatalog.windowMarkListFlags)
+        try assertCompletions("omniwmctl window mark set saved ", [])
+    }
+
     func testNestedCommandsAndLiteralArguments() throws {
         let cases: [(String, [String])] = [
             ("omniwmctl command focus ", ["left", "right", "up", "down", "previous", "down-or-left", "up-or-right"]),

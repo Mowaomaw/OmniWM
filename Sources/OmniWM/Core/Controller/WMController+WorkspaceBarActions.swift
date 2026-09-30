@@ -89,7 +89,7 @@ extension WMController {
             monitorId: monitorId,
             isFloating: entry.mode == .floating,
             canMove: canMove,
-            canSummon: canMove && anchor != nil && anchor != token
+            canSummon: canMove && entry.mode == .tiling && anchor != nil && anchor != token
         )
     }
 

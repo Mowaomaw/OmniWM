@@ -68,6 +68,7 @@ extension WMController {
             self?.axEventHandler.probeUnresolvedNativeFocus(after: handle.token)
         }
         workspaceManager.onWindowRemoved = { [weak self] entry in
+            self?.windowMarkRegistry.retire(entry.token)
             self?.windowActionHandlerStorage?.handleOverviewWindowRemoved(entry)
             self?.layoutRefreshController.workspaceSwipe.windowRemoved(entry.token)
         }

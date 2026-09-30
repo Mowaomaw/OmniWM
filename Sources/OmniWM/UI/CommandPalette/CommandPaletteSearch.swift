@@ -9,6 +9,12 @@ import SwiftUI
 
 @MainActor
 enum CommandPaletteSearch {
+    private struct WindowSearchMatch {
+        let item: CommandPaletteWindowItem
+        let rank: Int
+        let recency: Int
+    }
+
     private static let unassignedShortcut = String(localized: "Unassigned")
     private static let noShortcut = String(localized: "No shortcut")
     private static let hiddenSearchTerms = ActionCatalog.uniqueTerms([
@@ -30,19 +36,39 @@ enum CommandPaletteSearch {
         let query = trimmedQuery.lowercased()
 
         var markedMatches: [CommandPaletteWindowItem] = []
-        var otherMatches: [CommandPaletteWindowItem] = []
-        for item in items {
+        var otherMatches: [WindowSearchMatch] = []
+        for (recency, item) in items.enumerated() {
             if item.markNames.contains(where: { $0.localizedCaseInsensitiveContains(query) }) {
                 markedMatches.append(item)
-            } else if item.title.localizedCaseInsensitiveContains(query)
-                || item.appName.localizedCaseInsensitiveContains(query)
-                || item.workspaceName.localizedCaseInsensitiveContains(query)
-                || (item.isAppHidden && hiddenSearchTerms.contains(where: { $0.contains(query) }))
-            {
-                otherMatches.append(item)
+            } else if let rank = windowSearchRank(item, query: query) {
+                otherMatches.append(.init(item: item, rank: rank, recency: recency))
             }
         }
-        return markedMatches + otherMatches
+        return markedMatches + otherMatches.sorted {
+            $0.rank == $1.rank ? $0.recency < $1.recency : $0.rank < $1.rank
+        }.map(\.item)
+    }
+
+    private static func windowSearchRank(_ item: CommandPaletteWindowItem, query: String) -> Int? {
+        let title = item.title.lowercased()
+        if let range = title.range(of: query) {
+            return title.distance(from: title.startIndex, to: range.lowerBound)
+        }
+        let appName = item.appName.lowercased()
+        if let range = appName.range(of: query) {
+            return 1000 + appName.distance(from: appName.startIndex, to: range.lowerBound)
+        }
+        let workspaceName = item.workspaceName.lowercased()
+        if let range = workspaceName.range(of: query) {
+            return 2000 + workspaceName.distance(from: workspaceName.startIndex, to: range.lowerBound)
+        }
+        if item.isAppHidden,
+           let term = hiddenSearchTerms.first(where: { $0.contains(query) }),
+           let range = term.range(of: query)
+        {
+            return 3000 + term.distance(from: term.startIndex, to: range.lowerBound)
+        }
+        return nil
     }
 
     static func filterMenuItems(_ items: [MenuItemModel], query rawQuery: String) -> [MenuItemModel] {
@@ -236,7 +262,6 @@ enum CommandPaletteSearch {
         confirmedFocusToken: WindowToken? = nil,
         focusedWindowToken: WindowToken? = nil
     ) -> [CommandPaletteWindowItem] {
-        // The frontmost-app capture can lag the confirmed managed focus during an app switch.
         let focusOrder = [confirmedFocusToken, focusedWindowToken].compactMap { $0 } + focusRecencyOrder
         let focusRanks = Dictionary(
             focusOrder.enumerated().map { ($0.element, $0.offset) },

@@ -77,9 +77,7 @@ def omniwmctl_choices [words: list<string>] {
             if $count == 1 { return $catalog.windowActionNames }
             if $action != "mark" { return [] }
             let mark_action = ($words | get -o 2 | default "")
-            if $count == 2 { $catalog.windowMarkActionNames }
-            else if $count == 3 and $mark_action == "list" { $catalog.windowMarkListFlags }
-            else { [] }
+            if $count == 2 { $catalog.windowMarkActionNames } else if $count == 3 and $mark_action == "list" { $catalog.windowMarkListFlags } else { [] }
         }
         subscribe => { $catalog.subscribeTokens }
         watch => { $catalog.watchTokens }

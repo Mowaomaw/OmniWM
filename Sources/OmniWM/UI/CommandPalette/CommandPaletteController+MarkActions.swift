@@ -4,6 +4,18 @@
 import AppKit
 
 extension CommandPaletteController {
+    func markShortcut(for action: CommandPalettePresentation.MarkAction) -> String? {
+        guard let wmController else { return nil }
+        let bindings = wmController.hotkeysEnabled ? wmController.settings.hotkeyBindings.filter { binding in
+            switch binding.command {
+            case .presentation(.overview): wmController.settings.overview.enabled
+            case .presentation(.quakeTerminal): wmController.settings.quakeTerminal.enabled
+            default: true
+            }
+        } : []
+        return CommandPalettePresentation.availableMarkShortcut(for: action, configuredBindings: bindings)
+    }
+
     func setMarkOnSelectedWindow() {
         guard let wmController else { return }
         guard let item = selectedWindowItemForMarkAction() else {
@@ -11,7 +23,10 @@ extension CommandPaletteController {
             return
         }
         isPresentingMarkPrompt = true
-        defer { isPresentingMarkPrompt = false }
+        defer {
+            restoreKeyWindowAfterMarkPrompt()
+            isPresentingMarkPrompt = false
+        }
         let outcome = makeMarkInteraction(for: wmController, selectedItem: item).setSelectedWindowMark()
         guard outcome != .cancelled else { return }
         refreshWindowItems()
@@ -25,7 +40,10 @@ extension CommandPaletteController {
             return
         }
         isPresentingMarkPrompt = true
-        defer { isPresentingMarkPrompt = false }
+        defer {
+            restoreKeyWindowAfterMarkPrompt()
+            isPresentingMarkPrompt = false
+        }
         let outcome = makeMarkInteraction(for: wmController, selectedItem: item)
             .removeMarkFromSelectedWindow(item.id)
         guard outcome != .cancelled else { return }
@@ -81,48 +99,52 @@ extension CommandPaletteController {
     private func markActionFeedback(for outcome: CommandPaletteMarkInteraction.Outcome) -> String {
         switch outcome {
         case let .marked(name):
-            "Marked the selected window as ‘\(name)’."
+            String(localized: "Marked the selected window as ‘\(name)’.")
         case let .alreadyMarked(name):
-            "The selected window is already marked ‘\(name)’."
+            String(localized: "The selected window is already marked ‘\(name)’.")
         case let .duplicateName(name):
-            "‘\(name)’ is already used by another window. Choose a different mark name."
+            String(localized: "‘\(name)’ is already used by another window. Choose a different mark name.")
         case .invalidName:
-            "Mark names must be non-empty and contain no control characters. Try another name."
+            String(localized: "Mark names must be non-empty and contain no control characters. Try another name.")
         case .staleWindow:
-            "The window is no longer eligible. Reopen the Palette and choose a current managed window."
+            String(
+                localized: "The window is no longer eligible. Reopen the Palette and choose a current managed window."
+            )
         case .cancelled:
-            "No mark was changed."
+            String(localized: "No mark was changed.")
         case let .removed(name):
-            "Removed mark ‘\(name)’ from the selected window."
+            String(localized: "Removed mark ‘\(name)’ from the selected window.")
         case .noSelectedWindow:
-            "Select a current window row before changing its marks."
+            String(localized: "Select a current window row before changing its marks.")
         case .noMarks:
-            "The selected window has no marks to remove. Select a marked window."
+            String(localized: "The selected window has no marks to remove. Select a marked window.")
         case .staleMark:
-            "That mark changed while the chooser was open. Choose a current mark and try again."
+            String(localized: "That mark changed while the chooser was open. Choose a current mark and try again.")
         }
     }
 
     func markedSummonFeedback(for outcome: WindowSummonRightOutcome) -> String {
         switch outcome {
         case .summoned:
-            "Window summoned right."
+            String(localized: "Window summoned right.")
         case .movedToWorkspace:
-            "Window moved to the empty workspace."
+            String(localized: "Window moved to the empty workspace.")
         case .moveFailed:
-            "Could not move this window into the empty workspace. Press Enter to focus it instead."
+            String(localized: "Could not move this window into the empty workspace. Press Enter to focus it instead.")
         case .noAnchor:
-            "This workspace is not empty. Focus a managed window here before using Shift-Enter."
+            String(localized: "This workspace is not empty. Focus a managed window here before using Shift-Enter.")
         case .selfSummon:
-            "A window cannot be summoned beside itself. Choose a different marked window."
+            String(localized: "A window cannot be summoned beside itself. Choose a different marked window.")
         case .hiddenTarget:
-            "This app is hidden. Press Enter to unhide and focus it; Shift-Enter cannot summon it."
+            String(localized: "This app is hidden. Press Enter to unhide and focus it; Shift-Enter cannot summon it.")
         case .staleTarget:
-            "This marked window is no longer available. Search again for a current result."
+            String(localized: "This marked window is no longer available. Search again for a current result.")
         case .unsupportedLayout:
-            "Summon right is not supported by the current layout. Press Enter to focus this window instead."
+            String(
+                localized: "Summon right is not supported by the current layout. Press Enter to focus this window instead."
+            )
         case .actionFailed:
-            "Could not summon this window right now. Press Enter to focus it instead."
+            String(localized: "Could not summon this window right now. Press Enter to focus it instead.")
         }
     }
 
@@ -131,7 +153,7 @@ extension CommandPaletteController {
         selectedItemID: CommandPaletteSelectionID?
     ) -> String {
         guard case let .window(token)? = selectedItemID else {
-            return "Select a current window result first."
+            return String(localized: "Select a current window result first.")
         }
 
         guard let wmController,
@@ -139,25 +161,31 @@ extension CommandPaletteController {
               entry.layoutReason == .standard,
               wmController.workspaceManager.handle(for: token) != nil
         else {
-            return "This window or mark is no longer available. Search again for a current result."
+            return String(localized: "This window or mark is no longer available. Search again for a current result.")
         }
 
         switch trigger {
         case .primary,
              .reveal:
-            return "This window is no longer in the current results. Search again before focusing it."
+            return String(
+                localized: "This window is no longer in the current results. Search again before focusing it."
+            )
         case .alternate:
             break
         }
 
         if wmController.workspaceManager.isAppHidden(pid: token.pid) {
-            return "This app is hidden. Press Enter to unhide and focus it; Shift-Enter cannot summon it."
+            return String(
+                localized: "This app is hidden. Press Enter to unhide and focus it; Shift-Enter cannot summon it."
+            )
         }
         guard let anchor = focusSession.summonAnchor,
               wmController.workspaceManager.entry(for: anchor.token) != nil
         else {
-            return "Summon right is unavailable. Focus a managed window in the active workspace first."
+            return String(
+                localized: "Summon right is unavailable. Focus a managed window in the active workspace first."
+            )
         }
-        return "This window cannot be summoned right now. Press Enter to focus it instead."
+        return String(localized: "This window cannot be summoned right now. Press Enter to focus it instead.")
     }
 }

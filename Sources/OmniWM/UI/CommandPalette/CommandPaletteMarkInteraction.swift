@@ -4,12 +4,33 @@
 import AppKit
 
 @MainActor
+private enum CommandPaletteMarkModal {
+    static func run(_ alert: NSAlert) -> NSApplication.ModalResponse {
+        let frontmostApp = NSWorkspace.shared.frontmostApplication
+        let wasActive = NSApp.isActive
+        NSApp.activate(ignoringOtherApps: true)
+        let response = alert.runModal()
+        if !wasActive {
+            if let frontmostApp,
+               frontmostApp.processIdentifier != NSRunningApplication.current.processIdentifier,
+               !frontmostApp.isTerminated,
+               frontmostApp.activate(options: [])
+            {
+                return response
+            }
+            NSApp.deactivate()
+        }
+        return response
+    }
+}
+
+@MainActor
 enum CommandPaletteMarkNamePrompt {
-    static let title = "Mark selected window"
-    static let message = "Enter a name you can search for in the Windows palette."
-    static let fieldLabel = "Window mark name"
-    static let confirmTitle = "Set Mark"
-    static let cancelTitle = "Cancel"
+    static let title = String(localized: "Mark selected window")
+    static let message = String(localized: "Enter a name you can search for in the Windows palette.")
+    static let fieldLabel = String(localized: "Window mark name")
+    static let confirmTitle = String(localized: "Set Mark")
+    static let cancelTitle = String(localized: "Cancel")
 
     static func requestName(initialValue: String? = nil) -> String? {
         let nameField = NSTextField(string: initialValue ?? "")
@@ -17,7 +38,9 @@ enum CommandPaletteMarkNamePrompt {
         nameField.placeholderString = fieldLabel
         nameField.setAccessibilityLabel(fieldLabel)
 
-        guard makeAlert(nameField: nameField).runModal() == .alertFirstButtonReturn else { return nil }
+        guard CommandPaletteMarkModal.run(makeAlert(nameField: nameField)) == .alertFirstButtonReturn else {
+            return nil
+        }
         return nameField.stringValue
     }
 
@@ -35,11 +58,11 @@ enum CommandPaletteMarkNamePrompt {
 
 @MainActor
 enum CommandPaletteMarkRemovalPrompt {
-    static let title = "Remove a window mark"
-    static let message = "Choose which mark to remove from this window."
-    static let fieldLabel = "Window mark to remove"
-    static let confirmTitle = "Remove Mark"
-    static let cancelTitle = "Cancel"
+    static let title = String(localized: "Remove a window mark")
+    static let message = String(localized: "Choose which mark to remove from this window.")
+    static let fieldLabel = String(localized: "Window mark to remove")
+    static let confirmTitle = String(localized: "Remove Mark")
+    static let cancelTitle = String(localized: "Cancel")
 
     static func requestName(from markNames: [String]) -> String? {
         guard !markNames.isEmpty else { return nil }
@@ -48,7 +71,9 @@ enum CommandPaletteMarkRemovalPrompt {
         namePicker.addItems(withTitles: markNames)
         namePicker.setAccessibilityLabel(fieldLabel)
 
-        guard makeAlert(namePicker: namePicker).runModal() == .alertFirstButtonReturn else { return nil }
+        guard CommandPaletteMarkModal.run(makeAlert(namePicker: namePicker)) == .alertFirstButtonReturn else {
+            return nil
+        }
         return namePicker.titleOfSelectedItem
     }
 

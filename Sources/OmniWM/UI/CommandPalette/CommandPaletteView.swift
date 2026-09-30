@@ -82,33 +82,7 @@ struct CommandPaletteView: View {
             .frame(height: 1)
 
         if controller.selectedMode == .windows {
-            HStack(spacing: 10) {
-                Button(action: { controller.setMarkOnSelectedWindow() }) {
-                    HStack(spacing: 6) {
-                        Label("Mark selected window…", systemImage: "tag")
-                        CommandPaletteShortcutBadge(text: CommandPalettePresentation.setMarkShortcut)
-                    }
-                }
-                .accessibilityHint(
-                    "Marks the selected window row. Shortcut Control-Option-M."
-                )
-                .help("Mark the selected window (Control-Option-M)")
-
-                Button(action: { controller.removeMarkFromSelectedWindow() }) {
-                    HStack(spacing: 6) {
-                        Label("Remove mark…", systemImage: "tag.slash")
-                        CommandPaletteShortcutBadge(text: CommandPalettePresentation.removeMarkShortcut)
-                    }
-                }
-                .accessibilityHint(
-                    "Choose a mark to remove from the selected window. Shortcut Control-Option-R."
-                )
-                .help("Choose a mark to remove from the selected window (Control-Option-R)")
-            }
-            .buttonStyle(.bordered)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+            CommandPaletteMarkActionsView(controller: controller)
         }
 
         if let actionFeedbackText = controller.actionFeedbackText {
@@ -200,10 +174,13 @@ struct CommandPaletteView: View {
             .font(.system(size: 18, weight: .medium))
             .foregroundColor(.secondary)
 
-            TextField(searchPlaceholder, text: $controller.searchText)
-                .textFieldStyle(.plain)
-                .font(.system(size: 20))
-                .focused($isSearchFocused)
+            TextField(
+                CommandPalettePresentation.searchPlaceholder(for: controller.selectedMode),
+                text: $controller.searchText
+            )
+            .textFieldStyle(.plain)
+            .font(.system(size: 20))
+            .focused($isSearchFocused)
 
             if !controller.searchText.isEmpty {
                 Button(action: { controller.searchText = "" }, label: {
@@ -249,29 +226,14 @@ struct CommandPaletteView: View {
         .help(statusText)
     }
 
-    private var searchPlaceholder: String {
-        switch controller.selectedMode {
-        case .windows:
-            String(localized: "Search windows...")
-        case .menu:
-            String(localized: "Search menu items...")
-        case .clipboard:
-            String(localized: "Search clipboard history...")
-        case .commands:
-            String(localized: "Search OmniWM commands...")
-        case .applications:
-            String(localized: "Search applications...")
-        case .files:
-            String(localized: "Search files...")
-        }
-    }
-
     private var statusText: String {
         switch controller.selectedMode {
         case .windows:
             CommandPalettePresentation.windowsStatusText(
                 selectedItem: selectedWindowItem,
                 isSummonRightAvailable: controller.isSummonRightAvailable,
+                isSelectedWindowEligibleForSummon: selectedWindowItem
+                    .map(controller.allowsWindowAlternateAction) ?? true,
                 isCurrentWorkspaceEmpty: controller.isCurrentWorkspaceEmpty
             )
         case .menu:

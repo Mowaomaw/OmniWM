@@ -92,9 +92,12 @@ final class IPCCaptureContractTests: XCTestCase {
             ruleActions: [],
             workspaceActions: [],
             windowActions: [],
+            windowMarkActions: [],
             subscriptions: []
         )
-        let commands = IPCCommandsQueryResult(commands: [], workspaceActions: [], windowActions: [])
+        let commands = IPCCommandsQueryResult(
+            commands: [], workspaceActions: [], windowActions: [], windowMarkActions: []
+        )
         let encoder = IPCWire.makeEncoder()
         let capabilitiesObject = try XCTUnwrap(
             JSONSerialization.jsonObject(with: encoder.encode(capabilities)) as? [String: Any]

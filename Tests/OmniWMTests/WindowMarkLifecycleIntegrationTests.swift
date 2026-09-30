@@ -29,6 +29,24 @@ final class WindowMarkLifecycleIntegrationTests: XCTestCase {
         XCTAssertTrue(controller.windowMarkRegistry.marks.isEmpty)
     }
 
+    func testAppTerminationRetiresMarksAndReleasesTheirNames() throws {
+        let controller = WindowAdmissionTestSupport.controller(prefix: "OmniWMWindowMarkTermination")
+        let workspaceId = try XCTUnwrap(
+            WindowAdmissionTestSupport.workspace(named: "78", layoutType: .niri, controller: controller)
+        )
+        let terminatedToken = WindowToken(pid: 76_021, windowId: 76_121)
+        let replacementToken = WindowToken(pid: 76_022, windowId: 76_122)
+        _ = WindowAdmissionTestSupport.track(terminatedToken, in: workspaceId, controller: controller)
+        _ = WindowAdmissionTestSupport.track(replacementToken, in: workspaceId, controller: controller)
+        XCTAssertEqual(controller.windowMarkRegistry.set("terminal", for: terminatedToken), .inserted)
+
+        controller.axEventHandler.handleAppTerminated(pid: terminatedToken.pid)
+
+        XCTAssertNil(controller.workspaceManager.entry(for: terminatedToken))
+        XCTAssertEqual(controller.windowMarkRegistry.lookup("terminal"), .unknown)
+        XCTAssertEqual(controller.windowMarkRegistry.set("terminal", for: replacementToken), .inserted)
+    }
+
     func testManagedReplacementRekeysMarkToReplacementToken() throws {
         let controller = WindowAdmissionTestSupport.controller(prefix: "OmniWMWindowMarkRebind")
         let workspaceId = try XCTUnwrap(

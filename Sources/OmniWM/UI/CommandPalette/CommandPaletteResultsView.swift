@@ -39,7 +39,7 @@ struct CommandPaletteResultsView: View {
                     item: item,
                     isSelected: controller.selectedItemID == .window(item.id),
                     isSummonRightAvailable: controller.isSummonRightAvailable
-                        && CommandPalettePresentation.allowsSummonRight(item),
+                        && controller.allowsWindowAlternateAction(item),
                     onSelect: {
                         controller.selectedItemID = .window(item.id)
                         controller.selectCurrent()

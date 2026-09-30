@@ -76,10 +76,10 @@ These shortcuts are available while the Command Palette is open in **Windows** m
 
 | Action | Shortcut |
 |--------|----------|
-| Mark selected window | `Control + Option + M` |
-| Remove a mark from the selected window | `Control + Option + R` |
+| Mark selected window | `Control + Option + Shift + M` |
+| Remove a mark from the selected window | `Control + Option + Shift + R` |
 
-These fixed shortcuts are local to the open Palette. **Set Mark on Focused Window** and **Remove Mark from Focused Window** are also available as separate, unassigned actions in **Settings > Hotkeys** for configurable global shortcuts. Outside the Palette, key combinations retain their configured global behavior.
+These shortcuts are local to the open Palette and yield to conflicting configured global shortcuts; the affected Palette action remains available as a button. **Set Mark on Focused Window** and **Remove Mark from Focused Window** are also available as separate, unassigned actions in **Settings > Hotkeys** for configurable global shortcuts. Outside the Palette, key combinations retain their configured global behavior.
 
 ## Move Window
 

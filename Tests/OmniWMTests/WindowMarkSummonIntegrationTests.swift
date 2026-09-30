@@ -114,6 +114,38 @@ final class WindowMarkSummonIntegrationTests: XCTestCase {
         XCTAssertEqual(controller.intentLedger.activeManagedRequest?.token, fixture.markedToken)
     }
 
+    func testMarkedFloatingWindowCannotBeSummonedOrMoved() throws {
+        for (layoutType, displayId) in [(LayoutType.niri, UInt32(78_308)), (.dwindle, 78_309)] {
+            let fixture = try makeFixture(layoutType: layoutType, displayId: displayId)
+            let controller = fixture.controller
+            let manager = controller.workspaceManager
+            manager.withEngineMutationScope {
+                switch layoutType {
+                case .dwindle:
+                    controller.dwindleEngine?.removeWindow(token: fixture.markedToken, from: fixture.sourceWorkspaceId)
+                case .niri,
+                     .defaultLayout:
+                    controller.niriEngine?.removeWindow(token: fixture.markedToken, in: fixture.sourceWorkspaceId)
+                }
+            }
+            XCTAssertTrue(manager.setWindowMode(.floating, for: fixture.markedToken))
+            XCTAssertEqual(controller.windowMarkRegistry.set("floating", for: fixture.markedToken), .inserted)
+
+            let barTarget = try XCTUnwrap(
+                controller.workspaceBarWindowMenuTarget(for: fixture.markedToken, title: "Floating")
+            )
+            XCTAssertTrue(barTarget.canMove)
+            XCTAssertFalse(barTarget.canSummon)
+
+            let response = summonResponse(fixture, mark: "floating")
+
+            XCTAssertEqual(response.code, .windowActionFailed)
+            XCTAssertEqual(manager.workspace(for: fixture.markedToken), fixture.sourceWorkspaceId)
+            XCTAssertEqual(manager.windowMode(for: fixture.markedToken), .floating)
+            XCTAssertEqual(controller.windowMarkRegistry.lookup("floating"), .found(fixture.markedToken))
+        }
+    }
+
     func testCrossWorkspaceDwindleSummonFocusIsSupersededByNewerIntent() async throws {
         let fixture = try makeFixture(layoutType: .dwindle, displayId: 78_307)
         let controller = fixture.controller
@@ -123,16 +155,10 @@ final class WindowMarkSummonIntegrationTests: XCTestCase {
         let response = summonResponse(fixture, mark: "supersede-mark")
         XCTAssertTrue(response.ok)
 
-        // Inject a newer focus intent on the anchor before the relayout
-        // drains — the summon's postLayout callback must yield.
         controller.focusWindow(fixture.anchorToken)
 
         await WindowAdmissionTestSupport.drainLayoutRefreshes(controller)
 
-        // The window moved to the target workspace (structural mutation is
-        // committed before the postLayout), but the Dwindle engine should
-        // still select the anchor because the newer focus intent superseded
-        // the summon's activation callback.
         XCTAssertEqual(controller.workspaceManager.workspace(for: fixture.markedToken), fixture.targetWorkspaceId)
         XCTAssertEqual(engine.activeToken(in: fixture.targetWorkspaceId), fixture.anchorToken)
         XCTAssertEqual(controller.intentLedger.activeManagedRequest?.token, fixture.anchorToken)

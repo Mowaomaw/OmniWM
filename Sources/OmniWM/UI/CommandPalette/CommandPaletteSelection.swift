@@ -28,6 +28,18 @@ extension CommandPaletteController {
         focusSession.summonAnchor != nil
     }
 
+    func allowsWindowAlternateAction(_ item: CommandPaletteWindowItem) -> Bool {
+        guard let wmController,
+              let entry = wmController.workspaceManager.entry(for: item.id),
+              !wmController.workspaceManager.isAppHidden(pid: item.id.pid)
+        else { return false }
+        return CommandPalettePresentation.allowsSummonRight(
+            item,
+            isTiling: entry.mode == .tiling,
+            isCurrentWorkspaceEmpty: isCurrentWorkspaceEmpty
+        )
+    }
+
     var menuStatusText: String {
         if let menuFocusTarget = focusSession.menuFocusTarget {
             return CommandPalettePresentation.availableMenuStatusText(for: menuFocusTarget.app.localizedName)
@@ -127,9 +139,7 @@ extension CommandPaletteController {
              .reveal:
             return .navigateWindow(wmController, item.handle)
         case .alternate:
-            guard CommandPalettePresentation.allowsSummonRight(item),
-                  !wmController.workspaceManager.isAppHidden(pid: token.pid)
-            else { return nil }
+            guard allowsWindowAlternateAction(item) else { return nil }
             if isCurrentWorkspaceEmpty, let workspaceId = focusSession.workspaceId {
                 return .moveWindowToWorkspace(wmController, item.handle, workspaceId)
             }

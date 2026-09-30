@@ -95,7 +95,7 @@ struct CommandPaletteWindowRow: View {
     }
 
     var markLabels: [String] {
-        item.markNames.map { "Mark: \($0)" }
+        item.markNames.map { String(localized: "Mark: \($0)") }
     }
 
     var accessibilityLabel: String {

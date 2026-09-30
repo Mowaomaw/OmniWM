@@ -35,6 +35,7 @@ extension WindowActionHandler {
               anchorEntry.workspaceId == anchorWorkspaceId,
               !controller.workspaceManager.isWindowSuppressedByMacOS(anchorEntry.token),
               let targetEntry = controller.workspaceManager.entry(for: handle),
+              targetEntry.mode == .tiling,
               !controller.workspaceManager.isWindowSuppressedByMacOS(targetEntry.token)
         else {
             return false
@@ -207,12 +208,6 @@ extension WindowActionHandler {
         }
     }
 
-    /// Cross-workspace Dwindle summon needs a relaxed postLayout gate
-    /// (`.layoutCommit`, which excludes `.focus`) because the workspace
-    /// transfer itself invalidates the focus domain before the relayout
-    /// that admits the summoned token into the target tree.  A
-    /// `newestFocusIntentId` check ensures a newer user-initiated focus
-    /// request supersedes this callback.
     private func commitCrossWorkspaceDwindleSummonFocus(
         _ token: WindowToken,
         in workspaceId: WorkspaceDescriptor.ID,
