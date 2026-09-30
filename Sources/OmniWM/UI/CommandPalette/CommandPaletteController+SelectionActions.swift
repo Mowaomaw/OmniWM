@@ -40,6 +40,10 @@ extension CommandPaletteController {
     }
 
     func moveSelection(by delta: Int) {
+        if selectedMode == .windows, !isExpanded {
+            expandResults()
+            return
+        }
         expandResults()
         let selectionList = currentSelectionList()
         guard !selectionList.isEmpty else { return }

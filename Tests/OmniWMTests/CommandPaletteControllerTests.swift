@@ -167,6 +167,39 @@ final class CommandPaletteControllerTests: XCTestCase {
         )
     }
 
+    func testMarkActionShortcutsStayVisibleAndMapToPaletteActions() {
+        let markModifiers: NSEvent.ModifierFlags = [.control, .option]
+
+        XCTAssertEqual(CommandPalettePresentation.setMarkShortcut, "⌃⌥M")
+        XCTAssertEqual(CommandPalettePresentation.removeMarkShortcut, "⌃⌥R")
+        XCTAssertEqual(
+            CommandPalettePresentation.markAction(
+                forKeyCode: UInt16(kVK_ANSI_M),
+                relevantModifiers: markModifiers
+            ),
+            .set
+        )
+        XCTAssertEqual(
+            CommandPalettePresentation.markAction(
+                forKeyCode: UInt16(kVK_ANSI_R),
+                relevantModifiers: markModifiers
+            ),
+            .remove
+        )
+        XCTAssertNil(
+            CommandPalettePresentation.markAction(
+                forKeyCode: UInt16(kVK_ANSI_M),
+                relevantModifiers: .control
+            )
+        )
+        XCTAssertNil(
+            CommandPalettePresentation.markAction(
+                forKeyCode: UInt16(kVK_ANSI_X),
+                relevantModifiers: markModifiers
+            )
+        )
+    }
+
     func testCompactModePickerLeaves326PointSearchField() {
         XCTAssertEqual(CommandPaletteModePicker.compactWidth, 304)
         XCTAssertEqual(CommandPalettePanel.width - CommandPaletteModePicker.compactWidth - 10, 326)
@@ -175,15 +208,230 @@ final class CommandPaletteControllerTests: XCTestCase {
     func testHiddenManagedRowsRemainSearchableAndSortAfterVisibleRows() throws {
         let (wmController, visibleToken, hiddenToken) = try makeWindowFixture()
 
-        let items = CommandPaletteSearch.buildWindowItems(from: wmController)
+        let focusedWindow = CommandPaletteFocusTarget(
+            app: .init(
+                processIdentifier: hiddenToken.pid, bundleIdentifier: nil, localizedName: nil, isTerminated: false
+            ),
+            focusedWindow: nil,
+            focusedWindowID: CGWindowID(hiddenToken.windowId)
+        )
+        let items = CommandPaletteSearch.buildWindowItems(from: wmController, focusedWindow: focusedWindow)
 
         XCTAssertEqual(items.map(\.id), [visibleToken, hiddenToken])
         XCTAssertEqual(items.map(\.isAppHidden), [false, true])
+        XCTAssertTrue(items.allSatisfy { $0.markNames.isEmpty })
         XCTAssertTrue(items[0].handle === wmController.workspaceManager.handle(for: visibleToken))
         XCTAssertTrue(items[1].handle === wmController.workspaceManager.handle(for: hiddenToken))
         XCTAssertEqual(CommandPaletteSearch.filterWindowItems(items, query: "hidden").map(\.id), [hiddenToken])
         XCTAssertTrue(CommandPalettePresentation.allowsSummonRight(items[0]))
         XCTAssertFalse(CommandPalettePresentation.allowsSummonRight(items[1]))
+    }
+
+    func testWindowRowsUseFocusRecencyForInitialSelectionAndChromeSearch() {
+        let older = makeWindowItem(windowId: 92_120, title: "Chrome Beta", appName: "Google Chrome")
+        let recentlyFocused = makeWindowItem(windowId: 92_121, title: "Chrome Zulu", appName: "Google Chrome")
+        let items = CommandPaletteSearch.orderWindowItems(
+            [older, recentlyFocused],
+            focusRecencyOrder: [recentlyFocused.id, older.id]
+        )
+
+        XCTAssertEqual(items.map(\.id), [recentlyFocused.id, older.id])
+        XCTAssertEqual(
+            CommandPaletteSearch.filterWindowItems(items, query: "Chrome").map(\.id),
+            [recentlyFocused.id, older.id]
+        )
+
+        let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+        palette.windows = items
+        XCTAssertEqual(palette.selectedItemID, .window(recentlyFocused.id))
+    }
+
+    func testCapturedPrePaletteWindowOverridesStaleFocusAndIsSelected() throws {
+        let older = makeWindowItem(windowId: 92_120, title: "Chrome Beta", appName: "Google Chrome")
+        let focused = makeWindowItem(windowId: 92_121, title: "Chrome Zulu", appName: "Google Chrome")
+        let ordered = CommandPaletteSearch.orderWindowItems(
+            [older, focused],
+            focusRecencyOrder: [older.id, focused.id],
+            focusedWindowToken: focused.id
+        )
+        XCTAssertEqual(ordered.map(\.id), [focused.id, older.id])
+        XCTAssertEqual(
+            CommandPaletteSearch.filterWindowItems(ordered, query: "Chrome").map(\.id),
+            [focused.id, older.id]
+        )
+
+        let (wmController, _, capturedToken) = try makeWindowFixture()
+        wmController.workspaceManager.setAppHidden(false, pid: capturedToken.pid, source: .service)
+        let focusedWindow = CommandPaletteFocusTarget(
+            app: .init(
+                processIdentifier: capturedToken.pid, bundleIdentifier: nil, localizedName: nil, isTerminated: false
+            ),
+            focusedWindow: nil,
+            focusedWindowID: CGWindowID(capturedToken.windowId)
+        )
+        let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+        palette.windows = CommandPaletteSearch.buildWindowItems(from: wmController, focusedWindow: focusedWindow)
+        XCTAssertEqual(palette.windows.first?.id, capturedToken)
+        XCTAssertEqual(palette.selectedItemID, .window(capturedToken))
+    }
+
+    func testConfirmedFocusBeatsPreviousAppCaptureWhenOpeningPalette() throws {
+        let chrome = makeWindowItem(windowId: 92_120, title: "Chrome", appName: "Google Chrome")
+        let wezTerm = makeWindowItem(windowId: 92_121, title: "WezTerm", appName: "WezTerm")
+        let markEdit = makeWindowItem(windowId: 92_122, title: "MarkEdit", appName: "MarkEdit")
+
+        for (current, previous) in [(wezTerm, chrome), (markEdit, wezTerm)] {
+            let items = CommandPaletteSearch.orderWindowItems(
+                [previous, current],
+                focusRecencyOrder: [current.id, previous.id],
+                confirmedFocusToken: current.id,
+                focusedWindowToken: previous.id
+            )
+            XCTAssertEqual(items.first?.id, current.id)
+            let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+            palette.windows = items
+            XCTAssertEqual(palette.selectedItemID, .window(current.id))
+        }
+
+        let (wmController, currentToken, previousToken) = try makeWindowFixture()
+        wmController.workspaceManager.setAppHidden(false, pid: previousToken.pid, source: .service)
+        let workspaceId = try XCTUnwrap(wmController.workspaceManager.entry(for: currentToken)?.workspaceId)
+        _ = wmController.workspaceManager.recordReconcileEvent(.managedFocusConfirmed(
+            token: currentToken, workspaceId: workspaceId, monitorId: nil,
+            requestId: nil, source: .workspaceManager
+        ))
+        XCTAssertEqual(wmController.workspaceManager.selectedManagedToken, currentToken)
+        let previousFocus = CommandPaletteFocusTarget(
+            app: .init(
+                processIdentifier: previousToken.pid, bundleIdentifier: nil, localizedName: nil, isTerminated: false
+            ),
+            focusedWindow: nil,
+            focusedWindowID: CGWindowID(previousToken.windowId)
+        )
+        let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+        palette.windows = CommandPaletteSearch.buildWindowItems(from: wmController, focusedWindow: previousFocus)
+        XCTAssertEqual(palette.windows.first?.id, currentToken)
+        XCTAssertEqual(palette.selectedItemID, .window(currentToken))
+    }
+
+    func testWindowSearchPrioritizesMatchingMarksThenKeepsOtherMatchesInFocusOrder() {
+        let recent = makeWindowItem(windowId: 92_130, title: "Home tabs", appName: "Google Chrome")
+        let next = makeWindowItem(windowId: 92_131, title: "Omni notes", appName: "Google Chrome")
+        let marked = makeWindowItem(
+            windowId: 92_132, title: "Unrelated page", appName: "Google Chrome", markNames: ["Omni"]
+        )
+        let windows = [recent, next, marked]
+
+        XCTAssertEqual(CommandPaletteSearch.filterWindowItems(windows, query: "").map(\.id), windows.map(\.id))
+        XCTAssertEqual(
+            CommandPaletteSearch.filterWindowItems(windows, query: "OM").map(\.id),
+            [marked.id, recent.id, next.id]
+        )
+
+        let palette = CommandPaletteController(motionPolicy: MotionPolicy(animationsEnabled: false))
+        palette.windows = windows
+        XCTAssertEqual(palette.selectedItemID, .window(recent.id))
+        palette.searchText = "OM"
+        XCTAssertEqual(palette.selectedItemID, .window(marked.id))
+    }
+
+    func testMarkTargetsSelectedWindowEvenWhenSelectionChangesDuringPrompt() throws {
+        let (wmController, otherToken, selectedToken) = try makeWindowFixture()
+        var palette: CommandPaletteController!
+        var environment = CommandPaletteEnvironment()
+        environment.requestWindowMarkName = {
+            XCTAssertTrue(palette.isPresentingMarkPrompt)
+            palette.selectedItemID = .window(otherToken)
+            return "review"
+        }
+        palette = CommandPaletteController(
+            motionPolicy: MotionPolicy(animationsEnabled: false), environment: environment
+        )
+        palette.wmController = wmController
+        palette.windows = CommandPaletteSearch.buildWindowItems(from: wmController)
+        palette.selectedItemID = .window(selectedToken)
+
+        palette.setMarkOnSelectedWindow()
+
+        XCTAssertFalse(palette.isPresentingMarkPrompt)
+        XCTAssertEqual(wmController.windowMarkRegistry.lookup("review"), .found(selectedToken))
+        XCTAssertTrue(wmController.windowMarkRegistry.names(for: otherToken).isEmpty)
+    }
+
+    func testMarkWithNoSelectedWindowDoesNotPromptOrTargetFirstResult() throws {
+        let (wmController, firstToken, _) = try makeWindowFixture()
+        var promptCount = 0
+        var environment = CommandPaletteEnvironment()
+        environment.requestWindowMarkName = {
+            promptCount += 1
+            return "review"
+        }
+        let palette = CommandPaletteController(
+            motionPolicy: MotionPolicy(animationsEnabled: false), environment: environment
+        )
+        palette.wmController = wmController
+        palette.windows = CommandPaletteSearch.buildWindowItems(from: wmController)
+        palette.selectedItemID = nil
+
+        palette.setMarkOnSelectedWindow()
+
+        XCTAssertEqual(promptCount, 0)
+        XCTAssertNil(palette.selectedItemID)
+        XCTAssertTrue(wmController.windowMarkRegistry.names(for: firstToken).isEmpty)
+        XCTAssertEqual(palette.actionFeedbackText, "Select a current window row before changing its marks.")
+    }
+
+    func testWindowRowsReadAllLiveRegistryMarksAndSearchEveryName() throws {
+        let (wmController, visibleToken, hiddenToken) = try makeWindowFixture()
+        XCTAssertEqual(wmController.windowMarkRegistry.set("editor", for: visibleToken), .inserted)
+        XCTAssertEqual(wmController.windowMarkRegistry.set("focus-later", for: visibleToken), .inserted)
+        XCTAssertEqual(wmController.windowMarkRegistry.set("hidden-review", for: hiddenToken), .inserted)
+
+        let items = CommandPaletteSearch.buildWindowItems(from: wmController)
+        let visibleItem = try XCTUnwrap(items.first { $0.id == visibleToken })
+        let hiddenItem = try XCTUnwrap(items.first { $0.id == hiddenToken })
+
+        XCTAssertEqual(visibleItem.markNames, ["editor", "focus-later"])
+        XCTAssertEqual(hiddenItem.markNames, ["hidden-review"])
+        XCTAssertEqual(CommandPaletteSearch.filterWindowItems(items, query: "later").map(\.id), [visibleToken])
+        XCTAssertEqual(CommandPaletteSearch.filterWindowItems(items, query: "hidden-review").map(\.id), [hiddenToken])
+
+        XCTAssertEqual(wmController.windowMarkRegistry.remove("focus-later"), .removed)
+        let refreshedItems = CommandPaletteSearch.buildWindowItems(from: wmController)
+        XCTAssertEqual(refreshedItems.first { $0.id == visibleToken }?.markNames, ["editor"])
+        XCTAssertTrue(CommandPaletteSearch.filterWindowItems(refreshedItems, query: "later").isEmpty)
+    }
+
+    func testWindowSearchMatchesAnyLiteralMarkNameAndPreservesExistingFields() {
+        let item = makeWindowItem(windowId: 92_110, markNames: ["editor", "late-review"])
+        let items = [item]
+
+        XCTAssertEqual(CommandPaletteSearch.filterWindowItems(items, query: "EDITOR").map(\.id), [item.id])
+        XCTAssertEqual(CommandPaletteSearch.filterWindowItems(items, query: "review").map(\.id), [item.id])
+        XCTAssertTrue(CommandPaletteSearch.filterWindowItems(items, query: "@editor").isEmpty)
+        XCTAssertEqual(CommandPaletteSearch.filterWindowItems(items, query: "quarterly").map(\.id), [item.id])
+        XCTAssertEqual(CommandPaletteSearch.filterWindowItems(items, query: "drafts").map(\.id), [item.id])
+        XCTAssertEqual(CommandPaletteSearch.filterWindowItems(items, query: "research").map(\.id), [item.id])
+    }
+
+    func testWindowRowShowsEachMarkIndividuallyAndAccessibly() {
+        let markedRow = CommandPaletteWindowRow(
+            item: makeWindowItem(windowId: 92_111, markNames: ["editor", "research"]),
+            isSelected: false,
+            isSummonRightAvailable: false,
+            onSelect: {}
+        )
+        let unmarkedRow = CommandPaletteWindowRow(
+            item: makeWindowItem(windowId: 92_112),
+            isSelected: false,
+            isSummonRightAvailable: false,
+            onSelect: {}
+        )
+
+        XCTAssertEqual(markedRow.markLabels, ["Mark: editor", "Mark: research"])
+        XCTAssertEqual(markedRow.accessibilityLabel, "Quarterly review, Drafts, Mark: editor, Mark: research")
+        XCTAssertTrue(unmarkedRow.markLabels.isEmpty)
+        XCTAssertEqual(unmarkedRow.accessibilityLabel, "Quarterly review, Drafts")
     }
 
     func testWindowStatusTextDescribesSelectedHiddenWindowPrimaryAction() throws {
@@ -226,7 +474,28 @@ final class CommandPaletteControllerTests: XCTestCase {
                 selectedItem: visibleItem,
                 isSummonRightAvailable: false
             ),
-            "Enter jumps. Shift-Enter unavailable for this session."
+            "Enter jumps. Shift-Enter unavailable without an anchor."
+        )
+    }
+
+    func testWindowStatusTextExplainsEmptyWorkspaceMoveAndAnchoredSummon() {
+        let item = makeWindowItem(windowId: 92_113)
+
+        XCTAssertEqual(
+            CommandPalettePresentation.windowsStatusText(
+                selectedItem: item,
+                isSummonRightAvailable: false,
+                isCurrentWorkspaceEmpty: true
+            ),
+            "Enter jumps. Shift-Enter moves here (empty workspace)."
+        )
+        XCTAssertEqual(
+            CommandPalettePresentation.windowsStatusText(
+                selectedItem: item,
+                isSummonRightAvailable: true,
+                isCurrentWorkspaceEmpty: false
+            ),
+            "Enter jumps. Shift-Enter summons right."
         )
     }
 
@@ -325,6 +594,25 @@ final class CommandPaletteControllerTests: XCTestCase {
         return (controller, visibleToken, hiddenToken)
     }
 
+    private func makeWindowItem(
+        windowId: Int,
+        title: String = "Quarterly review",
+        appName: String = "Drafts",
+        markNames: [String] = []
+    ) -> CommandPaletteWindowItem {
+        let token = WindowToken(pid: 92_010, windowId: windowId)
+        return CommandPaletteWindowItem(
+            id: token,
+            handle: WindowHandle(id: token),
+            title: title,
+            appName: appName,
+            appIcon: nil,
+            workspaceName: "Research",
+            isAppHidden: false,
+            markNames: markNames
+        )
+    }
+
     private func commandPaletteWindowRowHeight(isAppHidden: Bool) -> CGFloat {
         let token = WindowToken(pid: 92_003, windowId: isAppHidden ? 92_104 : 92_103)
         let item = CommandPaletteWindowItem(
@@ -334,7 +622,8 @@ final class CommandPaletteControllerTests: XCTestCase {
             appName: "Ghostty",
             appIcon: nil,
             workspaceName: "1",
-            isAppHidden: isAppHidden
+            isAppHidden: isAppHidden,
+            markNames: []
         )
         let hostingView = NSHostingView(rootView: CommandPaletteWindowRow(
             item: item,

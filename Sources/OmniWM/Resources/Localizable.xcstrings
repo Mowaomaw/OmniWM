@@ -47226,7 +47226,8 @@
             "value" : "Enter 키를 누르면 이동합니다. Shift+Enter 키를 누르면 오른쪽에 호출합니다."
           }
         }
-      }
+      },
+      "extractionState" : "stale"
     },
     "Enter jumps. Shift-Enter unavailable for this session." : {
       "localizations" : {
@@ -47350,7 +47351,8 @@
             "value" : "Enter 키를 누르면 이동합니다. 이 세션에서는 Shift+Enter 키를 사용할 수 없습니다."
           }
         }
-      }
+      },
+      "extractionState" : "stale"
     },
     "Enter opens the selected application." : {
       "localizations" : {
@@ -87052,7 +87054,8 @@
             "value" : "창을 찾을 수 없습니다"
           }
         }
-      }
+      },
+      "extractionState" : "stale"
     },
     "No workspaces configured" : {
       "localizations" : {
@@ -158577,7 +158580,18 @@
           }
         }
       }
-    }
+    },
+    "Choose a mark to remove from the selected window (Control-Option-R)" : {},
+    "Choose a mark to remove from the selected window. Shortcut Control-Option-R." : {},
+    "Enter jumps. %@" : {},
+    "Mark selected window…" : {},
+    "Mark the selected window (Control-Option-M)" : {},
+    "Marks the selected window row. Shortcut Control-Option-M." : {},
+    "No windows found. Check the mark name or try a title, app, or workspace." : {},
+    "Remove mark…" : {},
+    "Shift-Enter moves here (empty workspace)." : {},
+    "Shift-Enter summons right." : {},
+    "Shift-Enter unavailable without an anchor." : {}
   },
   "version" : "1.0"
 }

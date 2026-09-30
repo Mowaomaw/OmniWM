@@ -42,6 +42,11 @@ enum LayoutCompatibility: String {
     ]
 }
 
+enum WindowMarkHotkeyAction: Equatable, Hashable {
+    case set
+    case remove
+}
+
 enum HotkeyCommand: Equatable, Hashable {
     case focus(Direction)
     case move(Direction)
@@ -56,6 +61,7 @@ enum HotkeyCommand: Equatable, Hashable {
     case windowState(IPCWindowStateCommand)
 
     case openMenuAnywhere
+    case windowMark(WindowMarkHotkeyAction)
 
     case presentation(IPCPresentationCommand)
     case focusNavigation(FocusNavigationAction)

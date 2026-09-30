@@ -29,45 +29,20 @@ enum CommandPaletteSearch {
         }
         let query = trimmedQuery.lowercased()
 
-        let scored: [(CommandPaletteWindowItem, Int)] = items.compactMap { item in
-            let titleLower = item.title.lowercased()
-            let appLower = item.appName.lowercased()
-
-            if let range = titleLower.range(of: query) {
-                let pos = titleLower.distance(from: titleLower.startIndex, to: range.lowerBound)
-                return (item, pos)
+        var markedMatches: [CommandPaletteWindowItem] = []
+        var otherMatches: [CommandPaletteWindowItem] = []
+        for item in items {
+            if item.markNames.contains(where: { $0.localizedCaseInsensitiveContains(query) }) {
+                markedMatches.append(item)
+            } else if item.title.localizedCaseInsensitiveContains(query)
+                || item.appName.localizedCaseInsensitiveContains(query)
+                || item.workspaceName.localizedCaseInsensitiveContains(query)
+                || (item.isAppHidden && hiddenSearchTerms.contains(where: { $0.contains(query) }))
+            {
+                otherMatches.append(item)
             }
-
-            if let range = appLower.range(of: query) {
-                let pos = appLower.distance(from: appLower.startIndex, to: range.lowerBound)
-                return (item, 1000 + pos)
-            }
-
-            let workspaceLower = item.workspaceName.lowercased()
-            if let range = workspaceLower.range(of: query) {
-                let pos = workspaceLower.distance(from: workspaceLower.startIndex, to: range.lowerBound)
-                return (item, 2000 + pos)
-            }
-
-            if item.isAppHidden {
-                for term in hiddenSearchTerms {
-                    if let range = term.range(of: query) {
-                        let pos = term.distance(from: term.startIndex, to: range.lowerBound)
-                        return (item, 3000 + pos)
-                    }
-                }
-            }
-
-            return nil
         }
-
-        return scored
-            .sorted { lhs, rhs in
-                if lhs.1 != rhs.1 { return lhs.1 < rhs.1 }
-                if lhs.0.title.count != rhs.0.title.count { return lhs.0.title.count < rhs.0.title.count }
-                return lhs.0.title < rhs.0.title
-            }
-            .map(\.0)
+        return markedMatches + otherMatches
     }
 
     static func filterMenuItems(_ items: [MenuItemModel], query rawQuery: String) -> [MenuItemModel] {
@@ -255,7 +230,37 @@ enum CommandPaletteSearch {
         return titleOrder == .orderedSame ? lhs.id < rhs.id : titleOrder == .orderedAscending
     }
 
-    static func buildWindowItems(from wmController: WMController) -> [CommandPaletteWindowItem] {
+    static func orderWindowItems(
+        _ items: [CommandPaletteWindowItem],
+        focusRecencyOrder: [WindowToken],
+        confirmedFocusToken: WindowToken? = nil,
+        focusedWindowToken: WindowToken? = nil
+    ) -> [CommandPaletteWindowItem] {
+        // The frontmost-app capture can lag the confirmed managed focus during an app switch.
+        let focusOrder = [confirmedFocusToken, focusedWindowToken].compactMap { $0 } + focusRecencyOrder
+        let focusRanks = Dictionary(
+            focusOrder.enumerated().map { ($0.element, $0.offset) },
+            uniquingKeysWith: { first, _ in first }
+        )
+        return items.sorted {
+            (
+                $0.isAppHidden ? 1 : 0,
+                focusRanks[$0.id] ?? Int.max,
+                $0.appName,
+                $0.title
+            ) < (
+                $1.isAppHidden ? 1 : 0,
+                focusRanks[$1.id] ?? Int.max,
+                $1.appName,
+                $1.title
+            )
+        }
+    }
+
+    static func buildWindowItems(
+        from wmController: WMController,
+        focusedWindow: CommandPaletteFocusTarget? = nil
+    ) -> [CommandPaletteWindowItem] {
         let entries = wmController.workspaceManager.allEntries()
         var items: [CommandPaletteWindowItem] = []
         items.reserveCapacity(entries.count)
@@ -275,14 +280,21 @@ enum CommandPaletteSearch {
                 appName: appInfo?.name ?? String(localized: "Unknown"),
                 appIcon: appInfo?.icon,
                 workspaceName: workspaceName,
-                isAppHidden: wmController.workspaceManager.isAppHidden(pid: entry.pid)
+                isAppHidden: wmController.workspaceManager.isAppHidden(pid: entry.pid),
+                markNames: wmController.windowMarkRegistry.names(for: entry.token)
             ))
         }
 
-        items.sort {
-            ($0.isAppHidden ? 1 : 0, $0.appName, $0.title)
-                < ($1.isAppHidden ? 1 : 0, $1.appName, $1.title)
+        let focusedWindowToken = focusedWindow.flatMap { target in
+            target.focusedWindowID.map {
+                WindowToken(pid: target.app.processIdentifier, windowId: Int($0))
+            }
         }
-        return items
+        return orderWindowItems(
+            items,
+            focusRecencyOrder: wmController.workspaceManager.windowFocusRecencyOrder,
+            confirmedFocusToken: wmController.workspaceManager.selectedManagedToken,
+            focusedWindowToken: focusedWindowToken
+        )
     }
 }

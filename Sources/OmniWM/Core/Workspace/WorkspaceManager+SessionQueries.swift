@@ -30,6 +30,20 @@ extension WorkspaceManager {
         focusSessionSnapshot.lastTiledFocusedToken
     }
 
+    var windowFocusRecencyOrder: [WindowToken] {
+        var candidates = [selectedManagedToken].compactMap { $0 }
+        candidates.append(contentsOf: focusSessionSnapshot.tiledFocusHistory)
+        let workspaceOrder = focusSessionSnapshot.lastFocusedByWorkspace.keys.sorted {
+            $0.uuidString < $1.uuidString
+        }
+        candidates.append(contentsOf: workspaceOrder.compactMap {
+            focusSessionSnapshot.lastFocusedByWorkspace[$0]
+        })
+
+        var seen = Set<WindowToken>()
+        return candidates.filter { seen.insert($0).inserted }
+    }
+
     func mostRecentlyFocusedTiledToken(excluding token: WindowToken) -> WindowToken? {
         focusSessionSnapshot.tiledFocusHistory.first { candidate in
             candidate != token && (windowMode(for: candidate) ?? .tiling) == .tiling && entry(for: candidate) != nil
