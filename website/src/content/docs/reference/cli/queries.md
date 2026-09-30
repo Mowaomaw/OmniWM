@@ -89,9 +89,11 @@ The three workspace flags answer different questions. `is-focused` marks the wor
 | `rules` | — | — | Persisted user window rules |
 | `rule-actions` | — | — | Rule action registry |
 | `queries` | — | — | Query registry |
-| `commands` | — | — | Automation action registry for `command`, `workspace`, and `window` surfaces |
+| `commands` | — | — | Automation action registry for `command`, `workspace`, `window`, and `window mark` surfaces |
 | `subscriptions` | — | — | Subscription registry |
-| `capabilities` | — | — | Full protocol capabilities |
+| `capabilities` | — | — | Full protocol capabilities, including `windowMarkActions` |
+
+**Unreleased:** `window mark` descriptors in `commands` and `capabilities` are available when building from `main`. List live marks with [`omniwmctl window mark list`](/reference/cli/actions/#window-marks).
 
 **Examples:**
 

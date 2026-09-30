@@ -6,13 +6,9 @@ import AppKit
 extension CommandPaletteController {
     func markShortcut(for action: CommandPalettePresentation.MarkAction) -> String? {
         guard let wmController else { return nil }
-        let bindings = wmController.hotkeysEnabled ? wmController.settings.hotkeyBindings.filter { binding in
-            switch binding.command {
-            case .presentation(.overview): wmController.settings.overview.enabled
-            case .presentation(.quakeTerminal): wmController.settings.quakeTerminal.enabled
-            default: true
-            }
-        } : []
+        let bindings = wmController.hotkeysEnabled
+            ? wmController.settings.hotkeyBindings.filter { wmController.settings.isCommandFeatureEnabled($0.command) }
+            : []
         return CommandPalettePresentation.availableMarkShortcut(for: action, configuredBindings: bindings)
     }
 

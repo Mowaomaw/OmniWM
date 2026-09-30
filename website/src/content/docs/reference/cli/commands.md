@@ -22,7 +22,7 @@ omniwmctl <command> [arguments...] [--format json|ndjson|table|tsv|text] [--json
 | `query` | remote | Query OmniWM state, registries, and protocol capabilities |
 | `rule` | remote | Manage persisted window rules and reapply them to windows |
 | `workspace` | remote | Perform workspace actions such as focusing, moving, or renaming by workspace name |
-| `window` | remote | Perform window actions using session-scoped opaque window IDs |
+| `window` | remote | Perform window actions using session-scoped opaque IDs; **Unreleased** builds from `main` also support [window marks](/reference/cli/actions/#window-marks) |
 | `subscribe` | remote | Stream the subscribe handshake plus live event envelopes as JSON |
 | `watch` | remote | Consume subscription events and run a child command once per event |
 | `help`, `--help`, `-h` | local | Print CLI usage text without connecting to IPC |

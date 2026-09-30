@@ -654,6 +654,8 @@ IPC is disabled by default. Enable `Enable IPC` from the menu bar before using t
 
 Diagnostics can be scripted with `omniwmctl capture start trace`, `omniwmctl capture start performance`, `omniwmctl capture stop`, and `omniwmctl capture status`.
 
+**Unreleased:** `omniwmctl window mark` can name, list, focus, summon, and remove runtime window marks when building from `main`. See [Window Marks](https://omniwm.app/reference/cli/actions/#window-marks).
+
 For setup, installation options, commands, queries, rules, subscriptions, and security details, see the [IPC & CLI Reference](https://omniwm.app/reference/cli/overview/).
 
 ## Quick Start
@@ -749,12 +751,16 @@ When you create workspace 10 or higher, Settings > Hotkeys adds its Switch, Move
 | Focus Window 1-9 in Column | `Unassigned` | `Niri` |
 | Toggle Command Palette | `Control + Option + Space` | `Shared` |
 | Open Menu Anywhere | `Control + Option + M` | `Shared` |
+| Set Mark on Focused Window | `Unassigned` | `Shared` |
+| Remove Mark from Focused Window | `Unassigned` | `Shared` |
 | Close Focused Window | `Unassigned` | `Shared` |
 | Toggle Workspace Bar | `Unassigned` | `Shared` |
 | Toggle Hidden Icons Bar | `Unassigned` | `Shared` |
 | Toggle Quake Terminal | `` Option + ` `` | `Shared` |
 | Toggle Overview | `Option + Shift + O` | `Shared` |
 | Toggle System Stats | `Unassigned` | `Shared` |
+
+**Unreleased:** The two window mark actions are available when building from `main`.
 
 #### Move Window
 
@@ -887,14 +893,15 @@ Quickly search windows, app menus, clipboard history, OmniWM commands, applicati
 - Open it from the global shortcut shown in `Keyboard Shortcuts`
 - Use `Tab` / `Shift + Tab` to cycle forward or backward through the available modes
 - Use `Cmd + 1` for `Windows`, `Cmd + 2` for `Menu`, `Cmd + 3` for `Clipboard`, `Cmd + 4` for `Commands`, `Cmd + 5` for `Applications`, and `Cmd + 6` for `Files`
-- Type to search; window-title matches rank first, followed by app-name and workspace-name matches in Windows mode
+- Type to search; **Unreleased** mark-name matches come first in Windows mode when building from `main`, then window title, app name, and workspace name, with focus recency breaking ties
+- **Unreleased:** Windows mode shows window marks and finds windows by mark name when building from `main`; its Mark and Remove Mark buttons act on the selected window
 - Menu results always show keyboard shortcuts when available
 - Commands are grouped by category until you search; each row shows its layout and current shortcut, including unassigned commands
 - In Commands mode, `Enter` runs the selected command; commands for another layout stay visible but cannot be selected
 - `Up` / `Down` move the selection
 - `Enter` activates the selected result
 - Windows from macOS-hidden apps remain searchable with a Hidden badge; selecting one unhides its app and focuses that exact window
-- In Windows mode, `Shift + Enter` summons the selected window to the right when available
+- In Windows mode, `Shift + Enter` summons the selected window to the right when available. **Unreleased:** Builds from `main` move it into an empty current workspace instead, including floating windows; floating windows cannot be summoned right
 - In Clipboard mode, `Enter` copies the selected entry; `Shift + Enter` pastes it into the previous app when that target is still available
 - Applications and Files open in a browse grid; switch either mode to a list from the view menu
 - Files shows recent documents before typing, supports type filters, and can reveal a selection in Finder with `Cmd + Enter`

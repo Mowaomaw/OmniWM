@@ -70,6 +70,8 @@ Confirm the binding and any registration warning in **Settings > Hotkeys**, then
 | Toggle Overview | `Option + Shift + O` | `Shared` |
 | Toggle System Stats | `Unassigned` | `Shared` |
 
+**Unreleased:** The Set Mark and Remove Mark global actions and the Command Palette mark shortcuts below are available when building from `main`.
+
 ### Window marks in the Command Palette
 
 These shortcuts are available while the Command Palette is open in **Windows** mode. They act on the selected window row and are shown beside the matching Palette actions.
@@ -79,7 +81,7 @@ These shortcuts are available while the Command Palette is open in **Windows** m
 | Mark selected window | `Control + Option + Shift + M` |
 | Remove a mark from the selected window | `Control + Option + Shift + R` |
 
-These shortcuts are local to the open Palette and yield to conflicting configured global shortcuts; the affected Palette action remains available as a button. **Set Mark on Focused Window** and **Remove Mark from Focused Window** are also available as separate, unassigned actions in **Settings > Hotkeys** for configurable global shortcuts. Outside the Palette, key combinations retain their configured global behavior.
+These shortcuts are local to the open Palette and yield to conflicting enabled global shortcuts; the affected Palette action remains available as a button. **Set Mark on Focused Window** and **Remove Mark from Focused Window** are also available as separate, unassigned actions in **Settings > Hotkeys** for configurable global shortcuts. Outside the Palette, key combinations retain their configured global behavior.
 
 ## Move Window
 

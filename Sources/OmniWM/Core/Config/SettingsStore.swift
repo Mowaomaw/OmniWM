@@ -481,6 +481,14 @@ extension SettingsStore {
 }
 
 extension SettingsStore {
+    func isCommandFeatureEnabled(_ command: HotkeyCommand) -> Bool {
+        switch command {
+        case .presentation(.overview): overview.enabled
+        case .presentation(.quakeTerminal): quakeTerminal.enabled
+        default: true
+        }
+    }
+
     func resetHotkeysToDefaults() {
         hyperKeyModifiers = SettingsStore.defaultExport.hyperKeyModifiers
         hotkeyBindings = withWorkspaceNumberHotkeys(HotkeyBindingRegistry.defaults())

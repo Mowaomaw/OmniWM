@@ -180,12 +180,8 @@ enum CommandPaletteSearch {
             uniquingKeysWith: { first, _ in first }
         )
 
-        return ActionCatalog.allSpecs().filter { spec in
-            switch spec.command {
-            case .presentation(.overview): wmController.settings.overview.enabled
-            case .presentation(.quakeTerminal): wmController.settings.quakeTerminal.enabled
-            default: true
-            }
+        return ActionCatalog.allSpecs().filter {
+            wmController.settings.isCommandFeatureEnabled($0.command)
         }.map { spec in
             let trigger = spec.visibility == .unassignable ? nil : triggersByID[spec.id]
             let hasShortcut = trigger?.isUnassigned == false

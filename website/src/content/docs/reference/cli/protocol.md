@@ -13,7 +13,7 @@ sidebar:
 {
   "version": 17,
   "id": "<uuid>",
-  "kind": "<ping|version|command|capture|query|rule|workspace|window|subscribe>",
+  "kind": "<ping|version|command|capture|query|rule|workspace|window|window-mark|subscribe>",
   "authorizationToken": "<token>",
   "payload": { ... }
 }
@@ -151,6 +151,17 @@ Workspace requests use this flat wire shape. For `move-to-monitor`, `force` is o
 
 `workspaceTarget` is required by `move-to-workspace` and rejected by every other window action.
 
+**Unreleased — window marks, available when building from `main`:**
+
+```json
+{
+  "name": "set",
+  "mark": "editor"
+}
+```
+
+`focus`, `summon`, and `remove` use the same `mark` field. `list` sends only `{"name":"list"}`; a `mark` field on `list` is rejected.
+
 ### Response Format
 
 ```json
@@ -158,16 +169,18 @@ Workspace requests use this flat wire shape. For `move-to-monitor`, `force` is o
   "version": 17,
   "id": "<request-id>",
   "ok": true,
-  "kind": "<ping|version|command|capture|query|rule|workspace|window|subscribe>",
+  "kind": "<ping|version|command|capture|query|rule|workspace|window|window-mark|subscribe>",
   "status": "<success|executed|ignored|error|subscribed>",
   "result": {
-    "kind": "<pong|version|capture|workspace-bar|active-workspace|focused-monitor|apps|metrics|focused-window|windows|workspaces|displays|rules|rule-actions|queries|commands|subscriptions|capabilities|subscribed>",
+    "kind": "<pong|version|capture|workspace-bar|active-workspace|focused-monitor|apps|metrics|focused-window|windows|workspaces|displays|rules|rule-actions|queries|commands|subscriptions|capabilities|subscribed|window-marks>",
     "payload": { ... }
   }
 }
 ```
 
 Optional response fields are omitted when unavailable. For example, a successful response has no `code` key; it does not send `"code": null`.
+
+An **Unreleased** `window mark list` response has `kind: "window-mark"` and `result.kind: "window-marks"`. Its `result.payload.marks` array contains each mark's `name`, `workspace` (`id`, `rawName`, `displayName`, optional `number`), `app` (`name`, optional `bundleId`), and optional window `title`. Other mark actions return `status: "executed"` without a result payload.
 
 Authorization, protocol, validation, and routing failures keep the originating response `kind`. For example:
 
@@ -237,12 +250,22 @@ This envelope is produced locally by the CLI, so it does not include IPC fields 
 | `unauthorized` | Missing or invalid authorization token |
 | `stale_window_id` | Well-formed window ID belongs to a different IPC session |
 | `not_found` | Target window, workspace, monitor, or rule does not exist |
-| `window_action_failed` | The window exists but its close button is missing or refused the action |
+| `window_action_failed` | The requested close, mark focus, or summon could not complete |
 | `no_change` | Request resolved to the current state (workspace already active and holding keyboard focus, window already on the target, nothing to raise or rescue); status is `ignored`. `switch-workspace`, `switch-workspace slot`, `switch-workspace anywhere`, and `workspace focus-name` return `executed` instead when the workspace is already visible but keyboard focus must be handed back to it |
 | `workspace_assignment_conflict` | Configured monitor assignment prevents the requested workspace move |
 | `workspace_state_conflict` | Current fullscreen, scratchpad, or pending focus state prevents the requested workspace move |
 | `capture_state_conflict` | Capture state does not permit the requested start or stop transition |
+| `stale_mark` | A mark points to a window that is no longer available; the mark is removed |
+| `unknown_mark` | No window has this mark |
+| `no_focused_window` | Setting or summoning a mark requires a focused managed window |
+| `self_summon` | The marked window is also the summon anchor |
+| `hidden_window` | A hidden app's marked window cannot be summoned |
+| `unsupported_layout` | The source or target layout cannot summon the marked window |
+| `duplicate_mark` | The name is already assigned to another window |
+| `invalid_mark` | The mark name is empty or contains control characters |
 | `internal_error` | Unexpected server-side error |
+
+The eight mark-specific codes above are **Unreleased**, available when building from `main`.
 
 Malformed opaque window IDs return `invalid_arguments`. For window actions, a valid current-session ID whose window is no longer managed returns `not_found`.
 

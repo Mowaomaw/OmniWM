@@ -82,7 +82,6 @@ struct CommandPaletteEnvironment {
     var ownBundleIdentifier: () -> String? = { Bundle.main.bundleIdentifier }
     var ownProcessIdentifier: () -> pid_t = { NSRunningApplication.current.processIdentifier }
     var fetchMenuItems: (pid_t) -> [MenuItemModel] = { MenuAnywhereFetcher().fetchMenuItemsSync(for: $0) }
-    var activateOmniWM: () -> Void = { NSApp.activate(ignoringOtherApps: true) }
     var applicationActivationNotifications: NotificationCenter = NSWorkspace.shared.notificationCenter
     var performCommand: (WMController, HotkeyCommand) -> ExternalCommandResult = { controller, command in
         controller.commandHandler.performCommand(command)

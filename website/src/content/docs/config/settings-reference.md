@@ -22,6 +22,8 @@ The current schema is strict — a missing required key in a version 4 file inva
 
 ## File schema
 
+**Unreleased:** Schema version 4 and its unassigned set/remove window-mark hotkeys are available when building from `main`.
+
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `schemaVersion` | integer | `4` | Version of the complete `settings.toml` schema. This top-level key appears before the first table. |
