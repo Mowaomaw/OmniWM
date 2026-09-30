@@ -141,14 +141,16 @@ The window-to-monitor actions send the focused window directly to the current wo
 | Expand Container to Available Primary Span | `Control + Option + F` | `Niri` |
 | Move Column to First / Last | `Control + Option + Home / End` | `Niri` |
 | Move Column to Index 1-9 | `Unassigned` | `Niri` |
-| Set Container Primary Span -10% / +10% | `Option + -` / `Option + =` | `Niri` |
-| Set Window Secondary Span -10% / +10% | `Option + Shift + -` / `Option + Shift + =` | `Niri` |
-| Set Window Primary Span -10% / +10% | `Unassigned` | `Niri` |
+| Shrink / Grow Container Primary Span | `Option + -` / `Option + =` | `Niri` |
+| Shrink / Grow Window Secondary Span | `Option + Shift + -` / `Option + Shift + =` | `Niri` |
+| Shrink / Grow Window Primary Span | `Unassigned` | `Niri` |
 | Reset Window Secondary Span | `Control + Option + R` | `Niri` |
 | Cycle Window Primary Span Forward / Backward | `Unassigned` | `Niri` |
 | Cycle Window Secondary Span Forward / Backward | `Unassigned` | `Niri` |
 | Center Column | `Unassigned` | `Niri` |
 | Center Visible Columns | `Unassigned` | `Niri` |
+
+**Unreleased:** Niri grow/shrink actions use a configurable increment, defaulting to 5% instead of 10%, when building from `main`. Change **Resize Increment** in Niri settings or `[niri].resizeStepPercent` in TOML (1–100). Explicit `omniwmctl` size arguments keep their specified amounts.
 
 `Consume or Expel Window Left / Right` exist as automation-only actions. They are reachable from `omniwmctl` but never appear in Settings > Hotkeys, because they intentionally cannot be bound to a shortcut.
 

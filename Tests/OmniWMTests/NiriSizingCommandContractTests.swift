@@ -15,11 +15,11 @@ final class NiriSizingCommandContractTests: XCTestCase {
         XCTAssertEqual(cycle.ipcCommandName, .sizing(.cycleSizeForward))
 
         let primary = try XCTUnwrap(
-            ActionCatalog.spec(for: .sizing(.setContainerPrimarySpan(.adjustProportion(10))))
+            ActionCatalog.spec(for: .sizing(.resizeContainerPrimarySpan(grow: true)))
         )
         XCTAssertEqual(primary.id, "setContainerPrimarySpan.increase10Percent")
         XCTAssertEqual(primary.layoutCompatibility, .niri)
-        XCTAssertEqual(primary.ipcCommandName, .sizing(.setContainerPrimarySpan))
+        XCTAssertNil(primary.ipcCommandName)
 
         let secondary = try XCTUnwrap(ActionCatalog.spec(for: .sizing(.resetWindowSecondarySpan)))
         XCTAssertEqual(secondary.id, "resetWindowSecondarySpan")

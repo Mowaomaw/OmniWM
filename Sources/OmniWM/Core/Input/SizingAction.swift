@@ -14,6 +14,9 @@ enum SizingAction: Equatable, Hashable {
     case toggleContainerFullPrimarySpan
     case expandContainerToAvailablePrimarySpan
     case resetWindowSecondarySpan
+    case resizeContainerPrimarySpan(grow: Bool)
+    case resizeWindowPrimarySpan(grow: Bool)
+    case resizeWindowSecondarySpan(grow: Bool)
     case setContainerPrimarySpan(NiriSizeChange)
     case setWindowPrimarySpan(NiriSizeChange)
     case setWindowSecondarySpan(NiriSizeChange)
@@ -51,6 +54,9 @@ extension SizingAction {
         case .toggleContainerFullPrimarySpan,
              .expandContainerToAvailablePrimarySpan,
              .resetWindowSecondarySpan,
+             .resizeContainerPrimarySpan,
+             .resizeWindowPrimarySpan,
+             .resizeWindowSecondarySpan,
              .setContainerPrimarySpan,
              .setWindowPrimarySpan,
              .setWindowSecondarySpan:
@@ -72,21 +78,25 @@ extension SizingAction {
                 "command.sizing.resetWindowSecondary", defaultValue: "Reset Window Secondary Span", table: "Commands",
                 bundle: .omniWM
             )
-        case let .setContainerPrimarySpan(change): LocalizedStringResource(
-                "command.sizing.setContainerPrimary",
-                defaultValue: "Set Container Primary Span \(Self.sizeChangeDisplayName(change))", table: "Commands",
+        case .setContainerPrimarySpan: LocalizedStringResource(
+                "command.sizing.setContainerPrimarySpan",
+                defaultValue: "Set Container Primary Span", table: "Commands",
                 bundle: .omniWM
             )
-        case let .setWindowPrimarySpan(change): LocalizedStringResource(
-                "command.sizing.setWindowPrimary",
-                defaultValue: "Set Window Primary Span \(Self.sizeChangeDisplayName(change))", table: "Commands",
+        case .setWindowPrimarySpan: LocalizedStringResource(
+                "command.sizing.setWindowPrimarySpan",
+                defaultValue: "Set Window Primary Span", table: "Commands",
                 bundle: .omniWM
             )
-        case let .setWindowSecondarySpan(change): LocalizedStringResource(
-                "command.sizing.setWindowSecondary",
-                defaultValue: "Set Window Secondary Span \(Self.sizeChangeDisplayName(change))", table: "Commands",
+        case .setWindowSecondarySpan: LocalizedStringResource(
+                "command.sizing.setWindowSecondarySpan",
+                defaultValue: "Set Window Secondary Span", table: "Commands",
                 bundle: .omniWM
             )
+        case .resizeContainerPrimarySpan,
+             .resizeWindowPrimarySpan,
+             .resizeWindowSecondarySpan:
+            resizeTitle()
         case .cycleSizeForward,
              .cycleSizeBackward,
              .cycleWindowPrimarySpanForward,
@@ -98,8 +108,55 @@ extension SizingAction {
         }
     }
 
+    private func resizeTitle() -> LocalizedStringResource {
+        switch self {
+        case .resizeContainerPrimarySpan(grow: true): LocalizedStringResource(
+                "command.sizing.growContainerPrimary", defaultValue: "Grow Container Primary Span",
+                table: "Commands", bundle: .omniWM
+            )
+        case .resizeContainerPrimarySpan(grow: false): LocalizedStringResource(
+                "command.sizing.shrinkContainerPrimary", defaultValue: "Shrink Container Primary Span",
+                table: "Commands", bundle: .omniWM
+            )
+        case .resizeWindowPrimarySpan(grow: true): LocalizedStringResource(
+                "command.sizing.growWindowPrimary", defaultValue: "Grow Window Primary Span",
+                table: "Commands", bundle: .omniWM
+            )
+        case .resizeWindowPrimarySpan(grow: false): LocalizedStringResource(
+                "command.sizing.shrinkWindowPrimary", defaultValue: "Shrink Window Primary Span",
+                table: "Commands", bundle: .omniWM
+            )
+        case .resizeWindowSecondarySpan(grow: true): LocalizedStringResource(
+                "command.sizing.growWindowSecondary", defaultValue: "Grow Window Secondary Span",
+                table: "Commands", bundle: .omniWM
+            )
+        case .resizeWindowSecondarySpan(grow: false): LocalizedStringResource(
+                "command.sizing.shrinkWindowSecondary", defaultValue: "Shrink Window Secondary Span",
+                table: "Commands", bundle: .omniWM
+            )
+        case .cycleSizeForward,
+             .cycleSizeBackward,
+             .cycleWindowPrimarySpanForward,
+             .cycleWindowPrimarySpanBackward,
+             .cycleWindowSecondarySpanForward,
+             .cycleWindowSecondarySpanBackward,
+             .toggleContainerFullPrimarySpan,
+             .expandContainerToAvailablePrimarySpan,
+             .resetWindowSecondarySpan,
+             .setContainerPrimarySpan,
+             .setWindowPrimarySpan,
+             .setWindowSecondarySpan,
+             .balanceSizes:
+            spanTitle()
+        }
+    }
+
     func ipcCommandName() -> IPCCommandName? {
         switch self {
+        case .resizeContainerPrimarySpan,
+             .resizeWindowPrimarySpan,
+             .resizeWindowSecondarySpan:
+            nil
         case .cycleSizeForward:
             .sizing(.cycleSizeForward)
         case .cycleSizeBackward:
@@ -142,23 +199,13 @@ extension SizingAction {
              .toggleContainerFullPrimarySpan,
              .expandContainerToAvailablePrimarySpan,
              .resetWindowSecondarySpan,
+             .resizeContainerPrimarySpan,
+             .resizeWindowPrimarySpan,
+             .resizeWindowSecondarySpan,
              .setContainerPrimarySpan,
              .setWindowPrimarySpan,
              .setWindowSecondarySpan:
             .niri
-        }
-    }
-
-    private static func sizeChangeDisplayName(_ change: NiriSizeChange) -> String {
-        switch change {
-        case let .setFixed(value):
-            "Fixed \(Int(value))px"
-        case let .setProportion(value):
-            "\(Int(value))%"
-        case let .adjustFixed(value):
-            "\(value >= 0 ? "+" : "")\(Int(value))px"
-        case let .adjustProportion(value):
-            "\(value >= 0 ? "+" : "")\(Int(value))%"
         }
     }
 }

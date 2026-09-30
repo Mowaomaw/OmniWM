@@ -11,6 +11,17 @@ final class NiriSettings {
     private nonisolated static let defaults = SettingsExport.Niri.defaults()
     @ObservationIgnored var onChange: (() -> Void)?
 
+    var resizeStepPercent = NiriSettings.defaults.resizeStepPercent ?? BuiltInSettingsDefaults.niriResizeStepPercent {
+        didSet {
+            let validated = min(100, max(1, resizeStepPercent))
+            if validated != resizeStepPercent {
+                resizeStepPercent = validated
+                return
+            }
+            onChange?()
+        }
+    }
+
     var containerPrimarySpanPresets = NiriSettings.validatedContainerPrimarySpanPresets(
         NiriSettings.defaults.containerPrimarySpanPresets ?? BuiltInSettingsDefaults
             .niriContainerPrimarySpanPresets
@@ -68,7 +79,8 @@ final class NiriSettings {
             singleWindowFit: singleWindowFit,
             containerPrimarySpanPresets: containerPrimarySpanPresets,
             defaultContainerPrimarySpan: defaultContainerPrimarySpan,
-            edgeGaps: edgeGaps
+            edgeGaps: edgeGaps,
+            resizeStepPercent: resizeStepPercent
         )
     }
 
@@ -79,6 +91,8 @@ final class NiriSettings {
         alwaysCenterSingleColumn = niri.alwaysCenterSingleColumn
         singleWindowFit = niri.singleWindowFit
         edgeGaps = niri.edgeGaps ?? baseline.edgeGaps ?? true
+        resizeStepPercent = niri.resizeStepPercent ?? baseline.resizeStepPercent ?? BuiltInSettingsDefaults
+            .niriResizeStepPercent
         containerPrimarySpanPresets = NiriSettings.validatedContainerPrimarySpanPresets(
             niri.containerPrimarySpanPresets ?? baseline.containerPrimarySpanPresets ?? NiriSettings
                 .defaultContainerPrimarySpanPresets

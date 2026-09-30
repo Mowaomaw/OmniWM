@@ -81,6 +81,9 @@ enum HotkeyCommand: Equatable, Hashable {
     }
 
     var layoutCompatibility: LayoutCompatibility {
-        ActionCatalog.layoutCompatibility(for: self) ?? .shared
+        if case let .sizing(action) = self {
+            return action.compatibility
+        }
+        return ActionCatalog.layoutCompatibility(for: self) ?? .shared
     }
 }

@@ -16,14 +16,14 @@ final class ActionCatalogLookupTests: XCTestCase {
     }
 
     func testUncataloguedCommandsKeepDisplayFallbacks() {
-        let commands: [HotkeyCommand] = [
-            .column(.moveToIndex(123)),
-            .sizing(.setContainerPrimarySpan(.setFixed(3.14159)))
+        let commands: [(HotkeyCommand, LayoutCompatibility)] = [
+            (.column(.moveToIndex(123)), .shared),
+            (.sizing(.setContainerPrimarySpan(.setFixed(3.14159))), .niri)
         ]
-        for command in commands {
+        for (command, compatibility) in commands {
             XCTAssertNil(ActionCatalog.spec(for: command))
             XCTAssertEqual(command.displayName, String(describing: command))
-            XCTAssertEqual(command.layoutCompatibility, .shared)
+            XCTAssertEqual(command.layoutCompatibility, compatibility)
         }
     }
 

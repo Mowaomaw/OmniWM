@@ -128,6 +128,18 @@ private struct GlobalNiriSettingsSection: View {
             SettingsCaption(
                 localized: "How a lone window is sized: Full Screen fills the work area; Custom uses a fixed width × height; Container Primary Span keeps the configured primary span."
             )
+
+            LabeledContent("Resize Increment") {
+                HStack {
+                    TextField("Resize Increment", value: Bindable(settings.niri).resizeStepPercent, format: .number)
+                        .labelsHidden()
+                        .textFieldStyle(.roundedBorder)
+                        .frame(width: 48)
+                        .multilineTextAlignment(.trailing)
+                    Text("%")
+                        .foregroundStyle(.secondary)
+                }
+            }
         }
 
         Section("Default New Container Primary Span") {
@@ -211,7 +223,7 @@ private struct GlobalNiriSettingsSection: View {
                     controller.updateNiriConfig(containerPrimarySpanPresets: settings.niri.containerPrimarySpanPresets)
                 }
             }
-            SettingsCaption(localized: "Resize commands cycle through these presets in order. Duplicates are allowed.")
+            SettingsCaption(localized: "Span-cycling commands use these presets in order. Duplicates are allowed.")
         }
         .id(settings.niri.containerPrimarySpanPresets.count)
     }

@@ -112771,130 +112771,6 @@
         }
       }
     },
-    "Resize commands cycle through these presets in order. Duplicates are allowed." : {
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "サイズ変更コマンドは、これらのプリセットを順番に切り替えます。重複は許可されています。"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die Befehle zum Vergrößern durchlaufen diese Voreinstellungen nacheinander. Duplikate sind erlaubt."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Endre størrelse-kommandoer går gjennom disse forhåndsinnstillingene i rekkefølge. Duplikater er tillatt."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ändra storlek-kommandonen går igenom dessa förinställningar i ordning. Dubbletter är tillåtna."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Los comandos de rediseño recorren estos presets en orden. Se permiten duplicados."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "缩放命令依次循环这些预设。允许重复。"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "रीज़ाइज़ कमांड इन प्रीसेट्स को क्रम से चक्रित करते हैं। डुप्लिकेट की अनुमति है।"
-          }
-        },
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "تتنقل أوامر إعادة الحجم عبر هذه الإعدادات المسبقة بالترتيب. يُسمح بالتكرار."
-          }
-        },
-        "sr-Latn" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Preuzmite komande ciklusa kroz ove presete u redu. Dozvoljeni su dupliranja."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αλλαγή μεγέθους του κύκλου εντολών μέσω αυτών των προεπιλογών στη σειρά. Τα αντίγραφα επιτρέπονται."
-          }
-        },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "שינוי גודל סדר סדר בפקודות אלה. שכפולים מותרים."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Команды масштабирования перемещаются по этим налаштуванням в порядке. Двукратные значения допускаются."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Komendy zmiany rozmiaru przełączają się przez te ustawienia w kolejności. Dopuszcza się powtórzenia."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Команди зміни розміру послідовно перебирають ці набори. Повторення дозволені."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Redimensionner les commandes à travers ces préréglages dans l'ordre. Des duplicatas sont autorisés."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Grootte commando's cyclus wijzigen door middel van deze presets in volgorde. Duplicaten zijn toegestaan."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ridimensiona i comandi ciclo attraverso questi preset in ordine. I duplicati sono ammessi."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Muuta komentoja syklissä näiden esiasetusten kautta järjestyksessä. Kaksinkertaisuudet ovat sallittuja."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ændr størrelsen på kommandoer cyklus gennem disse forudindstillinger i rækkefølge. Duplikater er tilladt."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "크기 조절 명령은 이러한 기본 설정들을 순서대로 순환합니다. 중복이 허용됩니다."
-          }
-        }
-      }
-    },
     "Resize diagonally" : {
       "localizations" : {
         "ja" : {
@@ -150809,9 +150685,7 @@
         }
       }
     },
-    "Workspace IDs use positive numeric slots. Display Name stays editable. Workspaces 10+ start with unassigned direct hotkeys; add them here or through IPC/CLI." : {
-
-    },
+    "Workspace IDs use positive numeric slots. Display Name stays editable. Workspaces 10+ start with unassigned direct hotkeys; add them here or through IPC/CLI." : {},
     "Workspace home monitors" : {
       "localizations" : {
         "ja" : {
@@ -158630,7 +158504,267 @@
     "This window or mark is no longer available. Search again for a current result." : {},
     "Summon right is unavailable. Focus a managed window in the active workspace first." : {},
     "Choose which mark to remove from this window." : {},
-    "Shift-Enter unavailable for this window." : {}
+    "Shift-Enter unavailable for this window." : {},
+    "Resize Increment" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resize Increment"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مقدار تغيير الحجم"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trin for størrelsesændring"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schrittweite der Größenänderung"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Βήμα αλλαγής μεγέθους"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incremento de cambio de tamaño"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koon muutoksen askel"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas de redimensionnement"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "צעד שינוי הגודל"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आकार बदलने की मात्रा"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incremento di ridimensionamento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サイズ変更の刻み幅"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "크기 조절 단위"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trinn for størrelsesendring"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stapgrootte bij formaatwijziging"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Krok zmiany rozmiaru"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаг изменения размера"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Korak promene veličine"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steg för storleksändring"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Крок зміни розміру"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "调整大小的步长"
+          }
+        }
+      }
+    },
+    "Span-cycling commands use these presets in order. Duplicates are allowed." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Span-cycling commands use these presets in order. Duplicates are allowed."
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تستخدم أوامر التبديل الدوري بين الأحجام هذه الإعدادات المسبقة بالترتيب. يُسمح بتكرار القيم."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommandoer til at skifte mellem forudindstillede størrelser gennemløber disse forudindstillinger i rækkefølge. Dubletter er tilladt."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Befehle zum zyklischen Größenwechsel verwenden diese Vorgaben in der angegebenen Reihenfolge. Duplikate sind erlaubt."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Οι εντολές κυκλικής εναλλαγής μεγέθους χρησιμοποιούν αυτές τις προεπιλογές με τη σειρά. Επιτρέπονται διπλότυπες τιμές."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los comandos para alternar entre tamaños predefinidos recorren estos preajustes en orden. Se permiten duplicados."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esiasetettuja kokoja selaavat komennot käyvät nämä esiasetukset läpi järjestyksessä. Sama esiasetus saa esiintyä useammin kuin kerran."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les commandes de changement cyclique de taille utilisent ces préréglages dans l’ordre indiqué. Les doublons sont autorisés."
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "פקודות המעבר המחזורי בין גדלים משתמשות בערכים המוגדרים מראש לפי הסדר. מותר לחזור על ערכים."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आकारों को चक्रीय क्रम में बदलने वाली कमांड इन प्रीसेट का दिए गए क्रम में उपयोग करती हैं। एक ही मान दोहराया जा सकता है।"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I comandi per scorrere ciclicamente le dimensioni usano queste preimpostazioni nell’ordine indicato. Sono ammessi duplicati."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サイズを順に切り替えるコマンドでは、これらのプリセットを上から順に使用します。同じ値を複数設定することもできます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "크기를 순환하며 전환하는 명령은 이 프리셋을 순서대로 사용합니다. 같은 값을 여러 번 지정할 수 있습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommandoer for å veksle mellom forhåndsinnstilte størrelser bruker disse forhåndsinnstillingene i rekkefølge. Duplikater er tillatt."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opdrachten om cyclisch van formaat te wisselen gebruiken deze voorinstellingen in de aangegeven volgorde. Dubbele waarden zijn toegestaan."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Polecenia cyklicznej zmiany rozmiaru korzystają z tych ustawień w podanej kolejności. Powtórzenia są dozwolone."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Команды циклического переключения размеров используют эти предустановленные значения по порядку. Повторяющиеся значения допустимы."
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komande za ciklično menjanje veličine koriste ove unapred podešene vrednosti po redu. Dozvoljeno je ponavljanje vrednosti."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommandon för att växla mellan förinställda storlekar går igenom dessa förinställningar i ordning. Dubbletter är tillåtna."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Команди циклічного перемикання розмірів використовують ці попередньо задані значення у вказаному порядку. Значення можуть повторюватися."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "循环切换尺寸的命令会按顺序使用这些预设。允许设置重复值。"
+          }
+        }
+      }
+    }
   },
   "version" : "1.0"
 }

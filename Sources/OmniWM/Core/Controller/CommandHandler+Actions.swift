@@ -167,6 +167,18 @@ extension CommandHandler {
             controller.niriLayoutHandler.expandContainerToAvailablePrimarySpan()
         case .resetWindowSecondarySpan:
             controller.niriLayoutHandler.resetWindowSecondarySpan()
+        case let .resizeContainerPrimarySpan(grow):
+            controller.niriLayoutHandler.setContainerPrimarySpan(
+                niriResizeChange(grow: grow, controller: controller)
+            )
+        case let .resizeWindowPrimarySpan(grow):
+            controller.niriLayoutHandler.setWindowPrimarySpan(
+                niriResizeChange(grow: grow, controller: controller)
+            )
+        case let .resizeWindowSecondarySpan(grow):
+            controller.niriLayoutHandler.setWindowSecondarySpan(
+                niriResizeChange(grow: grow, controller: controller)
+            )
         case let .setContainerPrimarySpan(change):
             controller.niriLayoutHandler.setContainerPrimarySpan(change)
         case let .setWindowPrimarySpan(change):
@@ -177,6 +189,10 @@ extension CommandHandler {
             layoutHandler(as: LayoutSizable.self)?.balanceSizes()
         }
         return .executed
+    }
+
+    private func niriResizeChange(grow: Bool, controller: WMController) -> NiriSizeChange {
+        .adjustProportion(CGFloat(controller.settings.niri.resizeStepPercent) * (grow ? 1 : -1))
     }
 
     func perform(_ action: DwindleAction, controller: WMController) -> ExternalCommandResult {
