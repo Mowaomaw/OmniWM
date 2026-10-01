@@ -155,7 +155,7 @@ Options for the scrolling (Niri) layout.
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `visibleContainerCount` | integer | `2` | How many containers (columns) share the viewport side by side. |
+| `visibleContainerCount` | integer | `2` | How many containers (columns) share the viewport side by side. **Unreleased — available when building from `main`:** when fewer containers are open, they expand proportionally to fill unused space while preserving their relative widths. Manual resizing takes priority until the container count changes. |
 | `infiniteLoop` | boolean | `false` | Treats the column strip as a loop instead of a bounded row. |
 | `centerFocusedColumn` | string | `"never"` | When to center the focused column: `never`, `always`, `onOverflow`. |
 | `alwaysCenterSingleColumn` | boolean | `false` | Centers the column when a workspace holds only one. |

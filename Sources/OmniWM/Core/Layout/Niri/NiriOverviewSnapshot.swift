@@ -47,6 +47,10 @@ extension NiriLayoutEngine {
             geometry: geometry, time: 0,
             hiddenPlacementMonitor: nil, hiddenPlacementMonitors: []
         )
+        reconcilePrimarySpanFit(
+            in: workspaceId, workingFrame: context.area.workingFrame,
+            gaps: context.primaryGap, orientation: context.orientation, motion: nil
+        )
         let snapshots: [NiriOverviewColumnSnapshot]
         let viewportPosition: CGFloat
         if let single = singleWindowLayoutContext(in: workspaceId), let column = columns.first {

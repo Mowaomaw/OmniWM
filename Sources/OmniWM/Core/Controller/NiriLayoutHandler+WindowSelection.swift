@@ -186,7 +186,8 @@ extension NiriLayoutHandler {
             in: pass.wsId,
             workingFrame: pass.insetFrame,
             gaps: pass.gap,
-            orientation: pass.orientation
+            orientation: pass.orientation,
+            motion: pass.motion
         )
     }
 

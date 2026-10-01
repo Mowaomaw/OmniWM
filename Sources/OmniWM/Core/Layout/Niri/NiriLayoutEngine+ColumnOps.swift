@@ -247,6 +247,10 @@ extension NiriLayoutEngine {
         let columns = projectedColumns(in: workspaceId)
         guard !columns.isEmpty else { return false }
 
+        for projectedColumn in columns {
+            beginManualPrimarySpanResize(projectedColumn.column, in: workspaceId, orientation: orientation)
+        }
+
         let resolvedWidth = resolvedContainerResetPrimarySpan(in: workspaceId)
         switch orientation {
         case .horizontal:

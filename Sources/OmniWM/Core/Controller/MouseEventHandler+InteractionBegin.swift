@@ -72,16 +72,18 @@ extension MouseEventHandler {
     ) -> Bool {
         guard let controller,
               let monitor = controller.workspaceManager.monitor(for: wsId),
-              let frame = tiledWindow.renderedFrame ?? tiledWindow.frame
+              let frame = tiledWindow.renderedFrame ?? tiledWindow.frame,
+              engine.interactiveResizeTarget(windowId: tiledWindow.id, in: wsId) != nil
         else { return false }
 
         let edges = resizeEdges(for: location, in: frame)
-        let currentViewOffset = controller.workspaceManager.niriViewportState(for: wsId).viewOffset
         let orientation = resolvedNiriOrientation(
             engine: engine,
             workspaceId: wsId,
             monitor: monitor
         )
+        controller.niriLayoutHandler.cancelActiveAnimations(for: wsId)
+        let currentViewOffset = controller.workspaceManager.niriViewportState(for: wsId).viewOffset
         guard engine.interactiveResizeBegin(
             windowId: tiledWindow.id,
             edges: edges,
@@ -96,7 +98,6 @@ extension MouseEventHandler {
         state.activeInteractionSource = source
         state.capturedInteractionButton = source.mouseButton
         state.currentHoveredEdges = edges
-        controller.niriLayoutHandler.cancelActiveAnimations(for: wsId)
         edges.cursor.set()
         return true
     }

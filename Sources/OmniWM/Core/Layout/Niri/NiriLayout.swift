@@ -113,6 +113,15 @@ extension NiriLayoutEngine {
             hiddenPlacementMonitors: hiddenPlacementMonitors
         )
         clearExcludedColumnFrames(in: workspaceId, excluding: excludedTokens)
+        if animationTime == nil {
+            reconcilePrimarySpanFit(
+                in: workspaceId,
+                workingFrame: context.area.workingFrame,
+                gaps: context.primaryGap,
+                orientation: context.orientation,
+                motion: nil
+            )
+        }
         if let single = singleWindowLayoutContext(in: workspaceId, excluding: excludedTokens) {
             layoutSingleWindow(single, context: context, result: &result)
             return
