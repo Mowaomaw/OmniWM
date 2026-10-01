@@ -82,7 +82,8 @@ final class WorkspaceSwipePreview {
             environment: OverviewEnvironment(),
             ownedWindowRegistry: ownedWindowRegistry,
             consumer: .workspaceSwipe,
-            hasCaptureAccess: hasCaptureAccess
+            hasCaptureAccess: hasCaptureAccess,
+            maximumRetainedBytes: 512 * 1_024 * 1_024
         )
         capture.onPreview = { [weak self] handle, frame in
             self?.updatePreview(frame, for: handle)
