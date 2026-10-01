@@ -17,7 +17,7 @@ extension SkyLight {
         let windowIteratorGetTags: SkyLightQueryFunctions.WindowIteratorGetTagsFunc
         let windowIteratorGetAttributes: SkyLightQueryFunctions.WindowIteratorGetAttributesFunc
         let windowIteratorGetParentID: SkyLightQueryFunctions.WindowIteratorGetParentIDFunc
-        let windowIsOrderedIn: SkyLightTransactionFunctions.WindowIsOrderedInFunc?
+        let includeOrderedIn: Bool
 
         nonisolated func read(connectionId cid: Int32) -> [UInt32: WindowServerInfo]? {
             guard !windowIds.isEmpty else { return [:] }
@@ -37,21 +37,17 @@ extension SkyLight {
             while windowIteratorAdvance(iterator) {
                 let windowId = windowIteratorGetWindowID(iterator)
                 guard windowIds.contains(windowId) else { continue }
+                let attributes = windowIteratorGetAttributes(iterator)
                 windowInfoById[windowId] = WindowServerInfo(
                     id: windowId,
                     pid: windowIteratorGetPID(iterator),
                     level: windowIteratorGetLevel(iterator),
                     frame: windowIteratorGetBounds(iterator),
                     tags: windowIteratorGetTags(iterator),
-                    attributes: windowIteratorGetAttributes(iterator),
-                    parentId: windowIteratorGetParentID(iterator)
+                    attributes: attributes,
+                    parentId: windowIteratorGetParentID(iterator),
+                    isOrderedIn: includeOrderedIn ? (attributes & 0x2) != 0 : nil
                 )
-                if let windowIsOrderedIn {
-                    var orderedIn: UInt8 = 0
-                    if windowIsOrderedIn(cid, windowId, &orderedIn) == .success {
-                        windowInfoById[windowId]?.isOrderedIn = orderedIn != 0
-                    }
-                }
             }
             return windowInfoById
         }
@@ -70,7 +66,7 @@ extension SkyLight {
             windowIteratorGetTags: queries.windowIteratorGetTags,
             windowIteratorGetAttributes: queries.windowIteratorGetAttributes,
             windowIteratorGetParentID: queries.windowIteratorGetParentID,
-            windowIsOrderedIn: includeOrderedIn ? transactions.windowIsOrderedIn : nil
+            includeOrderedIn: includeOrderedIn
         )
     }
 
