@@ -17,6 +17,7 @@ extension SkyLight {
         let windowIteratorGetTags: SkyLightQueryFunctions.WindowIteratorGetTagsFunc
         let windowIteratorGetAttributes: SkyLightQueryFunctions.WindowIteratorGetAttributesFunc
         let windowIteratorGetParentID: SkyLightQueryFunctions.WindowIteratorGetParentIDFunc
+        let windowIsOrderedIn: SkyLightTransactionFunctions.WindowIsOrderedInFunc?
 
         nonisolated func read(connectionId cid: Int32) -> [UInt32: WindowServerInfo]? {
             guard !windowIds.isEmpty else { return [:] }
@@ -45,12 +46,18 @@ extension SkyLight {
                     attributes: windowIteratorGetAttributes(iterator),
                     parentId: windowIteratorGetParentID(iterator)
                 )
+                if let windowIsOrderedIn {
+                    var orderedIn: UInt8 = 0
+                    if windowIsOrderedIn(cid, windowId, &orderedIn) == .success {
+                        windowInfoById[windowId]?.isOrderedIn = orderedIn != 0
+                    }
+                }
             }
             return windowInfoById
         }
     }
 
-    private func windowInfoQuery(_ windowIds: Set<UInt32>) -> WindowInfoQuery {
+    private func windowInfoQuery(_ windowIds: Set<UInt32>, includeOrderedIn: Bool = false) -> WindowInfoQuery {
         WindowInfoQuery(
             windowIds: windowIds,
             windowQueryWindows: queries.windowQueryWindows,
@@ -62,7 +69,8 @@ extension SkyLight {
             windowIteratorGetBounds: queries.windowIteratorGetBounds,
             windowIteratorGetTags: queries.windowIteratorGetTags,
             windowIteratorGetAttributes: queries.windowIteratorGetAttributes,
-            windowIteratorGetParentID: queries.windowIteratorGetParentID
+            windowIteratorGetParentID: queries.windowIteratorGetParentID,
+            windowIsOrderedIn: includeOrderedIn ? transactions.windowIsOrderedIn : nil
         )
     }
 
@@ -73,11 +81,14 @@ extension SkyLight {
         } succeeded: { $0 != nil }
     }
 
-    func queryWindowInfoDeferred(windowIds: Set<UInt32>) async throws -> [UInt32: WindowServerInfo]? {
+    func queryWindowInfoDeferred(
+        windowIds: Set<UInt32>,
+        includeOrderedIn: Bool = false
+    ) async throws -> [UInt32: WindowServerInfo]? {
         try Task.checkCancellation()
         guard !windowIds.isEmpty else { return [:] }
         guard let connection = windowInfoConnection() else { return nil }
-        let query = windowInfoQuery(windowIds)
+        let query = windowInfoQuery(windowIds, includeOrderedIn: includeOrderedIn)
         return try await connection.perform { query.read(connectionId: $0) }
     }
 

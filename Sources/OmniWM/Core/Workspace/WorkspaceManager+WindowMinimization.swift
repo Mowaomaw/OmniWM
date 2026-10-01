@@ -5,11 +5,11 @@ import Foundation
 
 extension WorkspaceManager {
     func isWindowSuppressedByMacOS(_ token: WindowToken) -> Bool {
-        isAppHidden(token) || entry(for: token)?.observedState.isMinimized == true
+        isAppHidden(token) || entry(for: token)?.observedState.isNativeSuppressed == true
     }
 
     func isWindowSuppressedByMacOS(_ entry: WindowState) -> Bool {
-        isAppHidden(entry.token) || entry.observedState.isMinimized
+        isAppHidden(entry.token) || entry.observedState.isNativeSuppressed
     }
 
     @discardableResult
@@ -23,6 +23,26 @@ extension WorkspaceManager {
             token: token,
             workspaceId: entry.workspaceId,
             minimized: minimized,
+            source: source
+        ))
+        if txn.plan.focusSession != nil {
+            notifySessionStateChanged()
+        }
+        drainPendingRuntimeMonitorOverrideClears()
+        return true
+    }
+
+    @discardableResult
+    func setWindowNativeWithdrawn(
+        _ withdrawn: Bool,
+        token: WindowToken,
+        source: WMEventSource = .ax
+    ) -> Bool {
+        guard let entry = entry(for: token), entry.observedState.isNativeWithdrawn != withdrawn else { return false }
+        let txn = recordReconcileEvent(.windowNativeWithdrawalChanged(
+            token: token,
+            workspaceId: entry.workspaceId,
+            withdrawn: withdrawn,
             source: source
         ))
         if txn.plan.focusSession != nil {

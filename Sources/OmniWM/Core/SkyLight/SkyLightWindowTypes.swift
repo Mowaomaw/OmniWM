@@ -121,6 +121,7 @@ struct WindowServerInfo: Equatable, Sendable {
     var attributes: UInt32 = 0
     var parentId: UInt32 = 0
     var title: String?
+    var isOrderedIn: Bool?
 
     static func hasDocumentTag(_ tags: UInt64) -> Bool {
         (tags & 0x1) != 0
