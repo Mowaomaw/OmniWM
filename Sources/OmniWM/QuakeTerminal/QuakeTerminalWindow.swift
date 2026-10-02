@@ -12,6 +12,10 @@ final class QuakeTerminalWindow: NSPanel {
         true
     }
 
+    override var contentLayoutRect: NSRect {
+        NSRect(origin: .zero, size: frame.size)
+    }
+
     var initialFrame: NSRect?
     var isAnimating: Bool = false
     weak var tabController: QuakeTerminalTabs?
@@ -19,7 +23,7 @@ final class QuakeTerminalWindow: NSPanel {
     convenience init() {
         self.init(
             contentRect: NSRect(x: 0, y: 0, width: 800, height: 400),
-            styleMask: [.borderless, .nonactivatingPanel, .resizable],
+            styleMask: [.titled, .fullSizeContentView, .nonactivatingPanel, .resizable],
             backing: .buffered,
             defer: false
         )
@@ -29,8 +33,12 @@ final class QuakeTerminalWindow: NSPanel {
     private func setup() {
         identifier = NSUserInterfaceItemIdentifier(rawValue: "com.omniwm.quakeTerminal")
         setAccessibilitySubrole(.floatingWindow)
-        styleMask.remove(.titled)
-        styleMask.insert(.nonactivatingPanel)
+        titleVisibility = .hidden
+        titlebarAppearsTransparent = true
+        standardWindowButton(.closeButton)?.isHidden = true
+        standardWindowButton(.miniaturizeButton)?.isHidden = true
+        standardWindowButton(.zoomButton)?.isHidden = true
+        tabbingMode = .disallowed
         isOpaque = false
         backgroundColor = .clear
         hasShadow = true
@@ -44,6 +52,10 @@ final class QuakeTerminalWindow: NSPanel {
         } else {
             super.setFrame(frameRect, display: flag)
         }
+    }
+
+    override func constrainFrameRect(_ frameRect: NSRect, to screen: NSScreen?) -> NSRect {
+        frameRect
     }
 
     override func performKeyEquivalent(with event: NSEvent) -> Bool {
