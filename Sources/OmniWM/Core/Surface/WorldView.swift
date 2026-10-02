@@ -80,6 +80,10 @@ struct WorldView {
         controller.isManagedWindowDisplayable(token)
     }
 
+    func hasPendingWindowClose(for entry: WindowState) -> Bool {
+        controller.axEventHandler.hasPendingWindowClose(entry.token, workspaceId: entry.workspaceId)
+    }
+
     func isWorkspaceVisible(_ workspaceId: WorkspaceDescriptor.ID) -> Bool {
         controller.workspaceManager.visibleWorkspaceIds().contains(workspaceId)
     }

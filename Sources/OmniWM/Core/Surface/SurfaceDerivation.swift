@@ -83,6 +83,7 @@ enum SurfaceDerivation {
             return nil
         }
         guard !world.hasPendingNativeFullscreenTransition(for: token) else { return nil }
+        guard !world.hasPendingWindowClose(for: entry) else { return nil }
         guard world.systemModalFocusToken != token else { return nil }
         guard world.suppressedFocusToken != token,
               !world.hasPendingNativeFullscreenTransition(in: entry.workspaceId),
