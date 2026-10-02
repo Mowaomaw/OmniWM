@@ -31,6 +31,11 @@ final class NativeBorderCompositorLiveTests: XCTestCase {
             cornerRadii: WindowCornerRadii(topLeft: 0, topRight: 16, bottomLeft: 48, bottomRight: 32),
             color: NSColor.red.cgColor, scale: screen.backingScaleFactor
         )
+        panel.updateEffects(
+            geometry: geometry.localized(),
+            cornerRadii: WindowCornerRadii(topLeft: 0, topRight: 16, bottomLeft: 48, bottomRight: 32),
+            config: config, baseColor: NSColor.red.cgColor, scale: screen.backingScaleFactor
+        )
         panel.applyFrame(targetFrame: geometry.targetFrame, surfaceFrame: geometry.surfaceFrame)
         panel.orderBack(nil)
         CATransaction.flush()

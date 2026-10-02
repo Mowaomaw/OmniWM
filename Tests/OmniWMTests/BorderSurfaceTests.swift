@@ -658,7 +658,7 @@ final class BorderSurfaceTests: XCTestCase {
     }
 
     @MainActor
-    func testNativeRimPreservesRGBAAndSquareCornersWithoutAnAdditionalStroke() throws {
+    func testSolidRingPreservesRGBAAndSquareCornersWithoutAnAdditionalStroke() throws {
         let recorder = BorderOperationsRecorder()
         let colors = [
             SettingsColor(red: 0.25, green: 0.5, blue: 0.75, alpha: 0.375),
@@ -678,7 +678,12 @@ final class BorderSurfaceTests: XCTestCase {
                 panel.borderLayer.rimColor?.components,
                 [CGFloat(color.red), CGFloat(color.green), CGFloat(color.blue), CGFloat(color.alpha)]
             )
-            XCTAssertEqual(panel.borderLayer.rimOpacity, 1)
+            XCTAssertEqual(panel.borderLayer.rimOpacity, 0)
+            let renderedColors = try XCTUnwrap(panel.gradientStrokeLayer.colors as? [CGColor])
+            XCTAssertEqual(renderedColors.count, 2)
+            for renderedColor in renderedColors {
+                XCTAssertEqual(renderedColor.components, panel.borderLayer.rimColor?.components)
+            }
             XCTAssertEqual(panel.borderLayer.rimWidth, 4)
             XCTAssertEqual(panel.borderLayer.borderWidth, 0)
             XCTAssertEqual(panel.renderedCornerRadii, .zero)
@@ -905,7 +910,7 @@ final class BorderSurfaceTests: XCTestCase {
         defer { window.destroy() }
         XCTAssertTrue(window.update(frame: frame, targetToken: token()))
         let panel = try XCTUnwrap(recorder.layerPanels.first)
-        XCTAssertTrue(panel.gradientStrokeLayer.isHidden)
+        XCTAssertFalse(panel.gradientStrokeLayer.isHidden)
         XCTAssertTrue(panel.glowColorLayer.isHidden)
         XCTAssertEqual(panel.borderUpdateCount, 1)
 
