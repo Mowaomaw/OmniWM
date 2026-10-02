@@ -114,7 +114,7 @@ final class NativeBorderCompositorLiveTests: XCTestCase {
             var nativeConfig = config
             nativeConfig.gradient = nil
             nativeConfig.glow = nil
-            configure(panel, geometry: geometry, radii: radii, config: nativeConfig)
+            configure(panel, geometry: geometry, radii: radii, config: nativeConfig, usesNativeRim: true)
             let native = try await capture(panel, label: "\(label)-native")
             configure(panel, geometry: geometry, radii: radii, config: config)
             let effects = try await capture(panel, label: "\(label)-effects")
@@ -124,7 +124,7 @@ final class NativeBorderCompositorLiveTests: XCTestCase {
             panel.applyFrame(targetFrame: movedGeometry.targetFrame, surfaceFrame: movedGeometry.surfaceFrame)
             let movedEffects = try await capture(panel, label: "\(label)-fractional-effects")
             XCTAssertTrue(panel.gradientRingMaskLayer.path === path)
-            configure(panel, geometry: movedGeometry, radii: radii, config: nativeConfig)
+            configure(panel, geometry: movedGeometry, radii: radii, config: nativeConfig, usesNativeRim: true)
             let movedNative = try await capture(panel, label: "\(label)-fractional-native")
             assertEffectOutline(movedEffects, matches: movedNative, geometry: movedGeometry, panelFrame: panel.frame)
         }
@@ -152,13 +152,18 @@ final class NativeBorderCompositorLiveTests: XCTestCase {
         _ panel: BorderLayerPanel,
         geometry: BorderConfig.ResolvedGeometry,
         radii: WindowCornerRadii,
-        config: BorderConfig
+        config: BorderConfig,
+        usesNativeRim: Bool = false
     ) {
         let color = BorderLayerPanel.cgColor(config.color)
         panel.updateBorder(geometry: geometry.localized(), cornerRadii: radii, color: color, scale: 2)
         panel.updateEffects(
             geometry: geometry.localized(), cornerRadii: radii, config: config, baseColor: color, scale: 2
         )
+        panel.borderLayer.rimOpacity = usesNativeRim ? 1 : 0
+        if usesNativeRim {
+            panel.gradientStrokeLayer.isHidden = true
+        }
         panel.applyFrame(targetFrame: geometry.targetFrame, surfaceFrame: geometry.surfaceFrame)
     }
 
