@@ -1043,6 +1043,35 @@ final class BorderSurfaceTests: XCTestCase {
     }
 
     @MainActor
+    func testReturningFocusReusesThatWindowsCornersWithoutFallbackFrame() async throws {
+        let recorder = BorderOperationsRecorder()
+        let probe = DeferredCornerProbe()
+        let applier = probe.applier(recorder)
+        defer { applier.cleanup() }
+        for (windowId, radius) in [(77, 24.0), (78, 12.0)] {
+            let requested = expectation(description: "corners requested for \(windowId)")
+            probe.onRequest = { requested.fulfill() }
+            _ = applier.apply(desired(configRed, token: token(windowId: windowId)), forceOrdering: false)
+            await fulfillment(of: [requested], timeout: 1)
+            let resolved = expectation(description: "corners resolved for \(windowId)")
+            applier.onCornerSampleResolved = { resolved.fulfill() }
+            probe.complete(sample(WindowCornerRadii(uniform: radius)))
+            await fulfillment(of: [resolved], timeout: 1)
+        }
+        let unexpectedQuery = expectation(description: "unchanged windows reuse cached corners")
+        unexpectedQuery.isInverted = true
+        probe.onRequest = { unexpectedQuery.fulfill() }
+        applier.onCornerSampleResolved = nil
+        let panel = try XCTUnwrap(recorder.layerPanels.first)
+        for (windowId, radius) in [(77, 24.0), (78, 12.0), (77, 24.0)] {
+            _ = applier.apply(desired(configRed, token: token(windowId: windowId)), forceOrdering: false)
+            XCTAssertEqual(panel.renderedCornerRadii, WindowCornerRadii(uniform: radius))
+        }
+        await fulfillment(of: [unexpectedQuery], timeout: 0.05)
+        XCTAssertEqual(probe.requests.count, 2)
+    }
+
+    @MainActor
     func testDeferredCornersDoNotInheritAnotherTargetsCache() async throws {
         let recorder = BorderOperationsRecorder()
         let probe = DeferredCornerProbe()
