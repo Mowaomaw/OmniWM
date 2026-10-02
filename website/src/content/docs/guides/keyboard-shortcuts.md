@@ -175,9 +175,9 @@ The unassigned advanced actions are available in Settings > Hotkeys. `Focus Down
 
 ## Quake Terminal (Inside Terminal)
 
-These shortcuts work inside the [Quake Terminal](/features/quake-terminal/) itself:
+These are the default shortcuts inside the [Quake Terminal](/features/quake-terminal/). **Unreleased — available when building from `main`:** customize tab and pane shortcuts in your [Ghostty configuration](/features/quake-terminal/#inside-terminal-shortcuts).
 
-| Action | Shortcut |
+| Action | Default Shortcut |
 |--------|----------|
 | New Tab | `Cmd + T` |
 | Close Tab | `Cmd + W` |

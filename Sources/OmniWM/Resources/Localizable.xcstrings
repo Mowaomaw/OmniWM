@@ -1,6 +1,7 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Customize terminal tab and pane shortcuts in ~/.config/ghostty/config.ghostty. Reload with Cmd + Shift + , or relaunch OmniWM." : {},
     "%@×" : {},
     "1× is the default. Higher values make window and workspace transitions faster." : {},
     "Tiling Animation Speed" : {},
