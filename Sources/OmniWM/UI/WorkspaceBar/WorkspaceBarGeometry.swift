@@ -23,6 +23,7 @@ private struct WorkspaceBarSplitMetrics {
 }
 
 struct WorkspaceBarGeometry: Equatable {
+    static let cornerRadius: CGFloat = 8
     static let notchGap: CGFloat = 8
     static let minimumSplitSideSpace: CGFloat = 60
     static let minimumIslandWidth: CGFloat = 40

@@ -36,7 +36,6 @@ enum MainThreadAXSpanTrace {
         case screenCapturePreflight = "screen-capture-preflight"
         case borderLiveBounds = "border-live-bounds"
         case focusProbe = "focus-probe"
-        case hiddenBarActivation = "hidden-bar-activation"
         case hiddenBarRunningApps = "hidden-bar-running-apps"
 
         var minimumNanoseconds: UInt64 {

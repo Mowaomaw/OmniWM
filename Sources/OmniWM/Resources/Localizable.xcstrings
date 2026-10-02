@@ -40653,7 +40653,9 @@
         }
       }
     },
+    "Off in System Settings" : {},
     "Detecting menu-bar apps…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -101241,6 +101243,7 @@
       }
     },
     "Press to open the OmniWM menu. Right-click or Option-click to show hidden icons when Hidden Bar is enabled." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

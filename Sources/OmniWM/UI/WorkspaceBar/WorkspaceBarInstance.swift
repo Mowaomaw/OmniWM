@@ -156,7 +156,8 @@ final class WorkspaceBarInstance {
             slice: slice,
             showsSystemStatsButton: showsSystemStatsButton
         )
-        let hasAdjacentContent = !slice.items(in: baseSnapshot).isEmpty || showsSystemStatsButton
+        let hasAdjacentContent = slice.showsOmniWMButton || !slice.items(in: baseSnapshot)
+            .isEmpty || showsSystemStatsButton
         let scratchpads = WorkspaceBarScratchpadLayout.compactedItems(
             snapshot.scratchpads,
             availableWidth: availableWidth,

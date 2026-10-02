@@ -117,14 +117,9 @@ extension WMController {
                 self.focusPolicyEngine.endLease(owner: .nativeMenu)
             }
         }
+        self.hiddenBarController.configureMotion(motionPolicy)
         self.hiddenBarController.onCursorWarp = { [weak self] point in
             self?.mouseWarpHandler.noteProgrammaticCursorMove(to: point)
-        }
-        self.hiddenBarController.statusItems.fallbackPlacementsProvider = { [weak self] in
-            self?.hiddenBarFallbackIconPlacements() ?? []
-        }
-        self.workspaceBarManager.onPrimaryBarFramesChanged = { [weak self] in
-            self?.hiddenBarController.statusItems.syncFallbackIcon()
         }
     }
 
