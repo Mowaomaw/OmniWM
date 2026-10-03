@@ -149,7 +149,8 @@ extension LayoutRefreshController {
     }
 
     func backingScale(for monitor: Monitor) -> CGFloat {
-        NSScreen.screens.first(where: { $0.displayId == monitor.displayId })?.backingScaleFactor ?? 2.0
+        if let scales = layoutState.backingScaleByDisplay { return scales[monitor.displayId] ?? 2.0 }
+        return NSScreen.screens.first(where: { $0.displayId == monitor.displayId })?.backingScaleFactor ?? 2.0
     }
 }
 

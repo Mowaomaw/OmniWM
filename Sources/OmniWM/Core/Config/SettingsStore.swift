@@ -25,6 +25,7 @@ final class SettingsStore {
     private var isApplyingExport = false
     private var isApplyingRuntimeState = false
     @ObservationIgnored private var lastEffectiveTrackpadAvailability: Bool?
+    @ObservationIgnored private(set) var layoutConfigurationRevision: UInt64 = 0
 
     var effectiveTrackpadGesturesEnabled: Bool {
         gestures.scrollEnabled || gestures.workspaceSwipeEnabled ||
@@ -274,16 +275,16 @@ final class SettingsStore {
         focus.onChange = { [weak self] in self?.scheduleSave() }
         pointer.onChange = { [weak self] in self?.scheduleSave() }
         monitors.onChange = { [weak self] in self?.scheduleSave() }
-        gaps.onChange = { [weak self] in self?.scheduleSave() }
+        gaps.onChange = { [weak self] in self?.layoutConfigurationDidChange() }
         niri.onChange = { [weak self] in self?.scheduleSave() }
         dwindle.onChange = { [weak self] in self?.scheduleSave() }
         gestures.onChange = { [weak self] in
             self?.notifyTrackpadAvailabilityIfChanged()
             self?.scheduleSave()
         }
-        workspaceBar.onChange = { [weak self] in self?.scheduleSave() }
+        workspaceBar.onChange = { [weak self] in self?.layoutConfigurationDidChange() }
         workspaces.onChange = { [weak self] in self?.workspacesDidChange() }
-        borders.onChange = { [weak self] in self?.scheduleSave() }
+        borders.onChange = { [weak self] in self?.layoutConfigurationDidChange() }
         overview.onChange = { [weak self] in
             self?.notifyTrackpadAvailabilityIfChanged()
             self?.scheduleSave()
@@ -364,6 +365,11 @@ final class SettingsStore {
 }
 
 extension SettingsStore {
+    private func layoutConfigurationDidChange() {
+        layoutConfigurationRevision &+= 1
+        scheduleSave()
+    }
+
     static func normalizedScratchpadLabels(_ labels: [String: String]) -> [String: String] {
         labels.reduce(into: [:]) { normalized, entry in
             guard let index = Int(entry.key.trimmingCharacters(in: .whitespacesAndNewlines)),
