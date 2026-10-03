@@ -91,7 +91,7 @@ struct WindowFocusOperations {
             WindowFocusDispatcher.shared.drain()
             _ = MainThreadAXSpanTrace.measure(.axRaise) {
                 performAXAction(element, kAXRaiseAction as CFString, noteKey: "performRaiseFailed")
-            } succeeded: { $0 }
+            } succeeded: { $0 == .success } status: { $0.rawValue }
         },
         orderWindow: { windowId in
             WindowFocusDispatcher.shared.drain()
