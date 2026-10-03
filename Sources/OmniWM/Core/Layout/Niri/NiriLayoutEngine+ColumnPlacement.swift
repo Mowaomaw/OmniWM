@@ -41,7 +41,7 @@ extension NiriLayoutEngine {
     func columnLayoutPass(
         selection: NiriViewportSelection,
         columns: [NiriProjectedColumn],
-        prepared: NiriPreparedLayoutColumns,
+        prepared: borrowing [NiriPreparedLayoutColumn],
         context: NiriCalculationContext,
         sampling: NiriViewportSampling
     ) -> NiriColumnLayoutPass {
@@ -50,7 +50,8 @@ extension NiriLayoutEngine {
             columns: columns,
             in: selection.workspaceId
         )
-        let activePosition = prepared.positions[activeIndex]
+        let activeColumn = prepared[activeIndex]
+        let activePosition = activeColumn.position
         let viewPosition = activePosition + sampling.viewOffset
         let viewPositions = sampling.settledVisibilityOffset
             .map { [activePosition + $0, viewPosition] } ?? [viewPosition]
@@ -60,7 +61,6 @@ extension NiriLayoutEngine {
         }
         return NiriColumnLayoutPass(
             context: context,
-            prepared: prepared,
             viewport: NiriLayoutViewport(
                 area: context.area, orientation: context.orientation, workspaceOffset: 0,
                 viewPositions: viewPositions, revealMargin: revealMargin
@@ -69,7 +69,7 @@ extension NiriLayoutEngine {
             viewPosition: viewPosition,
             selectedNodeId: selection.state.selectedNodeId,
             settledContentFrame: sampling.isSettled
-                ? settledContentFrame(context: context, activeSpan: prepared.spans[activeIndex]) : nil
+                ? settledContentFrame(context: context, activeSpan: activeColumn.span) : nil
         )
     }
 
@@ -85,12 +85,13 @@ extension NiriLayoutEngine {
 
     func layoutProjectedColumn(
         _ column: NiriProjectedColumn,
+        prepared: NiriPreparedLayoutColumn,
         at index: Int,
         pass: NiriColumnLayoutPass,
         result: inout LayoutResult
     ) {
         let visibility = pass.viewport.columnVisibility(
-            in: pass.prepared, at: index, viewPosition: pass.viewPosition,
+            for: prepared, at: index, viewPosition: pass.viewPosition,
             hiddenPlacementMonitor: pass.context.hiddenPlacementMonitor,
             hiddenPlacementMonitors: pass.context.hiddenPlacementMonitors
         )
