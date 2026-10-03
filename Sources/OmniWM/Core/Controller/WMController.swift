@@ -412,18 +412,6 @@ extension WMController {
         systemHyperTriggerFailure = hotkeys.systemHyperTriggerFailure
     }
 
-    var statusBarRefreshIsEnabled: Bool {
-        statusBarController != nil && settings.statusBar.showWorkspaceName
-    }
-
-    var hasWorkspaceBarDataConsumers: Bool {
-        workspaceBarRefreshIsEnabled
-            || statusBarRefreshIsEnabled
-            || ipcApplicationBridge?.hasSubscribers(for: .workspaceBar) == true
-            || ipcApplicationBridge?.hasSubscribers(for: .windowsChanged) == true
-            || ipcApplicationBridge?.hasSubscribers(for: .layoutChanged) == true
-    }
-
     func isWorkspaceBarConfiguredVisible(on monitor: Monitor, resolved: ResolvedBarSettings) -> Bool {
         guard resolved.enabled, !hiddenWorkspaceBarMonitorIds.contains(monitor.id) else { return false }
         return settings.workspaceBar.revealModifier == .off || isWorkspaceBarRevealHeld

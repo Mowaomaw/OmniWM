@@ -146,20 +146,7 @@ extension CanonicalTOMLConfig {
     }
 
     func toSettingsExport() -> SettingsExport {
-        var overview = overview
-        overview.enabled = overview.enabled ?? true
-        overview.matchFocusBorder = overview.matchFocusBorder ?? true
-        overview.invertScrollDirection = overview.invertScrollDirection ?? false
-        overview.mouseScrollSpeed = overview.mouseScrollSpeed ?? 1
-        var gestures = gestures
-        gestures.overviewGestureEnabled = gestures.overviewGestureEnabled ?? false
-        gestures.overviewGestureFingerCount = gestures.overviewGestureFingerCount ?? .four
-        gestures.windowMoveEnabled = gestures.windowMoveEnabled ?? false
-        gestures.windowMoveFingerCount = gestures.windowMoveFingerCount ?? .four
-        gestures.windowResizeEnabled = gestures.windowResizeEnabled ?? false
-        gestures.windowResizeFingerCount = gestures.windowResizeFingerCount ?? .three
-        gestures.windowGestureSensitivity = gestures.windowGestureSensitivity ?? 1.0
-        return SettingsExport(
+        SettingsExport(
             hotkeysEnabled: general.hotkeysEnabled,
             focus: focus,
             mouseWarp: mouseWarp,
@@ -170,7 +157,7 @@ extension CanonicalTOMLConfig {
             workspaceConfigurations: workspaces,
             defaultLayoutType: general.defaultLayoutType,
             borders: borders,
-            overview: overview,
+            overview: overviewForExport(),
             hotkeyBindings: hotkeys,
             systemHyperTrigger: general.systemHyperTrigger,
             hyperKeyModifiers: general.hyperKeyModifiers,
@@ -186,7 +173,7 @@ extension CanonicalTOMLConfig {
             preventSleepEnabled: general.preventSleepEnabled,
             updateChecksEnabled: general.updateChecksEnabled,
             ipcEnabled: general.ipcEnabled,
-            gestures: gestures,
+            gestures: gesturesForExport(),
             statusBar: statusBar,
             hiddenBar: hiddenBar,
             animationsEnabled: general.animationsEnabled,
@@ -197,5 +184,26 @@ extension CanonicalTOMLConfig {
             appearanceMode: appearance.mode,
             tabRailAppIcons: appearance.tabRailAppIcons
         )
+    }
+
+    private func overviewForExport() -> SettingsExport.Overview {
+        var overview = overview
+        overview.enabled = overview.enabled ?? true
+        overview.matchFocusBorder = overview.matchFocusBorder ?? true
+        overview.invertScrollDirection = overview.invertScrollDirection ?? false
+        overview.mouseScrollSpeed = overview.mouseScrollSpeed ?? 1
+        return overview
+    }
+
+    private func gesturesForExport() -> SettingsExport.Gestures {
+        var gestures = gestures
+        gestures.overviewGestureEnabled = gestures.overviewGestureEnabled ?? false
+        gestures.overviewGestureFingerCount = gestures.overviewGestureFingerCount ?? .four
+        gestures.windowMoveEnabled = gestures.windowMoveEnabled ?? false
+        gestures.windowMoveFingerCount = gestures.windowMoveFingerCount ?? .four
+        gestures.windowResizeEnabled = gestures.windowResizeEnabled ?? false
+        gestures.windowResizeFingerCount = gestures.windowResizeFingerCount ?? .three
+        gestures.windowGestureSensitivity = gestures.windowGestureSensitivity ?? 1.0
+        return gestures
     }
 }
