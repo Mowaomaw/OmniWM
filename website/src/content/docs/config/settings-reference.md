@@ -58,7 +58,7 @@ Pointer-driven focus and monitor-edge focus/move behavior.
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
 | `followsMouse` | boolean | `false` | Focuses a managed window when the pointer enters it, no click needed. |
-| `raiseOnMouseFocus` | boolean | `false` | Also raises the window when focus-follows-mouse focuses it. |
+| `raiseOnMouseFocus` | boolean | `false` | Also raises the window when focus-follows-mouse focuses it. **Unreleased — available when building from `main`:** a tiled window that a visible floating window overlaps from the front is focused without raising, so the floating window stays in front. |
 | `lockModifier` | string | `"off"` | Modifier that holds focus in place while pressed: `off`, `option`, `leftOption`, `rightOption`, `command`, `leftCommand`, `rightCommand`, `control`, `leftControl`, `rightControl`, `shift`, `leftShift`, `rightShift`. |
 | `moveMouseToFocusedWindow` | boolean | `false` | Moves the pointer to the window that gains focus. |
 | `followsWindowToMonitor` | boolean | `false` | Follows ordinary window or column transfers to another workspace, including dedicated monitor-move actions. Edge-crossing moves always follow. |

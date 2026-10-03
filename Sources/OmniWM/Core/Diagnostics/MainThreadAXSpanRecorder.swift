@@ -31,6 +31,7 @@ enum MainThreadAXSpanTrace {
         case windowServerBounds = "ws-window-bounds"
         case windowServerQuery = "ws-window-query"
         case windowServerBatchQuery = "ws-window-batch-query"
+        case focusCoverageQuery = "focus-coverage-query"
         case windowServerVisibleQuery = "ws-visible-window-query"
         case windowServerCommit = "ws-transaction-commit"
         case screenCapturePreflight = "screen-capture-preflight"
@@ -66,7 +67,7 @@ enum MainThreadAXSpanTrace {
     }
 
     static let windowServerMinimumNanoseconds: UInt64 = 1_000_000
-    static let capturePolicy = "mainThreadSpans=AX-all,WindowServer-duration-at-least-1000us"
+    static let capturePolicy = "mainThreadSpans=AX-all,focus-coverage-all,WindowServer-duration-at-least-1000us"
 
     static let shared = SessionTraceRecorder<Record>(
         sectionTitle: "Main Thread AX Spans",
