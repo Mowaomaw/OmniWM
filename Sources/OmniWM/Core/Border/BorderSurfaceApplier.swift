@@ -263,12 +263,13 @@ final class BorderSurfaceApplier {
         guard cornerTargetToken != token else { return }
         clearCornerState()
         cornerTargetToken = token
-        cachedCornerSample = recentCornerSamples.first { $0.token == token }
     }
 
     private func fallbackCornerRadii(for token: WindowToken) -> WindowCornerRadii {
-        guard let cachedCornerSample, cachedCornerSample.token == token else { return defaultCornerRadii }
-        return cachedCornerSample.sample.radii
+        if let cachedCornerSample, cachedCornerSample.token == token {
+            return cachedCornerSample.sample.radii
+        }
+        return recentCornerSamples.first { $0.token == token }?.sample.radii ?? defaultCornerRadii
     }
 
     private func needsAutomaticRetry(for token: WindowToken, desiredSize: CGSize) -> Bool {

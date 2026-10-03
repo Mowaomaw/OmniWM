@@ -50,15 +50,11 @@ extension BorderEffectLayers {
         cornerRadii: WindowCornerRadii,
         config: BorderConfig,
         baseColor: CGColor,
-        scale: CGFloat,
-        drawsSolidStroke: Bool = false
+        scale: CGFloat
     ) {
         let gradient = config.gradient.flatMap { $0.enabled ? $0 : nil }
         let surfaceBounds = CGRect(origin: .zero, size: geometry.surfaceFrame.size)
-        updateStroke(
-            gradient, geometry: geometry, cornerRadii: cornerRadii,
-            baseColor: baseColor, drawsSolidStroke: drawsSolidStroke
-        )
+        updateGradient(gradient, geometry: geometry, cornerRadii: cornerRadii)
         glowColorLayer.frame = surfaceBounds
         glowMaskLayer.frame = surfaceBounds
         if let glow = config.glow, glow.enabled, glow.opacity > 0, geometry.surfacePadding > 0 {
@@ -89,14 +85,12 @@ extension BorderEffectLayers {
         gradientRingMaskLayer.contentsScale = scale
     }
 
-    private func updateStroke(
+    private func updateGradient(
         _ gradient: BorderGradient?,
         geometry: BorderConfig.ResolvedGeometry,
-        cornerRadii: WindowCornerRadii,
-        baseColor: CGColor,
-        drawsSolidStroke: Bool
+        cornerRadii: WindowCornerRadii
     ) {
-        guard gradient != nil || drawsSolidStroke else {
+        guard let gradient else {
             gradientStrokeLayer.isHidden = true
             return
         }
@@ -107,11 +101,10 @@ extension BorderEffectLayers {
         path.addPath(Self.roundedRectPath(in: ringFrame, radii: outerRadii))
         path.addPath(Self.roundedRectPath(in: geometry.targetFrame, radii: radii))
         let surfaceBounds = CGRect(origin: .zero, size: geometry.surfaceFrame.size)
-        let points = Self.gradientUnitPoints(for: gradient?.direction ?? .topLeftToBottomRight)
+        let points = Self.gradientUnitPoints(for: gradient.direction)
         gradientStrokeLayer.isHidden = false
         gradientStrokeLayer.frame = surfaceBounds
-        gradientStrokeLayer.colors = gradient.map { [Self.cgColor($0.start), Self.cgColor($0.end)] }
-            ?? [baseColor, baseColor]
+        gradientStrokeLayer.colors = [Self.cgColor(gradient.start), Self.cgColor(gradient.end)]
         gradientStrokeLayer.startPoint = points.start
         gradientStrokeLayer.endPoint = points.end
         gradientRingMaskLayer.frame = surfaceBounds

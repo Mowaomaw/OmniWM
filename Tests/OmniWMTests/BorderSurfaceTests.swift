@@ -658,7 +658,7 @@ final class BorderSurfaceTests: XCTestCase {
     }
 
     @MainActor
-    func testSolidRingPreservesRGBAAndSquareCornersWithoutAnAdditionalStroke() throws {
+    func testNativeRimPreservesRGBAAndSquareCornersWithoutAnAdditionalStroke() throws {
         let recorder = BorderOperationsRecorder()
         let colors = [
             SettingsColor(red: 0.25, green: 0.5, blue: 0.75, alpha: 0.375),
@@ -678,12 +678,7 @@ final class BorderSurfaceTests: XCTestCase {
                 panel.borderLayer.rimColor?.components,
                 [CGFloat(color.red), CGFloat(color.green), CGFloat(color.blue), CGFloat(color.alpha)]
             )
-            XCTAssertEqual(panel.borderLayer.rimOpacity, 0)
-            let renderedColors = try XCTUnwrap(panel.gradientStrokeLayer.colors as? [CGColor])
-            XCTAssertEqual(renderedColors.count, 2)
-            for renderedColor in renderedColors {
-                XCTAssertEqual(renderedColor.components, panel.borderLayer.rimColor?.components)
-            }
+            XCTAssertEqual(panel.borderLayer.rimOpacity, 1)
             XCTAssertEqual(panel.borderLayer.rimWidth, 4)
             XCTAssertEqual(panel.borderLayer.borderWidth, 0)
             XCTAssertEqual(panel.renderedCornerRadii, .zero)
@@ -910,7 +905,7 @@ final class BorderSurfaceTests: XCTestCase {
         defer { window.destroy() }
         XCTAssertTrue(window.update(frame: frame, targetToken: token()))
         let panel = try XCTUnwrap(recorder.layerPanels.first)
-        XCTAssertFalse(panel.gradientStrokeLayer.isHidden)
+        XCTAssertTrue(panel.gradientStrokeLayer.isHidden)
         XCTAssertTrue(panel.glowColorLayer.isHidden)
         XCTAssertEqual(panel.borderUpdateCount, 1)
 
@@ -1043,7 +1038,7 @@ final class BorderSurfaceTests: XCTestCase {
     }
 
     @MainActor
-    func testReturningFocusReusesThatWindowsCornersWithoutFallbackFrame() async throws {
+    func testReturningFocusKeepsCachedNativeCornersWhileRefreshing() async throws {
         let recorder = BorderOperationsRecorder()
         let probe = DeferredCornerProbe()
         let applier = probe.applier(recorder)
@@ -1058,17 +1053,23 @@ final class BorderSurfaceTests: XCTestCase {
             probe.complete(sample(WindowCornerRadii(uniform: radius)))
             await fulfillment(of: [resolved], timeout: 1)
         }
-        let unexpectedQuery = expectation(description: "unchanged windows reuse cached corners")
-        unexpectedQuery.isInverted = true
-        probe.onRequest = { unexpectedQuery.fulfill() }
-        applier.onCornerSampleResolved = nil
         let panel = try XCTUnwrap(recorder.layerPanels.first)
-        for (windowId, radius) in [(77, 24.0), (78, 12.0), (77, 24.0)] {
+        for (windowId, radius) in [(77, 24.0), (78, 12.0), (77, 26.0)] {
+            let requested = expectation(description: "refresh corners for \(windowId)")
+            probe.onRequest = { requested.fulfill() }
             _ = applier.apply(desired(configRed, token: token(windowId: windowId)), forceOrdering: false)
             XCTAssertEqual(panel.renderedCornerRadii, WindowCornerRadii(uniform: radius))
+            XCTAssertEqual(panel.borderLayer.rimOpacity, 1)
+            XCTAssertTrue(panel.gradientStrokeLayer.isHidden)
+            await fulfillment(of: [requested], timeout: 1)
+            let resolved = expectation(description: "updated corners for \(windowId)")
+            applier.onCornerSampleResolved = { resolved.fulfill() }
+            probe.complete(sample(WindowCornerRadii(uniform: radius + 2)))
+            await fulfillment(of: [resolved], timeout: 1)
+            _ = applier.apply(desired(configRed, token: token(windowId: windowId)), forceOrdering: false)
+            XCTAssertEqual(panel.renderedCornerRadii, WindowCornerRadii(uniform: radius + 2))
         }
-        await fulfillment(of: [unexpectedQuery], timeout: 0.05)
-        XCTAssertEqual(probe.requests.count, 2)
+        XCTAssertEqual(probe.requests.count, 5)
     }
 
     @MainActor

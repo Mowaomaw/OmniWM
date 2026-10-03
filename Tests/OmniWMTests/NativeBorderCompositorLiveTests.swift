@@ -31,11 +31,6 @@ final class NativeBorderCompositorLiveTests: XCTestCase {
             cornerRadii: WindowCornerRadii(topLeft: 0, topRight: 16, bottomLeft: 48, bottomRight: 32),
             color: NSColor.red.cgColor, scale: screen.backingScaleFactor
         )
-        panel.updateEffects(
-            geometry: geometry.localized(),
-            cornerRadii: WindowCornerRadii(topLeft: 0, topRight: 16, bottomLeft: 48, bottomRight: 32),
-            config: config, baseColor: NSColor.red.cgColor, scale: screen.backingScaleFactor
-        )
         panel.applyFrame(targetFrame: geometry.targetFrame, surfaceFrame: geometry.surfaceFrame)
         panel.orderBack(nil)
         CATransaction.flush()
@@ -114,7 +109,7 @@ final class NativeBorderCompositorLiveTests: XCTestCase {
             var nativeConfig = config
             nativeConfig.gradient = nil
             nativeConfig.glow = nil
-            configure(panel, geometry: geometry, radii: radii, config: nativeConfig, usesNativeRim: true)
+            configure(panel, geometry: geometry, radii: radii, config: nativeConfig)
             let native = try await capture(panel, label: "\(label)-native")
             configure(panel, geometry: geometry, radii: radii, config: config)
             let effects = try await capture(panel, label: "\(label)-effects")
@@ -124,7 +119,7 @@ final class NativeBorderCompositorLiveTests: XCTestCase {
             panel.applyFrame(targetFrame: movedGeometry.targetFrame, surfaceFrame: movedGeometry.surfaceFrame)
             let movedEffects = try await capture(panel, label: "\(label)-fractional-effects")
             XCTAssertTrue(panel.gradientRingMaskLayer.path === path)
-            configure(panel, geometry: movedGeometry, radii: radii, config: nativeConfig, usesNativeRim: true)
+            configure(panel, geometry: movedGeometry, radii: radii, config: nativeConfig)
             let movedNative = try await capture(panel, label: "\(label)-fractional-native")
             assertEffectOutline(movedEffects, matches: movedNative, geometry: movedGeometry, panelFrame: panel.frame)
         }
@@ -152,18 +147,13 @@ final class NativeBorderCompositorLiveTests: XCTestCase {
         _ panel: BorderLayerPanel,
         geometry: BorderConfig.ResolvedGeometry,
         radii: WindowCornerRadii,
-        config: BorderConfig,
-        usesNativeRim: Bool = false
+        config: BorderConfig
     ) {
         let color = BorderLayerPanel.cgColor(config.color)
         panel.updateBorder(geometry: geometry.localized(), cornerRadii: radii, color: color, scale: 2)
         panel.updateEffects(
             geometry: geometry.localized(), cornerRadii: radii, config: config, baseColor: color, scale: 2
         )
-        panel.borderLayer.rimOpacity = usesNativeRim ? 1 : 0
-        if usesNativeRim {
-            panel.gradientStrokeLayer.isHidden = true
-        }
         panel.applyFrame(targetFrame: geometry.targetFrame, surfaceFrame: geometry.surfaceFrame)
     }
 
