@@ -32092,6 +32092,626 @@
         }
       }
     },
+    "Command+Shift (⌘⇧)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コマンド+シフト（⌘⇧）"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Command+Shift (⌘⇧)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommando+Shift (⌘⇧)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommando+Skift (⌘⇧)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comando+Shift (⌘⇧)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Command+Shift（⌘⇧）"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कमांड+शिफ्ट (⌘⇧)"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أمر+Shift (⌘⇧)"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komand+Shift (⌘⇧)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Command+Shift (⌘⇧)"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Command+Shift (⌘⇧)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Команда+Шифт (⌘⇧)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Command+Shift (⌘⇧)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Command+Shift (⌘⇧)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commande+Maj (⌘⇧)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Command+Shift (⌘⇧)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comando+Maiusc (⌘⇧)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komento+Vaihto (⌘⇧)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommando+Skift (⌘⇧)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "커맨드+시프트 (⌘⇧)"
+          }
+        }
+      }
+    },
+    "Control+Command+Shift (⌃⌘⇧)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コントロール+コマンド+シフト（⌃⌘⇧）"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Command+Shift (⌃⌘⇧)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontroll+Kommando+Shift (⌃⌘⇧)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Kommando+Skift (⌃⌘⇧)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Comando+Shift (⌃⌘⇧)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Command+Shift（⌃⌘⇧）"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कंट्रोल+कमांड+शिफ्ट (⌃⌘⇧)"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التحكم+أمر+Shift (⌃⌘⇧)"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontrola+Komand+Shift (⌃⌘⇧)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Command+Shift (⌃⌘⇧)"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Command+Shift (⌃⌘⇧)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Контроль+Команда+Шифт (⌃⌘⇧)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ctrl+Command+Shift (⌃⌘⇧)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Command+Shift (⌃⌘⇧)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrôle+Commande+Maj (⌃⌘⇧)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Command+Shift (⌃⌘⇧)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Comando+Maiusc (⌃⌘⇧)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Komento+Vaihto (⌃⌘⇧)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontrol+Kommando+Skift (⌃⌘⇧)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "컨트롤+커맨드+시프트 (⌃⌘⇧)"
+          }
+        }
+      }
+    },
+    "Control+Option+Command+Shift (⌃⌥⌘⇧)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コントロール+オプション+コマンド+シフト（⌃⌥⌘⇧）"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Option+Command+Shift (⌃⌥⌘⇧)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontroll+Alternativ+Kommando+Shift (⌃⌥⌘⇧)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Alternativ+Kommando+Skift (⌃⌥⌘⇧)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Opción+Comando+Shift (⌃⌥⌘⇧)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+选项+Command+Shift（⌃⌥⌘⇧）"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कंट्रोल+ऑप्शन+कमांड+शिफ्ट (⌃⌥⌘⇧)"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التحكم+خيار+أمر+Shift (⌃⌥⌘⇧)"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontrola+Opcija+Komand+Shift (⌃⌥⌘⇧)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Option+Command+Shift (⌃⌥⌘⇧)"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Option+Command+Shift (⌃⌥⌘⇧)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Контроль+Опция+Команда+Шифт (⌃⌥⌘⇧)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ctrl+Opcja+Command+Shift (⌃⌥⌘⇧)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Option+Command+Shift (⌃⌥⌘⇧)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrôle+Option+Commande+Maj (⌃⌥⌘⇧)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Optie+Command+Shift (⌃⌥⌘⇧)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Opzione+Comando+Maiusc (⌃⌥⌘⇧)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Optio+Komento+Vaihto (⌃⌥⌘⇧)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontrol+Tilvalg+Kommando+Skift (⌃⌥⌘⇧)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "컨트롤+옵션+커맨드+시프트 (⌃⌥⌘⇧)"
+          }
+        }
+      }
+    },
+    "Control+Option+Shift (⌃⌥⇧)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コントロール+オプション+シフト（⌃⌥⇧）"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Option+Shift (⌃⌥⇧)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontroll+Alternativ+Shift (⌃⌥⇧)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Alternativ+Skift (⌃⌥⇧)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Opción+Shift (⌃⌥⇧)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+选项+Shift（⌃⌥⇧）"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कंट्रोल+ऑप्शन+शिफ्ट (⌃⌥⇧)"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "التحكم+خيار+Shift (⌃⌥⇧)"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontrola+Opcija+Shift (⌃⌥⇧)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Option+Shift (⌃⌥⇧)"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Option+Shift (⌃⌥⇧)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Контроль+Опция+Шифт (⌃⌥⇧)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ctrl+Opcja+Shift (⌃⌥⇧)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Option+Shift (⌃⌥⇧)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrôle+Option+Maj (⌃⌥⇧)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Optie+Shift (⌃⌥⇧)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Opzione+Maiusc (⌃⌥⇧)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control+Optio+Vaihto (⌃⌥⇧)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontrol+Tilvalg+Skift (⌃⌥⇧)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "컨트롤+옵션+시프트 (⌃⌥⇧)"
+          }
+        }
+      }
+    },
+    "Option+Command+Shift (⌥⌘⇧)" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オプション+コマンド+シフト（⌥⌘⇧）"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Option+Command+Shift (⌥⌘⇧)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alternativ+Kommando+Shift (⌥⌘⇧)"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alternativ+Kommando+Skift (⌥⌘⇧)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opción+Comando+Shift (⌥⌘⇧)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选项+Command+Shift（⌥⌘⇧）"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ऑप्शन+कमांड+शिफ्ट (⌥⌘⇧)"
+          }
+        },
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خيار+أمر+Shift (⌥⌘⇧)"
+          }
+        },
+        "sr-Latn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opcija+Komand+Shift (⌥⌘⇧)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Option+Command+Shift (⌥⌘⇧)"
+          }
+        },
+        "he" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Option+Command+Shift (⌥⌘⇧)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опция+Команда+Шифт (⌥⌘⇧)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opcja+Command+Shift (⌥⌘⇧)"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Option+Command+Shift (⌥⌘⇧)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Option+Commande+Maj (⌥⌘⇧)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optie+Command+Shift (⌥⌘⇧)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opzione+Comando+Maiusc (⌥⌘⇧)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optio+Komento+Vaihto (⌥⌘⇧)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilvalg+Kommando+Skift (⌥⌘⇧)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "옵션+커맨드+시프트 (⌥⌘⇧)"
+          }
+        }
+      }
+    },
     "Control+Shift (⌃⇧)" : {
       "localizations" : {
         "ja" : {
@@ -32145,7 +32765,7 @@
         "sr-Latn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kontrola + Shift ()"
+            "value" : "Kontrola+Shift (⌃⇧)"
           }
         },
         "el" : {
@@ -32181,13 +32801,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Contrôle + Déplacement (=)"
+            "value" : "Contrôle+Maj (⌃⇧)"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Controle+Shift (...)"
+            "value" : "Control+Shift (⌃⇧)"
           }
         },
         "it" : {
@@ -96329,7 +96949,7 @@
         "sr-Latn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opcija + Shift ()"
+            "value" : "Opcija+Shift (⌥⇧)"
           }
         },
         "el" : {
@@ -96365,13 +96985,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Option+Shift (=)"
+            "value" : "Option+Maj (⌥⇧)"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Optie+Shift (...)"
+            "value" : "Optie+Shift (⌥⇧)"
           }
         },
         "it" : {

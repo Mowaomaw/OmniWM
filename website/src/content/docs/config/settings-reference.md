@@ -273,7 +273,7 @@ The seven optional `overviewGesture…` and `window…` keys below configure Ove
 | --- | --- | --- | --- |
 | `scrollEnabled` | boolean | `true` | Trackpad column scrolling (`fingerCount`) and modifier + mouse scroll wheel scrolling along the Niri primary axis; `false` turns off both. |
 | `scrollSensitivity` | float | `5.0` | Scroll gesture sensitivity. |
-| `scrollModifierKey` | string | `"optionShift"` | Modifier for wheel scrolling: `optionShift` or `controlShift`. |
+| `scrollModifierKey` | string | `"optionShift"` | Modifier for wheel scrolling: `optionShift` or `controlShift`. **Unreleased — available when building from `main`:** also `commandShift`, `controlOptionShift`, `optionCommandShift`, `controlCommandShift`, or `controlOptionCommandShift`. The System Hyper Trigger does not add modifiers to wheel events. |
 | `mouseMoveModifierKey` | string | `"option"` | Modifier for drag-to-swap of tiled windows in Niri and Dwindle (Niri also accepts `Shift` for insert): `off`, `option`, `control`, `command`, `controlOption`, `optionCommand`, `controlCommand`, `controlOptionCommand`. |
 | `mouseResizeModifierKey` | string | `"option"` | Modifier for right-drag resize: `option`, `control`, `command`, `shift`, `controlOption`, `optionCommand`, `optionShift`, `controlCommand`, `controlShift`, `commandShift`, `controlOptionCommand`, `controlOptionShift`, `optionCommandShift`, `controlCommandShift`, `controlOptionCommandShift`. |
 | `fingerCount` | integer | `3` | Trackpad column-scroll finger count: `2`, `3`, or `4`. |

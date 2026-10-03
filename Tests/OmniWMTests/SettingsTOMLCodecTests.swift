@@ -7,6 +7,22 @@ import Foundation
 import XCTest
 
 final class SettingsTOMLCodecTests: XCTestCase {
+    func testScrollModifierChoicesRoundTripWithOptionShiftDefault() throws {
+        var export = SettingsExport.defaults()
+        XCTAssertEqual(export.gestures.scrollModifierKey, .optionShift)
+        for modifier in ScrollModifierKey.allCases {
+            export.gestures.scrollModifierKey = modifier
+            let data = try SettingsTOMLCodec.encode(export)
+            XCTAssertTrue(String(decoding: data, as: UTF8.self).contains(
+                "scrollModifierKey = \"\(modifier.rawValue)\""
+            ))
+            let result = try SettingsTOMLCodec.decodeForLoad(data)
+            XCTAssertEqual(result.export, export)
+            XCTAssertNil(result.migration)
+            XCTAssertNil(result.migratedData)
+        }
+    }
+
     func testAnimationSpeedDefaultsAndRoundTrips() throws {
         var export = SettingsExport.defaults()
         XCTAssertEqual(export.animationSpeed, 1)
