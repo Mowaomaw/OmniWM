@@ -66,10 +66,9 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
     private var cliManager: AppCLIManager?
     private var updateCoordinator: (any AppUpdateCoordinating)?
     private var runtimeStateStore: RuntimeStateStore?
-    private var launchOverlayController: LaunchOverlayController?
     private var monitorSetupScreenObserver: NSObjectProtocol?
     private var monitorSetupEvaluationTask: Task<Void, Never>?
-    private var launchOverlayFinished = false
+    private var launchOverlayFinished = true
     private var launchPermissionsWindowController: LaunchPermissionsWindowController?
     private var didFinishBootstrap = false
     private var terminationPending = false
@@ -186,7 +185,7 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
         updateCoordinator.startAutomaticChecks()
 
         startMonitorSetupPresentationObservation()
-        playLaunchOverlay()
+        scheduleMonitorSetupEvaluation()
     }
 
     private func observeSettings(_ settings: SettingsStore, controller: WMController) {
@@ -210,17 +209,6 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         settings.onConfigNoticeChanged = { [weak controller] in
             controller?.refreshDiagnosticsIssues()
-        }
-    }
-
-    private func playLaunchOverlay() {
-        let overlay = LaunchOverlayController()
-        launchOverlayController = overlay
-        overlay.play { [weak self] in
-            guard let self else { return }
-            launchOverlayController = nil
-            launchOverlayFinished = true
-            scheduleMonitorSetupEvaluation()
         }
     }
 
